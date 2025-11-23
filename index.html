@@ -1,0 +1,350 @@
+import React, { useState, useRef, useEffect } from 'react';
+import { Download, Upload, Type, Palette, RefreshCw, Sparkles, Image } from 'lucide-react';
+
+const MemeStudio = () => {
+  const [selectedTemplate, setSelectedTemplate] = useState(null);
+  const [topText, setTopText] = useState('');
+  const [bottomText, setBottomText] = useState('');
+  const [textColor, setTextColor] = useState('#FFFFFF');
+  const [fontSize, setFontSize] = useState(48);
+  const [strokeWidth, setStrokeWidth] = useState(3);
+  const [customImage, setCustomImage] = useState(null);
+  const canvasRef = useRef(null);
+  const fileInputRef = useRef(null);
+
+  const memeTemplates = [
+    { id: 1, name: 'Drake', url: 'https://i.imgflip.com/30b1gx.jpg' },
+    { id: 2, name: 'Distracted Boyfriend', url: 'https://i.imgflip.com/1ur9b0.jpg' },
+    { id: 3, name: 'Two Buttons', url: 'https://i.imgflip.com/1g8my4.jpg' },
+    { id: 4, name: 'Change My Mind', url: 'https://i.imgflip.com/24y43o.jpg' },
+    { id: 5, name: 'Expanding Brain', url: 'https://i.imgflip.com/1jwhww.jpg' },
+    { id: 6, name: 'Woman Yelling at Cat', url: 'https://i.imgflip.com/345v97.jpg' },
+  ];
+
+  useEffect(() => {
+    if (selectedTemplate || customImage) {
+      drawMeme();
+    }
+  }, [selectedTemplate, topText, bottomText, textColor, fontSize, strokeWidth, customImage]);
+
+  const drawMeme = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    
+    img.onload = () => {
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0);
+
+      ctx.font = `bold ${fontSize}px Impact, Arial Black, sans-serif`;
+      ctx.fillStyle = textColor;
+      ctx.strokeStyle = '#000000';
+      ctx.lineWidth = strokeWidth;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+
+      const drawText = (text, y) => {
+        const words = text.toUpperCase().split(' ');
+        let line = '';
+        let lines = [];
+        
+        words.forEach(word => {
+          const testLine = line + word + ' ';
+          const metrics = ctx.measureText(testLine);
+          if (metrics.width > canvas.width - 20 && line !== '') {
+            lines.push(line);
+            line = word + ' ';
+          } else {
+            line = testLine;
+          }
+        });
+        lines.push(line);
+
+        lines.forEach((line, index) => {
+          const yPos = y + (index * fontSize * 1.2);
+          ctx.strokeText(line.trim(), canvas.width / 2, yPos);
+          ctx.fillText(line.trim(), canvas.width / 2, yPos);
+        });
+      };
+
+      if (topText) drawText(topText, 10);
+      if (bottomText) drawText(bottomText, canvas.height - (fontSize * 1.5));
+    };
+
+    img.src = customImage || selectedTemplate.url;
+  };
+
+  const handleDownload = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    canvas.toBlob((blob) => {
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.download = 'ebymedias-meme.png';
+      link.href = url;
+      link.click();
+      URL.revokeObjectURL(url);
+    });
+  };
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setCustomImage(event.target.result);
+        setSelectedTemplate(null);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const resetMeme = () => {
+    setTopText('');
+    setBottomText('');
+    setSelectedTemplate(null);
+    setCustomImage(null);
+    setTextColor('#FFFFFF');
+    setFontSize(48);
+    setStrokeWidth(3);
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-800 to-orange-700 p-4 md:p-8">
+      {/* Animated Background */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none opacity-20">
+        <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-br from-cyan-500 to-blue-500 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-gradient-to-tl from-pink-500 to-purple-500 rounded-full blur-3xl animate-pulse delay-1000"></div>
+      </div>
+
+      <div className="max-w-7xl mx-auto relative z-10">
+        {/* Header */}
+        <div className="text-center mb-8 animate-fade-in">
+          <div className="inline-flex items-center gap-3 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 p-1 rounded-2xl mb-4">
+            <div className="bg-gray-900 px-8 py-4 rounded-xl flex items-center gap-3">
+              <Sparkles className="w-8 h-8 text-yellow-400 animate-spin" style={{ animationDuration: '3s' }} />
+              <h1 className="text-4xl md:text-5xl font-black bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
+                Ebymedias<span className="text-red-500">❤️</span> Meme Studio
+              </h1>
+              <Sparkles className="w-8 h-8 text-yellow-400 animate-spin" style={{ animationDuration: '3s' }} />
+            </div>
+          </div>
+          <p className="text-white text-lg md:text-xl font-semibold drop-shadow-lg">
+            Create viral memes in seconds with the most advanced editor 🚀
+          </p>
+        </div>
+
+        <div className="grid lg:grid-cols-3 gap-6">
+          {/* Left Panel - Templates */}
+          <div className="lg:col-span-1 space-y-6">
+            <div className="bg-gray-900/80 backdrop-blur-xl rounded-3xl p-6 shadow-2xl border border-purple-500/30 hover:border-purple-500/60 transition-all">
+              <div className="flex items-center gap-3 mb-4">
+                <Image className="w-6 h-6 text-cyan-400" />
+                <h2 className="text-2xl font-bold text-white">Templates</h2>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                {memeTemplates.map((template) => (
+                  <button
+                    key={template.id}
+                    onClick={() => {
+                      setSelectedTemplate(template);
+                      setCustomImage(null);
+                    }}
+                    className={`relative group overflow-hidden rounded-xl transition-all duration-300 ${
+                      selectedTemplate?.id === template.id
+                        ? 'ring-4 ring-cyan-400 scale-105'
+                        : 'hover:scale-105 hover:ring-2 hover:ring-purple-400'
+                    }`}
+                  >
+                    <img
+                      src={template.url}
+                      alt={template.name}
+                      className="w-full h-24 object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-2">
+                      <span className="text-white text-xs font-bold">{template.name}</span>
+                    </div>
+                  </button>
+                ))}
+              </div>
+
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                className="w-full mt-4 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all transform hover:scale-105 shadow-lg"
+              >
+                <Upload className="w-5 h-5" />
+                Upload Custom Image
+              </button>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                className="hidden"
+              />
+            </div>
+
+            {/* Text Controls */}
+            <div className="bg-gray-900/80 backdrop-blur-xl rounded-3xl p-6 shadow-2xl border border-purple-500/30">
+              <div className="flex items-center gap-3 mb-4">
+                <Type className="w-6 h-6 text-pink-400" />
+                <h2 className="text-2xl font-bold text-white">Text Controls</h2>
+              </div>
+              
+              <div className="space-y-4">
+                <div>
+                  <label className="text-white font-semibold mb-2 block">Top Text</label>
+                  <input
+                    type="text"
+                    value={topText}
+                    onChange={(e) => setTopText(e.target.value)}
+                    placeholder="Enter top text..."
+                    className="w-full px-4 py-3 bg-gray-800 text-white rounded-xl border-2 border-purple-500/30 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/50 outline-none transition-all"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-white font-semibold mb-2 block">Bottom Text</label>
+                  <input
+                    type="text"
+                    value={bottomText}
+                    onChange={(e) => setBottomText(e.target.value)}
+                    placeholder="Enter bottom text..."
+                    className="w-full px-4 py-3 bg-gray-800 text-white rounded-xl border-2 border-purple-500/30 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/50 outline-none transition-all"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-white font-semibold mb-2 block">Font Size: {fontSize}px</label>
+                  <input
+                    type="range"
+                    min="20"
+                    max="80"
+                    value={fontSize}
+                    onChange={(e) => setFontSize(Number(e.target.value))}
+                    className="w-full accent-cyan-400"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-white font-semibold mb-2 block">Stroke Width: {strokeWidth}px</label>
+                  <input
+                    type="range"
+                    min="0"
+                    max="8"
+                    value={strokeWidth}
+                    onChange={(e) => setStrokeWidth(Number(e.target.value))}
+                    className="w-full accent-pink-400"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-white font-semibold mb-2 block flex items-center gap-2">
+                    <Palette className="w-5 h-5" />
+                    Text Color
+                  </label>
+                  <input
+                    type="color"
+                    value={textColor}
+                    onChange={(e) => setTextColor(e.target.value)}
+                    className="w-full h-12 rounded-xl cursor-pointer"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Center & Right - Canvas and Actions */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Canvas */}
+            <div className="bg-gray-900/80 backdrop-blur-xl rounded-3xl p-6 shadow-2xl border border-purple-500/30">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-2xl font-bold text-white">Preview</h2>
+                <div className="flex gap-2">
+                  <button
+                    onClick={resetMeme}
+                    className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-2 px-4 rounded-xl flex items-center gap-2 transition-all transform hover:scale-105 shadow-lg"
+                  >
+                    <RefreshCw className="w-4 h-4" />
+                    Reset
+                  </button>
+                  <button
+                    onClick={handleDownload}
+                    disabled={!selectedTemplate && !customImage}
+                    className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 disabled:from-gray-600 disabled:to-gray-700 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded-xl flex items-center gap-2 transition-all transform hover:scale-105 shadow-lg"
+                  >
+                    <Download className="w-4 h-4" />
+                    Download
+                  </button>
+                </div>
+              </div>
+
+              <div className="bg-gray-800 rounded-2xl p-4 flex items-center justify-center min-h-[400px]">
+                {selectedTemplate || customImage ? (
+                  <canvas
+                    ref={canvasRef}
+                    className="max-w-full h-auto rounded-xl shadow-2xl"
+                  />
+                ) : (
+                  <div className="text-center text-gray-400 py-20">
+                    <Image className="w-20 h-20 mx-auto mb-4 opacity-50" />
+                    <p className="text-xl font-semibold">Select a template or upload an image to start</p>
+                    <p className="text-sm mt-2">Your masterpiece awaits! 🎨</p>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Quick Tips */}
+            <div className="bg-gradient-to-r from-purple-900/80 to-pink-900/80 backdrop-blur-xl rounded-3xl p-6 shadow-2xl border border-purple-500/30">
+              <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-yellow-400" />
+                Pro Tips
+              </h3>
+              <ul className="text-white space-y-2 text-sm">
+                <li className="flex items-start gap-2">
+                  <span className="text-cyan-400">✨</span>
+                  <span>Keep text short and punchy for maximum impact</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-pink-400">🎨</span>
+                  <span>Use high contrast between text and image</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-yellow-400">🚀</span>
+                  <span>Upload your own images for unique memes</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-400">💡</span>
+                  <span>Experiment with different font sizes and colors</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="text-center mt-8 text-white/80">
+          <p className="text-sm">Made with <span className="text-red-500 animate-pulse">❤️</span> by Ebymedias</p>
+        </div>
+      </div>
+
+      <style jsx>{`
+        @keyframes fade-in {
+          from { opacity: 0; transform: translateY(-20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+          animation: fade-in 0.6s ease-out;
+        }
+      `}</style>
+    </div>
+  );
+};
+
+export default MemeStudio;
