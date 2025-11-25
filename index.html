@@ -1,298 +1,938 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Download, Upload, Type, Palette, RefreshCw, Sparkles, Image } from 'lucide-react';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-const MemeStudio = () => {
-  const [selectedTemplate, setSelectedTemplate] = useState(null);
-  const [topText, setTopText] = useState('');
-  const [bottomText, setBottomText] = useState('');
-  const [textColor, setTextColor] = useState('#FFFFFF');
-  const [fontSize, setFontSize] = useState(48);
-  const [strokeWidth, setStrokeWidth] = useState(3);
-  const [customImage, setCustomImage] = useState(null);
-  const canvasRef = useRef(null);
-  const fileInputRef = useRef(null);
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #111b21;
+            color: #e9edef;
+            height: 100vh;
+            overflow: hidden;
+        }
 
-  const memeTemplates = [
-    { id: 1, name: 'Drake', url: 'https://i.imgflip.com/30b1gx.jpg' },
-    { id: 2, name: 'Distracted Boyfriend', url: 'https://i.imgflip.com/1ur9b0.jpg' },
-    { id: 3, name: 'Two Buttons', url: 'https://i.imgflip.com/1g8my4.jpg' },
-    { id: 4, name: 'Change My Mind', url: 'https://i.imgflip.com/24y43o.jpg' },
-    { id: 5, name: 'Expanding Brain', url: 'https://i.imgflip.com/1jwhww.jpg' },
-    { id: 6, name: 'Woman Yelling at Cat', url: 'https://i.imgflip.com/345v97.jpg' },
-  ];
+        body.light {
+            background: #f0f2f5;
+            color: #111b21;
+        }
 
-  useEffect(() => {
-    if (selectedTemplate || customImage) {
-      drawMeme();
-    }
-  }, [selectedTemplate, topText, bottomText, textColor, fontSize, strokeWidth, customImage]);
+        .login-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #111b21;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 16px;
+        }
 
-  const drawMeme = () => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+        body.light .login-screen {
+            background: #f0f2f5;
+        }
 
-    const ctx = canvas.getContext('2d');
-    const img = new Image();
-    img.crossOrigin = 'anonymous';
-    
-    img.onload = () => {
-      canvas.width = img.width;
-      canvas.height = img.height;
-      ctx.drawImage(img, 0, 0);
+        .login-box {
+            background: #1f2c34;
+            padding: 24px;
+            border-radius: 12px;
+            max-width: 360px;
+            width: 100%;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
 
-      ctx.font = `bold ${fontSize}px Impact, Arial Black, sans-serif`;
-      ctx.fillStyle = textColor;
-      ctx.strokeStyle = '#000000';
-      ctx.lineWidth = strokeWidth;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
+        body.light .login-box {
+            background: white;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
 
-      const drawText = (text, y) => {
-        const words = text.toUpperCase().split(' ');
-        let line = '';
-        let lines = [];
-        
-        words.forEach(word => {
-          const testLine = line + word + ' ';
-          const metrics = ctx.measureText(testLine);
-          if (metrics.width > canvas.width - 20 && line !== '') {
-            lines.push(line);
-            line = word + ' ';
-          } else {
-            line = testLine;
-          }
-        });
-        lines.push(line);
+        .login-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-        lines.forEach((line, index) => {
-          const yPos = y + (index * fontSize * 1.2);
-          ctx.strokeText(line.trim(), canvas.width / 2, yPos);
-          ctx.fillText(line.trim(), canvas.width / 2, yPos);
-        });
-      };
+        .login-icon {
+            width: 60px;
+            height: 60px;
+            background: #25d366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 30px;
+        }
 
-      if (topText) drawText(topText, 10);
-      if (bottomText) drawText(bottomText, canvas.height - (fontSize * 1.5));
-    };
+        .login-header h1 {
+            font-size: 20px;
+            margin-bottom: 6px;
+            color: #e9edef;
+        }
 
-    img.src = customImage || selectedTemplate.url;
-  };
+        body.light .login-header h1 {
+            color: #111b21;
+        }
 
-  const handleDownload = () => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+        .login-header p {
+            font-size: 13px;
+            color: #8696a0;
+        }
 
-    canvas.toBlob((blob) => {
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.download = 'ebymedias-meme.png';
-      link.href = url;
-      link.click();
-      URL.revokeObjectURL(url);
-    });
-  };
+        .input-group {
+            margin-bottom: 16px;
+        }
 
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        setCustomImage(event.target.result);
-        setSelectedTemplate(null);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+        .input-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 13px;
+            color: #8696a0;
+        }
 
-  const resetMeme = () => {
-    setTopText('');
-    setBottomText('');
-    setSelectedTemplate(null);
-    setCustomImage(null);
-    setTextColor('#FFFFFF');
-    setFontSize(48);
-    setStrokeWidth(3);
-  };
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            background: #2a3942;
+            border: 1px solid #3b4a54;
+            border-radius: 6px;
+            font-size: 15px;
+            color: #e9edef;
+            outline: none;
+        }
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-800 to-orange-700 p-4">
-      <div className="fixed inset-0 overflow-hidden pointer-events-none opacity-20">
-        <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-br from-cyan-500 to-blue-500 rounded-full blur-3xl"></div>
-        <div className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-gradient-to-tl from-pink-500 to-purple-500 rounded-full blur-3xl"></div>
-      </div>
+        body.light .input-group input {
+            background: #f0f2f5;
+            border: 1px solid #d1d7db;
+            color: #111b21;
+        }
 
-      <div className="max-w-6xl mx-auto relative z-10">
-        <div className="text-center mb-6">
-          <div className="inline-flex items-center gap-3 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 p-1 rounded-2xl mb-4">
-            <div className="bg-gray-900 px-6 py-3 rounded-xl flex items-center gap-2">
-              <Sparkles className="w-6 h-6 text-yellow-400" />
-              <h1 className="text-2xl md:text-4xl font-black bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
-                Ebymedias<span className="text-red-500">❤️</span> Meme Studio
-              </h1>
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-primary {
+            background: #25d366;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #20bd5a;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid #25d366;
+            color: #25d366;
+            margin-top: 10px;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(37, 211, 102, 0.1);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .chat-container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            background: #202c33;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #2a3942;
+        }
+
+        body.light .chat-header {
+            background: #f0f2f5;
+            border-bottom: 1px solid #d1d7db;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chat-avatar {
+            width: 36px;
+            height: 36px;
+            background: #25d366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .chat-info h2 {
+            font-size: 15px;
+            color: #e9edef;
+        }
+
+        body.light .chat-info h2 {
+            color: #111b21;
+        }
+
+        .chat-info p {
+            font-size: 12px;
+            color: #8696a0;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .icon-btn {
+            width: 36px;
+            height: 36px;
+            background: transparent;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #8696a0;
+            font-size: 18px;
+            transition: background 0.2s;
+        }
+
+        .icon-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        body.light .icon-btn:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .messages-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px;
+            background: #0b141a;
+        }
+
+        body.light .messages-area {
+            background: #efeae2;
+        }
+
+        .message {
+            display: flex;
+            margin-bottom: 8px;
+            animation: slideIn 0.2s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.own {
+            justify-content: flex-end;
+        }
+
+        .message-bubble {
+            max-width: 80%;
+            padding: 6px 10px;
+            border-radius: 8px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+            word-wrap: break-word;
+        }
+
+        .message:not(.own) .message-bubble {
+            background: #202c33;
+            border-radius: 0 8px 8px 8px;
+        }
+
+        body.light .message:not(.own) .message-bubble {
+            background: white;
+        }
+
+        .message.own .message-bubble {
+            background: #005c4b;
+            border-radius: 8px 0 8px 8px;
+        }
+
+        body.light .message.own .message-bubble {
+            background: #d9fdd3;
+        }
+
+        .message-sender {
+            font-weight: 600;
+            font-size: 13px;
+            color: #25d366;
+            margin-bottom: 2px;
+        }
+
+        .message-text {
+            font-size: 14px;
+            line-height: 1.4;
+            color: #e9edef;
+            word-wrap: break-word;
+        }
+
+        body.light .message-text {
+            color: #111b21;
+        }
+
+        .message-time {
+            font-size: 10px;
+            color: #8696a0;
+            margin-top: 2px;
+            text-align: right;
+        }
+
+        .input-area {
+            background: #202c33;
+            padding: 8px 12px;
+            border-top: 1px solid #2a3942;
+        }
+
+        body.light .input-area {
+            background: #f0f2f5;
+            border-top: 1px solid #d1d7db;
+        }
+
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .message-input {
+            flex: 1;
+            padding: 10px 14px;
+            background: #2a3942;
+            border: none;
+            border-radius: 20px;
+            font-size: 14px;
+            color: #e9edef;
+            outline: none;
+        }
+
+        body.light .message-input {
+            background: white;
+            color: #111b21;
+        }
+
+        .send-btn {
+            width: 42px;
+            height: 42px;
+            background: #25d366;
+            border: none;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: background 0.2s;
+        }
+
+        .send-btn:hover {
+            background: #20bd5a;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #8696a0;
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .side-menu {
+            position: fixed;
+            left: -300px;
+            top: 0;
+            width: 300px;
+            height: 100%;
+            background: #202c33;
+            z-index: 1001;
+            transition: left 0.3s;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        body.light .side-menu {
+            background: white;
+        }
+
+        .side-menu.open {
+            left: 0;
+        }
+
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .menu-item {
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: background 0.2s;
+        }
+
+        .menu-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        body.light .menu-item:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 16px;
+        }
+
+        .modal-content {
+            background: #1f2c34;
+            border-radius: 12px;
+            padding: 24px;
+            max-width: 400px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        body.light .modal-content {
+            background: white;
+        }
+
+        .modal-header {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 12px;
+            background: #2a3942;
+            border: 1px solid #3b4a54;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #e9edef;
+            outline: none;
+            margin-bottom: 12px;
+        }
+
+        body.light .modal-input {
+            background: #f0f2f5;
+            border: 1px solid #d1d7db;
+            color: #111b21;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .admin-badge {
+            background: #25d366;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-screen">
+        <div class="login-box">
+            <div class="login-header">
+                <div class="login-icon">💬</div>
+                <h1>Welcome</h1>
+                <p>Enter username to continue</p>
             </div>
-          </div>
-          <p className="text-white text-sm md:text-lg font-semibold">
-            Create viral memes in seconds 🚀
-          </p>
+            <div class="input-group">
+                <label>Username</label>
+                <input type="text" id="usernameInput" placeholder="Your username" maxlength="20" autofocus>
+            </div>
+            <button class="btn btn-primary" id="joinBtn">Join Chat</button>
+            <button class="btn btn-secondary" id="adminLoginBtn">Admin Login</button>
         </div>
-
-        <div className="space-y-4">
-          <div className="bg-gray-900/90 backdrop-blur-xl rounded-2xl p-4 shadow-2xl border border-purple-500/30">
-            <div className="flex items-center gap-2 mb-3">
-              <Image className="w-5 h-5 text-cyan-400" />
-              <h2 className="text-lg font-bold text-white">Templates</h2>
-            </div>
-            <div className="grid grid-cols-3 gap-2 mb-3">
-              {memeTemplates.map((template) => (
-                <button
-                  key={template.id}
-                  onClick={() => {
-                    setSelectedTemplate(template);
-                    setCustomImage(null);
-                  }}
-                  className={`relative overflow-hidden rounded-lg transition-all ${
-                    selectedTemplate?.id === template.id
-                      ? 'ring-2 ring-cyan-400'
-                      : 'hover:ring-2 hover:ring-purple-400'
-                  }`}
-                >
-                  <img
-                    src={template.url}
-                    alt={template.name}
-                    className="w-full h-20 object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-1">
-                    <span className="text-white text-xs font-bold">{template.name}</span>
-                  </div>
-                </button>
-              ))}
-            </div>
-
-            <button
-              onClick={() => fileInputRef.current?.click()}
-              className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-bold py-2 px-4 rounded-xl flex items-center justify-center gap-2"
-            >
-              <Upload className="w-4 h-4" />
-              Upload Image
-            </button>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              onChange={handleImageUpload}
-              className="hidden"
-            />
-          </div>
-
-          <div className="bg-gray-900/90 backdrop-blur-xl rounded-2xl p-4 shadow-2xl border border-purple-500/30">
-            <div className="flex items-center gap-2 mb-3">
-              <Type className="w-5 h-5 text-pink-400" />
-              <h2 className="text-lg font-bold text-white">Text</h2>
-            </div>
-            
-            <div className="space-y-3">
-              <input
-                type="text"
-                value={topText}
-                onChange={(e) => setTopText(e.target.value)}
-                placeholder="Top text..."
-                className="w-full px-3 py-2 bg-gray-800 text-white rounded-lg border border-purple-500/30 focus:border-cyan-400 outline-none"
-              />
-
-              <input
-                type="text"
-                value={bottomText}
-                onChange={(e) => setBottomText(e.target.value)}
-                placeholder="Bottom text..."
-                className="w-full px-3 py-2 bg-gray-800 text-white rounded-lg border border-purple-500/30 focus:border-cyan-400 outline-none"
-              />
-
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="text-white text-xs mb-1 block">Size: {fontSize}</label>
-                  <input
-                    type="range"
-                    min="20"
-                    max="80"
-                    value={fontSize}
-                    onChange={(e) => setFontSize(Number(e.target.value))}
-                    className="w-full accent-cyan-400"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-white text-xs mb-1 block">Stroke: {strokeWidth}</label>
-                  <input
-                    type="range"
-                    min="0"
-                    max="8"
-                    value={strokeWidth}
-                    onChange={(e) => setStrokeWidth(Number(e.target.value))}
-                    className="w-full accent-pink-400"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="text-white text-xs mb-1 block flex items-center gap-1">
-                  <Palette className="w-4 h-4" />
-                  Color
-                </label>
-                <input
-                  type="color"
-                  value={textColor}
-                  onChange={(e) => setTextColor(e.target.value)}
-                  className="w-full h-10 rounded-lg cursor-pointer"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-gray-900/90 backdrop-blur-xl rounded-2xl p-4 shadow-2xl border border-purple-500/30">
-            <div className="flex items-center justify-between mb-3">
-              <h2 className="text-lg font-bold text-white">Preview</h2>
-              <div className="flex gap-2">
-                <button
-                  onClick={resetMeme}
-                  className="bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold py-2 px-3 rounded-lg flex items-center gap-1 text-sm"
-                >
-                  <RefreshCw className="w-4 h-4" />
-                  Reset
-                </button>
-                <button
-                  onClick={handleDownload}
-                  disabled={!selectedTemplate && !customImage}
-                  className="bg-gradient-to-r from-green-500 to-emerald-500 disabled:from-gray-600 disabled:to-gray-700 text-white font-bold py-2 px-3 rounded-lg flex items-center gap-1 text-sm"
-                >
-                  <Download className="w-4 h-4" />
-                  Save
-                </button>
-              </div>
-            </div>
-
-            <div className="bg-gray-800 rounded-xl p-3 flex items-center justify-center min-h-[300px]">
-              {selectedTemplate || customImage ? (
-                <canvas
-                  ref={canvasRef}
-                  className="max-w-full h-auto rounded-lg shadow-2xl"
-                />
-              ) : (
-                <div className="text-center text-gray-400 py-12">
-                  <Image className="w-16 h-16 mx-auto mb-3 opacity-50" />
-                  <p className="text-sm font-semibold">Select a template to start</p>
-                  <p className="text-xs mt-1">Your masterpiece awaits! 🎨</p>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-
-        <div className="text-center mt-4 text-white/70 text-xs">
-          Made with <span className="text-red-500">❤️</span> by Ebymedias
-        </div>
-      </div>
     </div>
-  );
-};
 
-export default MemeStudio;
+    <!-- Admin Login Screen -->
+    <div id="adminLoginScreen" class="login-screen hidden">
+        <div class="login-box">
+            <div class="login-header">
+                <div class="login-icon">🔐</div>
+                <h1>Admin Login</h1>
+                <p>Enter admin credentials</p>
+            </div>
+            <div class="input-group">
+                <label>Username</label>
+                <input type="text" id="adminUsernameInput" placeholder="Admin username" maxlength="20">
+            </div>
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" id="adminPasswordInput" placeholder="Admin password">
+            </div>
+            <button class="btn btn-primary" id="adminSubmitBtn">Login</button>
+            <button class="btn btn-secondary" id="backBtn">Back</button>
+        </div>
+    </div>
+
+    <!-- Menu Overlay -->
+    <div id="menuOverlay" class="menu-overlay hidden"></div>
+
+    <!-- Side Menu -->
+    <div id="sideMenu" class="side-menu">
+        <div class="menu-item" id="clearAllMenuItem">
+            <span>🗑️</span>
+            <span>Clear All Messages</span>
+        </div>
+        <div class="menu-item admin-only hidden" id="warnUserMenuItem">
+            <span>⚠️</span>
+            <span>Warn User</span>
+        </div>
+        <div class="menu-item admin-only hidden" id="kickUserMenuItem">
+            <span>⚔️</span>
+            <span>Kick User</span>
+        </div>
+    </div>
+
+    <!-- Chat Screen -->
+    <div id="chatScreen" class="chat-container hidden">
+        <div class="chat-header">
+            <div class="header-left">
+                <button class="icon-btn" id="menuBtn">☰</button>
+                <div class="chat-avatar">💬</div>
+                <div class="chat-info">
+                    <h2>Group Chat</h2>
+                    <p id="userStatus">Online as <span id="displayUsername"></span></p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="icon-btn" id="themeBtn" title="Toggle Theme">☀️</button>
+            </div>
+        </div>
+
+        <div class="messages-area" id="messagesArea">
+            <div id="messagesWrapper">
+                <div class="empty-state">
+                    <div class="empty-icon">💬</div>
+                    <p>No messages yet</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="input-area">
+            <div class="input-wrapper">
+                <input type="text" id="messageInput" class="message-input" placeholder="Type a message">
+                <button class="send-btn" id="sendBtn">➤</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Clear All Modal -->
+    <div id="clearModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">⚠️ Clear All Messages</div>
+            <p style="margin-bottom: 16px; color: #8696a0;">This will delete all messages permanently. This action cannot be undone.</p>
+            <div class="modal-buttons">
+                <button class="btn btn-primary" id="confirmClearBtn">Clear All</button>
+                <button class="btn btn-secondary" id="cancelClearBtn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Warn User Modal -->
+    <div id="warnModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">⚠️ Warn User</div>
+            <input type="text" id="warnUsername" class="modal-input" placeholder="Username">
+            <input type="text" id="warnReason" class="modal-input" placeholder="Reason">
+            <div class="modal-buttons">
+                <button class="btn btn-primary" id="sendWarnBtn">Send Warning</button>
+                <button class="btn btn-secondary" id="closeWarnBtn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Kick User Modal -->
+    <div id="kickModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">⚔️ Kick User</div>
+            <input type="text" id="kickUsername" class="modal-input" placeholder="Username">
+            <input type="text" id="kickReason" class="modal-input" placeholder="Reason">
+            <div class="modal-buttons">
+                <button class="btn btn-primary" id="sendKickBtn">Kick User</button>
+                <button class="btn btn-secondary" id="closeKickBtn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getDatabase, ref, push, onValue, set, onDisconnect, remove } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBzUELxbbaL6Wb_M1uNhjwlZHVTorN9XJs",
+            authDomain: "my-whatsapp-2c1af.firebaseapp.com",
+            databaseURL: "https://my-whatsapp-2c1af-default-rtdb.firebaseio.com",
+            projectId: "my-whatsapp-2c1af",
+            storageBucket: "my-whatsapp-2c1af.firebasestorage.app",
+            messagingSenderId: "1089455460888",
+            appId: "1:1089455460888:web:d0c8dea185ba6769ebe96d"
+        };
+
+        const ADMIN_PASSWORD = "Eberechi";
+        
+        let app, database, messagesRef, presenceRef, warningsRef;
+        let username = '';
+        let isAdmin = false;
+        let isDark = true;
+
+        try {
+            app = initializeApp(firebaseConfig);
+            database = getDatabase(app);
+            messagesRef = ref(database, 'chat-messages');
+            presenceRef = ref(database, 'presence');
+            warningsRef = ref(database, 'warnings');
+        } catch (error) {
+            console.error('Firebase error:', error);
+            alert('Failed to connect to Firebase.');
+        }
+
+        // Event Listeners
+        document.getElementById('joinBtn').addEventListener('click', joinChat);
+        document.getElementById('adminLoginBtn').addEventListener('click', showAdminLogin);
+        document.getElementById('adminSubmitBtn').addEventListener('click', loginAdmin);
+        document.getElementById('backBtn').addEventListener('click', backToLogin);
+        document.getElementById('themeBtn').addEventListener('click', toggleTheme);
+        document.getElementById('menuBtn').addEventListener('click', toggleMenu);
+        document.getElementById('menuOverlay').addEventListener('click', toggleMenu);
+        document.getElementById('sendBtn').addEventListener('click', sendMessage);
+        document.getElementById('clearAllMenuItem').addEventListener('click', showClearModal);
+        document.getElementById('warnUserMenuItem').addEventListener('click', () => {
+            toggleMenu();
+            toggleModal('warnModal');
+        });
+        document.getElementById('kickUserMenuItem').addEventListener('click', () => {
+            toggleMenu();
+            toggleModal('kickModal');
+        });
+        document.getElementById('sendWarnBtn').addEventListener('click', sendWarning);
+        document.getElementById('closeWarnBtn').addEventListener('click', () => toggleModal('warnModal'));
+        document.getElementById('sendKickBtn').addEventListener('click', kickUser);
+        document.getElementById('closeKickBtn').addEventListener('click', () => toggleModal('kickModal'));
+        document.getElementById('confirmClearBtn').addEventListener('click', clearAllMessages);
+        document.getElementById('cancelClearBtn').addEventListener('click', () => toggleModal('clearModal'));
+        
+        document.getElementById('messageInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+        
+        document.getElementById('usernameInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') joinChat();
+        });
+        
+        document.getElementById('adminPasswordInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') loginAdmin();
+        });
+
+        function joinChat() {
+            const input = document.getElementById('usernameInput');
+            if (input.value.trim()) {
+                username = input.value.trim();
+                startChat();
+            }
+        }
+
+        function showAdminLogin() {
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('adminLoginScreen').classList.remove('hidden');
+        }
+
+        function backToLogin() {
+            document.getElementById('adminLoginScreen').classList.add('hidden');
+            document.getElementById('loginScreen').classList.remove('hidden');
+        }
+
+        function loginAdmin() {
+            const user = document.getElementById('adminUsernameInput').value.trim();
+            const pass = document.getElementById('adminPasswordInput').value;
+            
+            if (pass === ADMIN_PASSWORD && user) {
+                username = user;
+                isAdmin = true;
+                startChat();
+            } else {
+                alert('❌ Invalid credentials!');
+            }
+        }
+
+        async function startChat() {
+            document.getElementById('displayUsername').textContent = username;
+            if (isAdmin) {
+                document.getElementById('userStatus').innerHTML = 
+                    `<span class="admin-badge">ADMIN</span> <span id="displayUsername">${username}</span>`;
+                document.querySelectorAll('.admin-only').forEach(el => el.classList.remove('hidden'));
+            }
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('adminLoginScreen').classList.add('hidden');
+            document.getElementById('chatScreen').classList.remove('hidden');
+            document.getElementById('messageInput').focus();
+            
+            const userPresenceRef = ref(database, `presence/${username}`);
+            await set(userPresenceRef, {
+                online: true,
+                lastSeen: Date.now()
+            });
+            
+            onDisconnect(userPresenceRef).set({
+                online: false,
+                lastSeen: Date.now()
+            });
+            
+            loadMessages();
+            checkForWarnings();
+        }
+
+        function toggleTheme() {
+            isDark = !isDark;
+            document.body.classList.toggle('light');
+            document.getElementById('themeBtn').textContent = isDark ? '☀️' : '🌙';
+        }
+
+        function toggleMenu() {
+            const menu = document.getElementById('sideMenu');
+            const overlay = document.getElementById('menuOverlay');
+            menu.classList.toggle('open');
+            overlay.classList.toggle('hidden');
+        }
+
+        function toggleModal(modalId) {
+            document.getElementById(modalId).classList.toggle('hidden');
+        }
+
+        function showClearModal() {
+            toggleMenu();
+            toggleModal('clearModal');
+        }
+
+        function loadMessages() {
+            onValue(messagesRef, (snapshot) => {
+                const messages = snapshot.val();
+                const wrapper = document.getElementById('messagesWrapper');
+                
+                if (!messages) {
+                    wrapper.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-icon">💬</div>
+                            <p>No messages yet</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                const sortedMessages = Object.entries(messages)
+                    .map(([id, msg]) => ({ id, ...msg }))
+                    .sort((a, b) => a.timestamp - b.timestamp);
+                
+                wrapper.innerHTML = sortedMessages.map(msg => renderMessage(msg)).join('');
+                scrollToBottom();
+            });
+        }
+
+        function renderMessage(msg) {
+            const isOwn = msg.username === username;
+            const time = new Date(msg.timestamp).toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+
+            return `
+                <div class="message ${isOwn ? 'own' : ''}" id="msg-${msg.id}">
+                    <div class="message-bubble">
+                        ${!isOwn ? `<div class="message-sender">${escapeHtml(msg.username)}${msg.isAdmin ? ' 👑' : ''}</div>` : ''}
+                        <div class="message-text">${escapeHtml(msg.text)}</div>
+                        <div class="message-time">${time}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            let text = input.value.trim();
+            
+            if (!text) return;
+            
+            try {
+                const messageData = {
+                    username: username,
+                    text: text,
+                    timestamp: Date.now(),
+                    isAdmin: isAdmin
+                };
+                
+                await push(messagesRef, messageData);
+                input.value = '';
+                input.focus();
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to send message');
+            }
+        }
+
+        async function sendWarning() {
+            const user = document.getElementById('warnUsername').value.trim();
+            const reason = document.getElementById('warnReason').value.trim();
+
+            if (!user || !reason) {
+                alert('Please enter username and reason');
+                return;
+            }
+
+            try {
+                await push(warningsRef, {
+                    user: user,
+                    reason: reason,
+                    issuedBy: username,
+                    timestamp: Date.now()
+                });
+
+                await push(messagesRef, {
+                    username: '⚠️ SYSTEM',
+                    text: `${user} has received a warning: ${reason}`,
+                    timestamp: Date.now(),
+                    isAdmin: true
+                });
+
+                alert(`⚠️ Warning sent to ${user}`);
+                toggleModal('warnModal');
+                document.getElementById('warnUsername').value = '';
+                document.getElementById('warnReason').value = '';
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to send warning');
+            }
+        }
+
+        async function checkForWarnings() {
+            onValue(warningsRef, (snapshot) => {
+                const warnings = snapshot.val();
+                if (!warnings) return;
+
+                const myWarnings = Object.values(warnings).filter(w => w.user === username);
+                if (myWarnings.length > 0) {
+                    const latest = myWarnings[myWarnings.length - 1];
+                    alert(`⚠️ WARNING\n\nYou have received a warning from ${latest.issuedBy}:\n\n"${latest.reason}"\n\nPlease follow chat rules.`);
+                }
+            });
+        }
+
+        async function kickUser() {
+            const user = document.getElementById('kickUsername').value.trim();
+            const reason = document.getElementById('kickReason').value.trim();
+
+            if (!user || !reason) {
+                alert('Please enter username and reason');
+                return;
+            }
+
+            if (!confirm(`Really kick ${user} from the chat?`)) return;
+
+            try {
+                await push(messagesRef, {
+                    username: '⚔️ SYSTEM',
+                    text: `${user} has been kicked from the chat. Reason: ${reason}`,
+                    timestamp: Date.now(),
+                    isAdmin: true
+                });
+
+                alert(`⚔️ ${user} has been kicked`);
+                toggleModal('kickModal');
+                document.getElementById('kickUsername').value = '';
+                document.getElementById('kickReason').value = '';
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to kick user');
+            }
+        }
+
+        async function clearAllMessages() {
+            if (!isAdmin) {
+                alert('Only admins can clear messages');
+                return;
+            }
+
+            try {
+                await remove(messagesRef);
+                alert('✅ All messages deleted');
+                toggleModal('clearModal');
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to clear messages');
+            }
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function scrollToBottom() {
+            const area = document.getElementById('messagesArea');
+            area.scrollTop = area.scrollHeight;
+        }
+    </script>
+</body>
+  </html>
