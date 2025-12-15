@@ -1,938 +1,565 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat App</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #111b21;
-            color: #e9edef;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        body.light {
-            background: #f0f2f5;
-            color: #111b21;
-        }
-
-        .login-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #111b21;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            padding: 16px;
-        }
-
-        body.light .login-screen {
-            background: #f0f2f5;
-        }
-
-        .login-box {
-            background: #1f2c34;
-            padding: 24px;
-            border-radius: 12px;
-            max-width: 360px;
-            width: 100%;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-        }
-
-        body.light .login-box {
-            background: white;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .login-header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .login-icon {
-            width: 60px;
-            height: 60px;
-            background: #25d366;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 16px;
-            font-size: 30px;
-        }
-
-        .login-header h1 {
-            font-size: 20px;
-            margin-bottom: 6px;
-            color: #e9edef;
-        }
-
-        body.light .login-header h1 {
-            color: #111b21;
-        }
-
-        .login-header p {
-            font-size: 13px;
-            color: #8696a0;
-        }
-
-        .input-group {
-            margin-bottom: 16px;
-        }
-
-        .input-group label {
-            display: block;
-            margin-bottom: 6px;
-            font-size: 13px;
-            color: #8696a0;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 12px;
-            background: #2a3942;
-            border: 1px solid #3b4a54;
-            border-radius: 6px;
-            font-size: 15px;
-            color: #e9edef;
-            outline: none;
-        }
-
-        body.light .input-group input {
-            background: #f0f2f5;
-            border: 1px solid #d1d7db;
-            color: #111b21;
-        }
-
-        .btn {
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 6px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .btn-primary {
-            background: #25d366;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #20bd5a;
-        }
-
-        .btn-secondary {
-            background: transparent;
-            border: 1px solid #25d366;
-            color: #25d366;
-            margin-top: 10px;
-        }
-
-        .btn-secondary:hover {
-            background: rgba(37, 211, 102, 0.1);
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        .chat-container {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .chat-header {
-            background: #202c33;
-            padding: 10px 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid #2a3942;
-        }
-
-        body.light .chat-header {
-            background: #f0f2f5;
-            border-bottom: 1px solid #d1d7db;
-        }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .chat-avatar {
-            width: 36px;
-            height: 36px;
-            background: #25d366;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-        }
-
-        .chat-info h2 {
-            font-size: 15px;
-            color: #e9edef;
-        }
-
-        body.light .chat-info h2 {
-            color: #111b21;
-        }
-
-        .chat-info p {
-            font-size: 12px;
-            color: #8696a0;
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .icon-btn {
-            width: 36px;
-            height: 36px;
-            background: transparent;
-            border: none;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            color: #8696a0;
-            font-size: 18px;
-            transition: background 0.2s;
-        }
-
-        .icon-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        body.light .icon-btn:hover {
-            background: rgba(0, 0, 0, 0.05);
-        }
-
-        .messages-area {
-            flex: 1;
-            overflow-y: auto;
-            padding: 12px;
-            background: #0b141a;
-        }
-
-        body.light .messages-area {
-            background: #efeae2;
-        }
-
-        .message {
-            display: flex;
-            margin-bottom: 8px;
-            animation: slideIn 0.2s ease-out;
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .message.own {
-            justify-content: flex-end;
-        }
-
-        .message-bubble {
-            max-width: 80%;
-            padding: 6px 10px;
-            border-radius: 8px;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-            word-wrap: break-word;
-        }
-
-        .message:not(.own) .message-bubble {
-            background: #202c33;
-            border-radius: 0 8px 8px 8px;
-        }
-
-        body.light .message:not(.own) .message-bubble {
-            background: white;
-        }
-
-        .message.own .message-bubble {
-            background: #005c4b;
-            border-radius: 8px 0 8px 8px;
-        }
-
-        body.light .message.own .message-bubble {
-            background: #d9fdd3;
-        }
-
-        .message-sender {
-            font-weight: 600;
-            font-size: 13px;
-            color: #25d366;
-            margin-bottom: 2px;
-        }
-
-        .message-text {
-            font-size: 14px;
-            line-height: 1.4;
-            color: #e9edef;
-            word-wrap: break-word;
-        }
-
-        body.light .message-text {
-            color: #111b21;
-        }
-
-        .message-time {
-            font-size: 10px;
-            color: #8696a0;
-            margin-top: 2px;
-            text-align: right;
-        }
-
-        .input-area {
-            background: #202c33;
-            padding: 8px 12px;
-            border-top: 1px solid #2a3942;
-        }
-
-        body.light .input-area {
-            background: #f0f2f5;
-            border-top: 1px solid #d1d7db;
-        }
-
-        .input-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .message-input {
-            flex: 1;
-            padding: 10px 14px;
-            background: #2a3942;
-            border: none;
-            border-radius: 20px;
-            font-size: 14px;
-            color: #e9edef;
-            outline: none;
-        }
-
-        body.light .message-input {
-            background: white;
-            color: #111b21;
-        }
-
-        .send-btn {
-            width: 42px;
-            height: 42px;
-            background: #25d366;
-            border: none;
-            border-radius: 50%;
-            color: white;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            transition: background 0.2s;
-        }
-
-        .send-btn:hover {
-            background: #20bd5a;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: #8696a0;
-        }
-
-        .empty-icon {
-            font-size: 48px;
-            margin-bottom: 12px;
-        }
-
-        .side-menu {
-            position: fixed;
-            left: -300px;
-            top: 0;
-            width: 300px;
-            height: 100%;
-            background: #202c33;
-            z-index: 1001;
-            transition: left 0.3s;
-            padding: 20px;
-            overflow-y: auto;
-        }
-
-        body.light .side-menu {
-            background: white;
-        }
-
-        .side-menu.open {
-            left: 0;
-        }
-
-        .menu-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-        }
-
-        .menu-item {
-            padding: 12px;
-            margin-bottom: 8px;
-            border-radius: 8px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            transition: background 0.2s;
-        }
-
-        .menu-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        body.light .menu-item:hover {
-            background: rgba(0, 0, 0, 0.05);
-        }
-
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            padding: 16px;
-        }
-
-        .modal-content {
-            background: #1f2c34;
-            border-radius: 12px;
-            padding: 24px;
-            max-width: 400px;
-            width: 100%;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        body.light .modal-content {
-            background: white;
-        }
-
-        .modal-header {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 16px;
-        }
-
-        .modal-input {
-            width: 100%;
-            padding: 12px;
-            background: #2a3942;
-            border: 1px solid #3b4a54;
-            border-radius: 6px;
-            font-size: 14px;
-            color: #e9edef;
-            outline: none;
-            margin-bottom: 12px;
-        }
-
-        body.light .modal-input {
-            background: #f0f2f5;
-            border: 1px solid #d1d7db;
-            color: #111b21;
-        }
-
-        .modal-buttons {
-            display: flex;
-            gap: 8px;
-            margin-top: 16px;
-        }
-
-        .admin-badge {
-            background: #25d366;
-            color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: 600;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nelly J Stitches - Luxury Fashion</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap');
+    
+    body {
+      font-family: 'Montserrat', sans-serif;
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Playfair Display', serif;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .modal-backdrop {
+      background: rgba(0, 0, 0, 0.5);
+    }
+  </style>
 </head>
-<body>
-    <!-- Login Screen -->
-    <div id="loginScreen" class="login-screen">
-        <div class="login-box">
-            <div class="login-header">
-                <div class="login-icon">💬</div>
-                <h1>Welcome</h1>
-                <p>Enter username to continue</p>
-            </div>
-            <div class="input-group">
-                <label>Username</label>
-                <input type="text" id="usernameInput" placeholder="Your username" maxlength="20" autofocus>
-            </div>
-            <button class="btn btn-primary" id="joinBtn">Join Chat</button>
-            <button class="btn btn-secondary" id="adminLoginBtn">Admin Login</button>
-        </div>
-    </div>
+<body class="bg-gradient-to-br from-amber-50 via-white to-amber-50">
 
-    <!-- Admin Login Screen -->
-    <div id="adminLoginScreen" class="login-screen hidden">
-        <div class="login-box">
-            <div class="login-header">
-                <div class="login-icon">🔐</div>
-                <h1>Admin Login</h1>
-                <p>Enter admin credentials</p>
-            </div>
-            <div class="input-group">
-                <label>Username</label>
-                <input type="text" id="adminUsernameInput" placeholder="Admin username" maxlength="20">
-            </div>
-            <div class="input-group">
-                <label>Password</label>
-                <input type="password" id="adminPasswordInput" placeholder="Admin password">
-            </div>
-            <button class="btn btn-primary" id="adminSubmitBtn">Login</button>
-            <button class="btn btn-secondary" id="backBtn">Back</button>
-        </div>
-    </div>
+  <div id="app"></div>
 
-    <!-- Menu Overlay -->
-    <div id="menuOverlay" class="menu-overlay hidden"></div>
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+    import { getDatabase, ref, set, push, onValue, update, remove } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
 
-    <!-- Side Menu -->
-    <div id="sideMenu" class="side-menu">
-        <div class="menu-item" id="clearAllMenuItem">
-            <span>🗑️</span>
-            <span>Clear All Messages</span>
-        </div>
-        <div class="menu-item admin-only hidden" id="warnUserMenuItem">
-            <span>⚠️</span>
-            <span>Warn User</span>
-        </div>
-        <div class="menu-item admin-only hidden" id="kickUserMenuItem">
-            <span>⚔️</span>
-            <span>Kick User</span>
-        </div>
-    </div>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCXp9tBR0fBhc8lsv6_0o-8V9SIcBMYp4M",
+      authDomain: "websites-171ae.firebaseapp.com",
+      databaseURL: "https://websites-171ae-default-rtdb.firebaseio.com",
+      projectId: "websites-171ae",
+      storageBucket: "websites-171ae.firebasestorage.app",
+      messagingSenderId: "1027026269504",
+      appId: "1:1027026269504:web:2d797316248b4c1458b6a5"
+    };
 
-    <!-- Chat Screen -->
-    <div id="chatScreen" class="chat-container hidden">
-        <div class="chat-header">
-            <div class="header-left">
-                <button class="icon-btn" id="menuBtn">☰</button>
-                <div class="chat-avatar">💬</div>
-                <div class="chat-info">
-                    <h2>Group Chat</h2>
-                    <p id="userStatus">Online as <span id="displayUsername"></span></p>
+    const CLOUDINARY_CLOUD_NAME = "dykqgn7xu";
+    const CLOUDINARY_UPLOAD_PRESET = "dzxckgbzp";
+    const ADMIN_CREDENTIALS = { username: 'nelly_admin', password: 'NellyJ2025!' };
+
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+
+    let designs = [];
+    let isAdmin = localStorage.getItem('nellyAdminSession') === 'true';
+    let currentPage = isAdmin ? 'admin' : 'home';
+    let selectedDesignId = null;
+
+    const designsRef = ref(database, 'designs');
+    onValue(designsRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        designs = Object.entries(data).map(([id, design]) => ({
+          id,
+          ...design,
+          comments: design.comments ? Object.entries(design.comments).map(([cid, comment]) => ({
+            id: cid,
+            ...comment
+          })) : []
+        })).sort((a, b) => b.timestamp - a.timestamp);
+      } else {
+        designs = [];
+      }
+      render();
+    });
+
+    async function uploadToCloudinary(file) {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+      formData.append('cloud_name', CLOUDINARY_CLOUD_NAME);
+
+      const response = await fetch(
+        `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
+        { method: 'POST', body: formData }
+      );
+      const data = await response.json();
+      return data.secure_url;
+    }
+
+    window.handleAdminLogin = function() {
+      const username = document.getElementById('adminUsername').value;
+      const password = document.getElementById('adminPassword').value;
+      
+      if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+        isAdmin = true;
+        localStorage.setItem('nellyAdminSession', 'true');
+        currentPage = 'admin';
+        render();
+      } else {
+        alert('Invalid credentials!');
+      }
+    };
+
+    window.handleAdminLogout = function() {
+      isAdmin = false;
+      localStorage.removeItem('nellyAdminSession');
+      currentPage = 'home';
+      render();
+    };
+
+    window.handleDesignUpload = async function(e) {
+      e.preventDefault();
+      const title = document.getElementById('designTitle').value;
+      const category = document.getElementById('designCategory').value;
+      const description = document.getElementById('designDescription').value;
+      const fileInput = document.getElementById('designImage');
+      const file = fileInput.files[0];
+
+      if (!title || !file) {
+        alert('Please fill in title and select an image!');
+        return;
+      }
+
+      const btn = document.getElementById('uploadBtn');
+      btn.disabled = true;
+      btn.textContent = 'Uploading...';
+
+      try {
+        const imageUrl = await uploadToCloudinary(file);
+        
+        const designRef = push(ref(database, 'designs'));
+        await set(designRef, {
+          title,
+          category,
+          description,
+          imageUrl,
+          likes: 0,
+          dislikes: 0,
+          timestamp: Date.now()
+        });
+
+        alert('Design uploaded successfully!');
+        document.getElementById('uploadForm').reset();
+        document.getElementById('uploadSection').classList.add('hidden');
+      } catch (error) {
+        alert('Upload failed: ' + error.message);
+      }
+
+      btn.disabled = false;
+      btn.textContent = 'Post Design ✓';
+    };
+
+    window.handleLike = async function(designId, currentLikes) {
+      await update(ref(database, `designs/${designId}`), { likes: currentLikes + 1 });
+    };
+
+    window.handleDislike = async function(designId, currentDislikes) {
+      await update(ref(database, `designs/${designId}`), { dislikes: currentDislikes + 1 });
+    };
+
+    window.showCommentModal = function(designId) {
+      selectedDesignId = designId;
+      const design = designs.find(d => d.id === designId);
+      if (!design) return;
+
+      const modal = document.getElementById('commentModal');
+      const title = document.getElementById('modalDesignTitle');
+      const commentsList = document.getElementById('approvedComments');
+      
+      title.textContent = design.title;
+      
+      const approvedComments = design.comments?.filter(c => c.status === 'approved') || [];
+      commentsList.innerHTML = approvedComments.length ? approvedComments.map(comment => `
+        <div class="border-b pb-3 mb-3">
+          <p class="font-semibold">${escapeHtml(comment.name)}</p>
+          <p class="text-gray-700">${escapeHtml(comment.text)}</p>
+          <p class="text-xs text-gray-400 mt-1">
+            ${new Date(comment.timestamp).toLocaleDateString()}
+          </p>
+        </div>
+      `).join('') : '<p class="text-gray-500">No comments yet. Be the first!</p>';
+      
+      modal.classList.remove('hidden');
+    };
+
+    window.closeCommentModal = function() {
+      document.getElementById('commentModal').classList.add('hidden');
+      document.getElementById('commentName').value = '';
+      document.getElementById('commentText').value = '';
+      selectedDesignId = null;
+    };
+
+    window.handleCommentSubmit = async function() {
+      const name = document.getElementById('commentName').value.trim();
+      const text = document.getElementById('commentText').value.trim();
+
+      if (!name || !text) {
+        alert('Please fill in both name and comment!');
+        return;
+      }
+
+      const commentRef = push(ref(database, `designs/${selectedDesignId}/comments`));
+      await set(commentRef, {
+        name,
+        text,
+        status: 'pending',
+        timestamp: Date.now()
+      });
+
+      alert('Comment submitted for approval!');
+      closeCommentModal();
+    };
+
+    window.approveComment = async function(designId, commentId) {
+      await update(ref(database, `designs/${designId}/comments/${commentId}`), { status: 'approved' });
+    };
+
+    window.rejectComment = async function(designId, commentId) {
+      await remove(ref(database, `designs/${designId}/comments/${commentId}`));
+    };
+
+    window.deleteDesign = async function(designId) {
+      if (confirm('Are you sure you want to delete this design?')) {
+        await remove(ref(database, `designs/${designId}`));
+      }
+    };
+
+    window.goToPage = function(page) {
+      currentPage = page;
+      render();
+    };
+
+    window.toggleUploadSection = function() {
+      document.getElementById('uploadSection').classList.toggle('hidden');
+    };
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function getPendingCount() {
+      let count = 0;
+      designs.forEach(design => {
+        design.comments?.forEach(comment => {
+          if (comment.status === 'pending') count++;
+        });
+      });
+      return count;
+    }
+
+    function render() {
+      const appDiv = document.getElementById('app');
+      
+      if (currentPage === 'admin-login') {
+        appDiv.innerHTML = `
+          <div class="min-h-screen flex items-center justify-center p-4">
+            <div class="bg-white rounded-lg shadow-2xl p-8 max-w-md w-full">
+              <div class="text-center mb-8">
+                <div class="text-6xl mb-4">✂️</div>
+                <h2 class="text-3xl font-bold text-gray-900">Admin Login</h2>
+                <p class="text-gray-600 mt-2">Nelly J Stitches Dashboard</p>
+              </div>
+              
+              <div class="space-y-4">
+                <input
+                  type="text"
+                  id="adminUsername"
+                  placeholder="Username"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500"
+                />
+                <input
+                  type="password"
+                  id="adminPassword"
+                  placeholder="Password"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500"
+                  onkeypress="if(event.key==='Enter') handleAdminLogin()"
+                />
+                <button
+                  onclick="handleAdminLogin()"
+                  class="w-full bg-amber-600 text-white py-3 rounded-lg hover:bg-amber-700 font-semibold"
+                >
+                  Login
+                </button>
+                <button
+                  onclick="goToPage('home')"
+                  class="w-full bg-gray-200 text-gray-700 py-3 rounded-lg hover:bg-gray-300"
+                >
+                  Back to Website
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      if (currentPage === 'admin' && isAdmin) {
+        const pendingCount = getPendingCount();
+        const totalLikes = designs.reduce((sum, d) => sum + (d.likes || 0), 0);
+        
+        appDiv.innerHTML = `
+          <div class="min-h-screen bg-gray-50">
+            <div class="bg-white shadow-md p-4 flex justify-between items-center">
+              <h1 class="text-2xl font-bold text-gray-900">🎨 Nelly J Admin</h1>
+              <button onclick="handleAdminLogout()" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">
+                Logout
+              </button>
+            </div>
+
+            <div class="max-w-7xl mx-auto p-6">
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                  <h3 class="text-gray-600 text-sm font-semibold">Total Designs</h3>
+                  <p class="text-4xl font-bold text-amber-600 mt-2">${designs.length}</p>
                 </div>
-            </div>
-            <div class="header-actions">
-                <button class="icon-btn" id="themeBtn" title="Toggle Theme">☀️</button>
-            </div>
-        </div>
-
-        <div class="messages-area" id="messagesArea">
-            <div id="messagesWrapper">
-                <div class="empty-state">
-                    <div class="empty-icon">💬</div>
-                    <p>No messages yet</p>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                  <h3 class="text-gray-600 text-sm font-semibold">Total Likes</h3>
+                  <p class="text-4xl font-bold text-red-500 mt-2">${totalLikes}</p>
                 </div>
-            </div>
-        </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                  <h3 class="text-gray-600 text-sm font-semibold">Pending Comments</h3>
+                  <p class="text-4xl font-bold text-yellow-600 mt-2">${pendingCount}</p>
+                </div>
+              </div>
 
-        <div class="input-area">
-            <div class="input-wrapper">
-                <input type="text" id="messageInput" class="message-input" placeholder="Type a message">
-                <button class="send-btn" id="sendBtn">➤</button>
-            </div>
-        </div>
-    </div>
+              <button onclick="toggleUploadSection()" class="w-full bg-amber-600 text-white py-4 rounded-lg hover:bg-amber-700 font-semibold mb-6">
+                📤 Upload New Design
+              </button>
 
-    <!-- Clear All Modal -->
-    <div id="clearModal" class="modal hidden">
-        <div class="modal-content">
-            <div class="modal-header">⚠️ Clear All Messages</div>
-            <p style="margin-bottom: 16px; color: #8696a0;">This will delete all messages permanently. This action cannot be undone.</p>
-            <div class="modal-buttons">
-                <button class="btn btn-primary" id="confirmClearBtn">Clear All</button>
-                <button class="btn btn-secondary" id="cancelClearBtn">Cancel</button>
-            </div>
-        </div>
-    </div>
+              <div id="uploadSection" class="hidden bg-white p-6 rounded-lg shadow-md mb-8">
+                <h3 class="text-xl font-bold mb-4">Upload New Design</h3>
+                <form id="uploadForm" onsubmit="handleDesignUpload(event)" class="space-y-4">
+                  <input type="text" id="designTitle" placeholder="Design Title" required class="w-full px-4 py-3 border rounded-lg" />
+                  <select id="designCategory" class="w-full px-4 py-3 border rounded-lg">
+                    <option>Bridal</option>
+                    <option>Casual</option>
+                    <option>Corporate</option>
+                    <option>Aso-ebi</option>
+                  </select>
+                  <textarea id="designDescription" placeholder="Description" class="w-full px-4 py-3 border rounded-lg h-24"></textarea>
+                  <input type="file" id="designImage" accept="image/*" required class="w-full px-4 py-3 border rounded-lg" />
+                  <button type="submit" id="uploadBtn" class="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700">
+                    Post Design ✓
+                  </button>
+                </form>
+              </div>
 
-    <!-- Warn User Modal -->
-    <div id="warnModal" class="modal hidden">
-        <div class="modal-content">
-            <div class="modal-header">⚠️ Warn User</div>
-            <input type="text" id="warnUsername" class="modal-input" placeholder="Username">
-            <input type="text" id="warnReason" class="modal-input" placeholder="Reason">
-            <div class="modal-buttons">
-                <button class="btn btn-primary" id="sendWarnBtn">Send Warning</button>
-                <button class="btn btn-secondary" id="closeWarnBtn">Cancel</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Kick User Modal -->
-    <div id="kickModal" class="modal hidden">
-        <div class="modal-content">
-            <div class="modal-header">⚔️ Kick User</div>
-            <input type="text" id="kickUsername" class="modal-input" placeholder="Username">
-            <input type="text" id="kickReason" class="modal-input" placeholder="Reason">
-            <div class="modal-buttons">
-                <button class="btn btn-primary" id="sendKickBtn">Kick User</button>
-                <button class="btn btn-secondary" id="closeKickBtn">Cancel</button>
-            </div>
-        </div>
-    </div>
-
-    <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getDatabase, ref, push, onValue, set, onDisconnect, remove } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyBzUELxbbaL6Wb_M1uNhjwlZHVTorN9XJs",
-            authDomain: "my-whatsapp-2c1af.firebaseapp.com",
-            databaseURL: "https://my-whatsapp-2c1af-default-rtdb.firebaseio.com",
-            projectId: "my-whatsapp-2c1af",
-            storageBucket: "my-whatsapp-2c1af.firebasestorage.app",
-            messagingSenderId: "1089455460888",
-            appId: "1:1089455460888:web:d0c8dea185ba6769ebe96d"
-        };
-
-        const ADMIN_PASSWORD = "Eberechi";
-        
-        let app, database, messagesRef, presenceRef, warningsRef;
-        let username = '';
-        let isAdmin = false;
-        let isDark = true;
-
-        try {
-            app = initializeApp(firebaseConfig);
-            database = getDatabase(app);
-            messagesRef = ref(database, 'chat-messages');
-            presenceRef = ref(database, 'presence');
-            warningsRef = ref(database, 'warnings');
-        } catch (error) {
-            console.error('Firebase error:', error);
-            alert('Failed to connect to Firebase.');
-        }
-
-        // Event Listeners
-        document.getElementById('joinBtn').addEventListener('click', joinChat);
-        document.getElementById('adminLoginBtn').addEventListener('click', showAdminLogin);
-        document.getElementById('adminSubmitBtn').addEventListener('click', loginAdmin);
-        document.getElementById('backBtn').addEventListener('click', backToLogin);
-        document.getElementById('themeBtn').addEventListener('click', toggleTheme);
-        document.getElementById('menuBtn').addEventListener('click', toggleMenu);
-        document.getElementById('menuOverlay').addEventListener('click', toggleMenu);
-        document.getElementById('sendBtn').addEventListener('click', sendMessage);
-        document.getElementById('clearAllMenuItem').addEventListener('click', showClearModal);
-        document.getElementById('warnUserMenuItem').addEventListener('click', () => {
-            toggleMenu();
-            toggleModal('warnModal');
-        });
-        document.getElementById('kickUserMenuItem').addEventListener('click', () => {
-            toggleMenu();
-            toggleModal('kickModal');
-        });
-        document.getElementById('sendWarnBtn').addEventListener('click', sendWarning);
-        document.getElementById('closeWarnBtn').addEventListener('click', () => toggleModal('warnModal'));
-        document.getElementById('sendKickBtn').addEventListener('click', kickUser);
-        document.getElementById('closeKickBtn').addEventListener('click', () => toggleModal('kickModal'));
-        document.getElementById('confirmClearBtn').addEventListener('click', clearAllMessages);
-        document.getElementById('cancelClearBtn').addEventListener('click', () => toggleModal('clearModal'));
-        
-        document.getElementById('messageInput').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') sendMessage();
-        });
-        
-        document.getElementById('usernameInput').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') joinChat();
-        });
-        
-        document.getElementById('adminPasswordInput').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') loginAdmin();
-        });
-
-        function joinChat() {
-            const input = document.getElementById('usernameInput');
-            if (input.value.trim()) {
-                username = input.value.trim();
-                startChat();
-            }
-        }
-
-        function showAdminLogin() {
-            document.getElementById('loginScreen').classList.add('hidden');
-            document.getElementById('adminLoginScreen').classList.remove('hidden');
-        }
-
-        function backToLogin() {
-            document.getElementById('adminLoginScreen').classList.add('hidden');
-            document.getElementById('loginScreen').classList.remove('hidden');
-        }
-
-        function loginAdmin() {
-            const user = document.getElementById('adminUsernameInput').value.trim();
-            const pass = document.getElementById('adminPasswordInput').value;
-            
-            if (pass === ADMIN_PASSWORD && user) {
-                username = user;
-                isAdmin = true;
-                startChat();
-            } else {
-                alert('❌ Invalid credentials!');
-            }
-        }
-
-        async function startChat() {
-            document.getElementById('displayUsername').textContent = username;
-            if (isAdmin) {
-                document.getElementById('userStatus').innerHTML = 
-                    `<span class="admin-badge">ADMIN</span> <span id="displayUsername">${username}</span>`;
-                document.querySelectorAll('.admin-only').forEach(el => el.classList.remove('hidden'));
-            }
-            document.getElementById('loginScreen').classList.add('hidden');
-            document.getElementById('adminLoginScreen').classList.add('hidden');
-            document.getElementById('chatScreen').classList.remove('hidden');
-            document.getElementById('messageInput').focus();
-            
-            const userPresenceRef = ref(database, `presence/${username}`);
-            await set(userPresenceRef, {
-                online: true,
-                lastSeen: Date.now()
-            });
-            
-            onDisconnect(userPresenceRef).set({
-                online: false,
-                lastSeen: Date.now()
-            });
-            
-            loadMessages();
-            checkForWarnings();
-        }
-
-        function toggleTheme() {
-            isDark = !isDark;
-            document.body.classList.toggle('light');
-            document.getElementById('themeBtn').textContent = isDark ? '☀️' : '🌙';
-        }
-
-        function toggleMenu() {
-            const menu = document.getElementById('sideMenu');
-            const overlay = document.getElementById('menuOverlay');
-            menu.classList.toggle('open');
-            overlay.classList.toggle('hidden');
-        }
-
-        function toggleModal(modalId) {
-            document.getElementById(modalId).classList.toggle('hidden');
-        }
-
-        function showClearModal() {
-            toggleMenu();
-            toggleModal('clearModal');
-        }
-
-        function loadMessages() {
-            onValue(messagesRef, (snapshot) => {
-                const messages = snapshot.val();
-                const wrapper = document.getElementById('messagesWrapper');
-                
-                if (!messages) {
-                    wrapper.innerHTML = `
-                        <div class="empty-state">
-                            <div class="empty-icon">💬</div>
-                            <p>No messages yet</p>
+              ${pendingCount > 0 ? `
+                <div class="bg-yellow-50 border-2 border-yellow-400 p-6 rounded-lg mb-8">
+                  <h3 class="text-xl font-bold mb-4">📬 Pending Comments (${pendingCount})</h3>
+                  <div class="space-y-4">
+                    ${designs.map(design => 
+                      design.comments?.filter(c => c.status === 'pending').map(comment => `
+                        <div class="bg-white p-4 rounded-lg shadow">
+                          <p class="font-semibold text-sm text-gray-600">Design: ${escapeHtml(design.title)}</p>
+                          <p class="font-semibold mt-2">From: ${escapeHtml(comment.name)}</p>
+                          <p class="text-gray-700 mt-1">"${escapeHtml(comment.text)}"</p>
+                          <div class="flex gap-2 mt-3">
+                            <button onclick="approveComment('${design.id}', '${comment.id}')" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">
+                              ✓ Approve
+                            </button>
+                            <button onclick="rejectComment('${design.id}', '${comment.id}')" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">
+                              ✕ Reject
+                            </button>
+                          </div>
                         </div>
-                    `;
-                    return;
-                }
-                
-                const sortedMessages = Object.entries(messages)
-                    .map(([id, msg]) => ({ id, ...msg }))
-                    .sort((a, b) => a.timestamp - b.timestamp);
-                
-                wrapper.innerHTML = sortedMessages.map(msg => renderMessage(msg)).join('');
-                scrollToBottom();
-            });
-        }
-
-        function renderMessage(msg) {
-            const isOwn = msg.username === username;
-            const time = new Date(msg.timestamp).toLocaleTimeString('en-US', {
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-
-            return `
-                <div class="message ${isOwn ? 'own' : ''}" id="msg-${msg.id}">
-                    <div class="message-bubble">
-                        ${!isOwn ? `<div class="message-sender">${escapeHtml(msg.username)}${msg.isAdmin ? ' 👑' : ''}</div>` : ''}
-                        <div class="message-text">${escapeHtml(msg.text)}</div>
-                        <div class="message-time">${time}</div>
-                    </div>
+                      `).join('') || ''
+                    ).join('')}
+                  </div>
                 </div>
-            `;
-        }
+              ` : ''}
 
-        async function sendMessage() {
-            const input = document.getElementById('messageInput');
-            let text = input.value.trim();
+              <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-xl font-bold mb-4">🎨 All Designs</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  ${designs.map(design => `
+                    <div class="border rounded-lg overflow-hidden">
+                      <img src="${design.imageUrl}" alt="${escapeHtml(design.title)}" class="w-full h-48 object-cover" />
+                      <div class="p-4">
+                        <h4 class="font-bold">${escapeHtml(design.title)}</h4>
+                        <p class="text-sm text-gray-600">${escapeHtml(design.category)}</p>
+                        <div class="flex gap-2 mt-3 text-sm">
+                          <span>❤️ ${design.likes || 0}</span>
+                          <span>💬 ${design.comments?.filter(c => c.status === 'approved').length || 0}</span>
+                        </div>
+                        <button onclick="deleteDesign('${design.id}')" class="w-full mt-3 bg-red-500 text-white py-2 rounded hover:bg-red-600">
+                          🗑️ Delete
+                        </button>
+                      </div>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      // Public Website
+      appDiv.innerHTML = `
+        <header class="fixed top-0 w-full z-50 bg-white shadow-md">
+          <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+              <span class="text-3xl">✂️</span>
+              <h1 class="text-2xl md:text-3xl font-bold text-gray-900">Nelly J Stitches</h1>
+            </div>
+            <nav class="hidden md:flex gap-8 text-gray-700 font-medium">
+              <a href="#home" class="hover:text-amber-600">Home</a>
+              <a href="#designs" class="hover:text-amber-600">Designs</a>
+              <a href="#about" class="hover:text-amber-600">About</a>
+              <a href="#contact" class="hover:text-amber-600">Contact</a>
+            </nav>
+          </div>
+        </header>
+
+        <section id="home" class="pt-32 pb-20 px-4">
+          <div class="max-w-7xl mx-auto text-center">
+            <h2 class="text-5xl md:text-7xl font-bold text-gray-900 mb-6">Handcrafted Elegance</h2>
+            <p class="text-xl md:text-2xl text-gray-600 mb-8">Custom tailoring made with perfection</p>
+            <div class="flex gap-4 justify-center flex-wrap">
+              <a href="#designs" class="bg-amber-600 text-white px-8 py-4 rounded-lg hover:bg-amber-700 font-semibold">
+                View Designs
+              </a>
+              <a href="https://wa.me/2348012345678" class="bg-gray-900 text-white px-8 py-4 rounded-lg hover:bg-gray-800 font-semibold">
+                Book a Fitting
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <section id="designs" class="py-20 px-4 bg-white">
+          <div class="max-w-7xl mx-auto">
+            <h2 class="text-4xl font-bold text-center mb-12">Latest Designs</h2>
             
-            if (!text) return;
-            
-            try {
-                const messageData = {
-                    username: username,
-                    text: text,
-                    timestamp: Date.now(),
-                    isAdmin: isAdmin
-                };
-                
-                await push(messagesRef, messageData);
-                input.value = '';
-                input.focus();
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Failed to send message');
-            }
-        }
+            ${designs.length === 0 ? `
+              <div class="text-center text-gray-500 py-20">
+                <p class="text-xl">No designs yet. Check back soon!</p>
+              </div>
+            ` : `
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                ${designs.map(design => `
+                  <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition-all">
+                    <img src="${design.imageUrl}" alt="${escapeHtml(design.title)}" class="w-full h-80 object-cover" />
+                    
+                    <div class="p-6">
+                      <h3 class="text-xl font-bold mb-2">${escapeHtml(design.title)}</h3>
+                      <p class="text-sm text-gray-600 mb-2">${escapeHtml(design.category)}</p>
+                      <p class="text-gray-700 mb-4">${escapeHtml(design.description || '')}</p>
+                      
+                      <div class="flex gap-6 mb-4 text-gray-600">
+                        <button onclick="handleLike('${design.id}', ${design.likes || 0})" class="flex items-center gap-2 hover:text-red-500 cursor-pointer">
+                          <span>❤️</span>
+                          <span>${design.likes || 0}</span>
+                        </button>
+                        <button onclick="handleDislike('${design.id}', ${design.dislikes || 0})" class="flex items-center gap-2 hover:text-gray-800 cursor-pointer">
+                          <span>👎</span>
+                          <span>${design.dislikes || 0}</span>
+                        </button>
+                        <button onclick="showCommentModal('${design.id}')" class="flex items-center gap-2 hover:text-amber-600 cursor-pointer">
+                          <span>💬</span>
+                          <span>${design.comments?.filter(c => c.status === 'approved').length || 0}</span>
+                        </button>
+                      </div>
 
-        async function sendWarning() {
-            const user = document.getElementById('warnUsername').value.trim();
-            const reason = document.getElementById('warnReason').value.trim();
+                      ${design.comments?.filter(c => c.status === 'approved').slice(0, 2).map(comment => `
+                        <div class="border-t pt-3 mt-3">
+                          <p class="font-semibold text-sm">${escapeHtml(comment.name)}</p>
+                          <p class="text-sm text-gray-600">${escapeHtml(comment.text)}</p>
+                        </div>
+                      `).join('') || ''}
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            `}
+          </div>
+        </section>
 
-            if (!user || !reason) {
-                alert('Please enter username and reason');
-                return;
-            }
+        <section id="about" class="py-20 px-4">
+          <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-6">About Nelly J Stitches</h2>
+            <p class="text-lg text-gray-700 leading-relaxed mb-8">
+              With years of passion and craftsmanship, Nelly J Stitches brings you custom-tailored 
+              elegance that fits perfectly. Every stitch tells a story of dedication, quality, 
+              and timeless fashion.
+            </p>
+          </div>
+        </section>
 
-            try {
-                await push(warningsRef, {
-                    user: user,
-                    reason: reason,
-                    issuedBy: username,
-                    timestamp: Date.now()
-                });
+        <section class="py-20 px-4 bg-gradient-to-r from-amber-600 to-amber-800 text-white">
+          <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-4xl md:text-5xl font-bold mb-6">Your Style, Perfectly Stitched</h2>
+            <p class="text-xl mb-8">Ready to create your dream outfit?</p>
+            <a href="https://wa.me/2348012345678" class="inline-block bg-white text-amber-600 px-8 py-4 rounded-lg hover:bg-gray-100 font-semibold">
+              📞 WhatsApp Order
+            </a>
+          </div>
+        </section>
 
-                await push(messagesRef, {
-                    username: '⚠️ SYSTEM',
-                    text: `${user} has received a warning: ${reason}`,
-                    timestamp: Date.now(),
-                    isAdmin: true
-                });
+        <footer id="contact" class="bg-gray-900 text-white py-12 px-4">
+          <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+              <div>
+                <div class="flex items-center gap-3 mb-4">
+                  <span class="text-3xl">✂️</span>
+                  <h3 class="text-2xl font-bold">Nelly J Stitches</h3>
+                </div>
+                <p class="text-gray-400">Handcrafted elegance, custom tailoring made with perfection.</p>
+              </div>
+              
+              <div>
+                <h4 class="font-bold text-lg mb-4">Contact</h4>
+                <div class="space-y-3 text-gray-400">
+                  <div>📞 +234 801 234 5678</div>
+                  <div>📍 Lagos, Nigeria</div>
+                </div>
+              </div>
 
-                alert(`⚠️ Warning sent to ${user}`);
-                toggleModal('warnModal');
-                document.getElementById('warnUsername').value = '';
-                document.getElementById('warnReason').value = '';
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Failed to send warning');
-            }
-        }
+              <div>
+                <h4 class="font-bold text-lg mb-4">Follow Us</h4>
+                <div class="flex gap-4 text-2xl">
+                  <a href="https://instagram.com/nellyjstitches" class="hover:text-amber-400">📷</a>
+                  <a href="https://wa.me/2348012345678" class="hover:text-amber-400">📞</a>
+                </div>
+              </div>
+            </div>
 
-        async function checkForWarnings() {
-            onValue(warningsRef, (snapshot) => {
-                const warnings = snapshot.val();
-                if (!warnings) return;
+            <div class="border-t border-gray-800 pt-8 text-center text-gray-400">
+              <p>&copy; 2025 Nelly J Stitches. All rights reserved.</p>
+              ${!isAdmin ? `
+                <button onclick="goToPage('admin-login')" class="text-xs text-gray-600 hover:text-gray-400 mt-2">•</button>
+              ` : ''}
+            </div>
+          </div>
+        </footer>
 
-                const myWarnings = Object.values(warnings).filter(w => w.user === username);
-                if (myWarnings.length > 0) {
-                    const latest = myWarnings[myWarnings.length - 1];
-                    alert(`⚠️ WARNING\n\nYou have received a warning from ${latest.issuedBy}:\n\n"${latest.reason}"\n\nPlease follow chat rules.`);
-                }
-            });
-        }
+        <div id="commentModal" class="hidden fixed inset-0 modal-backdrop flex items-center justify-center z-50 p-4">
+          <div class="bg-white rounded-lg max-w-md w-full max-h-[80vh] overflow-y-auto p-6">
+            <div class="flex justify-between items-center mb-4">
+              <h3 id="modalDesignTitle" class="text-xl font-bold">Comments</h3>
+              <button onclick="closeCommentModal()" class="text-2xl hover:text-gray-600">✕</button>
+            </div>
 
-        async function kickUser() {
-            const user = document.getElementById('kickUsername').value.trim();
-            const reason = document.getElementById('kickReason').value.trim();
+            <div id="approvedComments" class="space-y-4 mb-6"></div>
 
-            if (!user || !reason) {
-                alert('Please enter username and reason');
-                return;
-            }
+            <div class="space-y-3">
+              <input type="text" id="commentName" placeholder="Your Name" class="w-full px-4 py-2 border rounded-lg" />
+              <textarea id="commentText" placeholder="Your Comment" class="w-full px-4 py-2 border rounded-lg h-24"></textarea>
+              <button onclick="handleCommentSubmit()" class="w-full bg-amber-600 text-white py-3 rounded-lg hover:bg-amber-700">
+                Submit Comment
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
 
-            if (!confirm(`Really kick ${user} from the chat?`)) return;
+    render();
+  </script>
 
-            try {
-                await push(messagesRef, {
-                    username: '⚔️ SYSTEM',
-                    text: `${user} has been kicked from the chat. Reason: ${reason}`,
-                    timestamp: Date.now(),
-                    isAdmin: true
-                });
-
-                alert(`⚔️ ${user} has been kicked`);
-                toggleModal('kickModal');
-                document.getElementById('kickUsername').value = '';
-                document.getElementById('kickReason').value = '';
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Failed to kick user');
-            }
-        }
-
-        async function clearAllMessages() {
-            if (!isAdmin) {
-                alert('Only admins can clear messages');
-                return;
-            }
-
-            try {
-                await remove(messagesRef);
-                alert('✅ All messages deleted');
-                toggleModal('clearModal');
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Failed to clear messages');
-            }
-        }
-
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
-        function scrollToBottom() {
-            const area = document.getElementById('messagesArea');
-            area.scrollTop = area.scrollHeight;
-        }
-    </script>
 </body>
-  </html>
+</html>
