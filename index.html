@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nelly J Stitches Global - Your Outfit Is Our Priority</title>
+    <title>Nelly J Stitches Global</title>
     <style>
         * {
             margin: 0;
@@ -12,33 +12,36 @@
         }
 
         :root {
-            --black: #000000;
-            --gold: #FFD700;
-            --beige: #f5f5dc;
-            --dark-gray: #2d2d2d;
-            --white: #ffffff;
+            --white: #FEFEFE;
+            --cream: #F8F6F3;
+            --black: #1A1A1A;
+            --gold: #C9A96E;
+            --gold-light: #E5D4B8;
         }
 
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: var(--beige);
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--cream);
             color: var(--black);
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        /* Header */
+        /* Header - Minimal */
         header {
-            background-color: var(--black);
-            color: var(--gold);
-            padding: 1rem 2rem;
-            position: sticky;
+            position: fixed;
             top: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(254, 254, 254, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 5%;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
         }
 
         .header-content {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
@@ -46,97 +49,115 @@
         }
 
         .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: var(--gold);
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            color: var(--black);
+            text-transform: uppercase;
         }
 
         nav ul {
             list-style: none;
             display: flex;
-            gap: 2rem;
+            gap: 3rem;
         }
 
         nav a {
-            color: var(--gold);
+            color: var(--black);
             text-decoration: none;
-            font-weight: 500;
+            font-size: 0.9rem;
+            font-weight: 400;
+            letter-spacing: 1px;
             transition: color 0.3s;
         }
 
         nav a:hover {
-            color: var(--white);
+            color: var(--gold);
         }
 
-        .admin-dot {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            width: 15px;
-            height: 15px;
-            background-color: var(--gold);
-            border-radius: 50%;
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
             cursor: pointer;
-            z-index: 1001;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            color: var(--black);
         }
 
-        /* Hero Section */
+        /* Hero Section - Full Screen */
         .hero {
-            background: linear-gradient(135deg, var(--black) 0%, var(--dark-gray) 100%);
-            color: var(--white);
-            padding: 4rem 2rem;
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.75);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
             text-align: center;
+            padding: 4rem 2rem;
+            color: var(--white);
         }
 
         .hero h1 {
-            font-size: 3rem;
-            color: var(--gold);
+            font-size: 3.5rem;
+            font-weight: 300;
+            letter-spacing: 3px;
             margin-bottom: 1rem;
+            text-transform: uppercase;
         }
 
-        .hero p {
-            font-size: 1.5rem;
+        .hero-motto {
+            font-size: 1.2rem;
+            font-weight: 300;
+            letter-spacing: 2px;
             margin-bottom: 2rem;
         }
 
-        .tagline {
-            font-size: 1.2rem;
-            font-style: italic;
-            color: var(--gold);
-        }
-
-        .highlight-boxes {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 3rem auto 0;
-        }
-
-        .highlight-box {
+        .gold-line {
+            width: 60px;
+            height: 1px;
             background-color: var(--gold);
+            margin: 2rem auto;
+        }
+
+        .hero-btn {
+            display: inline-block;
+            padding: 1rem 3rem;
+            background-color: transparent;
+            color: var(--white);
+            border: 1px solid var(--white);
+            text-decoration: none;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.4s;
+            cursor: pointer;
+        }
+
+        .hero-btn:hover {
+            background-color: var(--white);
             color: var(--black);
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
-            transition: transform 0.3s;
         }
 
-        .highlight-box:hover {
-            transform: translateY(-5px);
-        }
-
-        .highlight-box h3 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        /* Sections */
+        /* Section Container */
         section {
             display: none;
-            padding: 3rem 2rem;
-            max-width: 1200px;
+            padding: 6rem 5%;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
@@ -144,211 +165,402 @@
             display: block;
         }
 
-        h2 {
-            color: var(--black);
+        /* Collection Grid - Masonry Style */
+        .collection-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .collection-header h2 {
             font-size: 2.5rem;
-            margin-bottom: 2rem;
-            border-bottom: 3px solid var(--gold);
-            padding-bottom: 0.5rem;
+            font-weight: 300;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
         }
 
-        /* Gallery */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
+        .masonry-grid {
+            column-count: 3;
+            column-gap: 1.5rem;
         }
 
-        .design-card {
-            background-color: var(--white);
-            border-radius: 10px;
+        .design-item {
+            break-inside: avoid;
+            margin-bottom: 1.5rem;
+            position: relative;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            cursor: pointer;
             transition: transform 0.3s;
         }
 
-        .design-card:hover {
+        .design-item:hover {
             transform: translateY(-5px);
         }
 
         .design-image {
             width: 100%;
-            height: 300px;
-            object-fit: cover;
-            background-color: var(--dark-gray);
+            display: block;
+            transition: filter 0.3s;
         }
 
-        .design-info {
-            padding: 1.5rem;
+        .design-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            padding: 2rem 1.5rem 1.5rem;
+            opacity: 0;
+            transition: opacity 0.3s;
         }
 
-        .design-info h3 {
-            color: var(--black);
-            margin-bottom: 0.5rem;
+        .design-item:hover .design-overlay {
+            opacity: 1;
         }
 
-        .design-info p {
-            color: var(--dark-gray);
-            margin-bottom: 1rem;
+        .design-name {
+            color: var(--white);
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 0.8rem;
         }
 
-        .interaction-buttons {
+        .design-interactions {
             display: flex;
-            gap: 1rem;
+            gap: 1.5rem;
             align-items: center;
+            color: var(--white);
+            font-size: 0.9rem;
         }
 
-        .btn {
-            padding: 0.5rem 1rem;
+        .interaction-btn {
+            background: none;
             border: none;
-            border-radius: 5px;
+            color: var(--white);
             cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s;
         }
 
-        .like-btn {
-            background-color: var(--gold);
-            color: var(--black);
-        }
-
-        .like-btn:hover {
-            background-color: var(--black);
+        .interaction-btn:hover {
             color: var(--gold);
         }
 
-        .dislike-btn {
-            background-color: var(--dark-gray);
-            color: var(--white);
-        }
-
-        .dislike-btn:hover {
-            background-color: var(--black);
-        }
-
-        .comment-btn {
-            background-color: var(--beige);
-            color: var(--black);
-        }
-
-        .comment-section {
+        .order-btn {
             margin-top: 1rem;
-            padding-top: 1rem;
-            border-top: 1px solid var(--beige);
+            padding: 0.7rem 1.5rem;
+            background-color: var(--white);
+            color: var(--black);
+            border: none;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
         }
 
-        .comment {
-            background-color: var(--beige);
-            padding: 0.5rem;
-            margin: 0.5rem 0;
-            border-radius: 5px;
+        .order-btn:hover {
+            background-color: var(--gold);
         }
 
-        .comment strong {
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: var(--white);
+            padding: 3rem;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            border-radius: 2px;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
             color: var(--black);
         }
 
-        /* Order Form */
-        .order-form {
-            background-color: var(--white);
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            max-width: 600px;
-            margin: 0 auto;
+        .modal h3 {
+            font-size: 1.8rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
         }
 
         .form-group {
             margin-bottom: 1.5rem;
         }
 
-        label {
+        .form-group label {
             display: block;
             margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
             color: var(--black);
-            font-weight: bold;
         }
 
-        input, select, textarea {
+        .form-group input,
+        .form-group textarea {
             width: 100%;
-            padding: 0.75rem;
-            border: 2px solid var(--beige);
-            border-radius: 5px;
-            font-size: 1rem;
+            padding: 0.8rem;
+            border: 1px solid rgba(0,0,0,0.1);
+            background-color: var(--cream);
+            font-size: 0.95rem;
+            font-family: inherit;
         }
 
-        input:focus, select:focus, textarea:focus {
+        .form-group input:focus,
+        .form-group textarea:focus {
             outline: none;
             border-color: var(--gold);
         }
 
         .submit-btn {
-            background-color: var(--gold);
-            color: var(--black);
-            padding: 1rem 2rem;
-            border: none;
-            border-radius: 5px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
             width: 100%;
-            transition: all 0.3s;
+            padding: 1rem;
+            background-color: var(--black);
+            color: var(--white);
+            border: none;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background-color 0.3s;
         }
 
         .submit-btn:hover {
-            background-color: var(--black);
-            color: var(--gold);
+            background-color: var(--gold);
+            color: var(--black);
         }
 
-        /* Reviews */
-        .reviews-container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .review-card {
+        /* Comments Panel */
+        .comments-panel {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
             background-color: var(--white);
-            padding: 1.5rem;
+            max-height: 70vh;
+            overflow-y: auto;
+            z-index: 1500;
+            padding: 2rem;
+            box-shadow: 0 -5px 30px rgba(0,0,0,0.2);
+            border-radius: 20px 20px 0 0;
+        }
+
+        .comments-panel.active {
+            display: block;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        .comments-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 1.5rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
         }
 
-        .stars {
-            color: var(--gold);
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
+        .comment-item {
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
         }
 
-        .review-form {
-            background-color: var(--white);
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            margin-top: 2rem;
+        .comment-author {
+            font-weight: 600;
+            margin-bottom: 0.3rem;
         }
 
-        /* Contact */
-        .contact-info {
-            background-color: var(--white);
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            max-width: 600px;
+        .comment-text {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .add-comment {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .add-comment input {
+            flex: 1;
+            padding: 0.8rem;
+            border: 1px solid rgba(0,0,0,0.1);
+            background-color: var(--cream);
+        }
+
+        .add-comment button {
+            padding: 0.8rem 1.5rem;
+            background-color: var(--black);
+            color: var(--white);
+            border: none;
+            cursor: pointer;
+            letter-spacing: 1px;
+        }
+
+        /* Reviews Section */
+        .reviews-container {
+            max-width: 900px;
             margin: 0 auto;
+        }
+
+        .review-item {
+            padding: 3rem 0;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .review-text {
+            font-size: 1.5rem;
+            font-weight: 300;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+
+        .review-author {
+            font-size: 1rem;
+            color: #777;
+            letter-spacing: 1px;
+        }
+
+        /* Contact Section */
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .contact-left {
+            background-color: var(--white);
+            padding: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8rem;
+        }
+
+        .contact-right {
+            padding: 3rem 0;
         }
 
         .contact-item {
-            margin-bottom: 1.5rem;
-            padding: 1rem;
-            background-color: var(--beige);
-            border-radius: 5px;
+            margin-bottom: 2.5rem;
         }
 
-        .contact-item strong {
-            color: var(--black);
-            display: block;
+        .contact-item h3 {
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #999;
             margin-bottom: 0.5rem;
+        }
+
+        .contact-item p,
+        .contact-item a {
+            font-size: 1.2rem;
+            color: var(--black);
+            text-decoration: none;
+            font-weight: 300;
+        }
+
+        .contact-item a:hover {
+            color: var(--gold);
+        }
+
+        .social-btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background-color: var(--black);
+            color: var(--white);
+            text-decoration: none;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            margin-top: 1rem;
+            border-radius: 30px;
+            transition: all 0.3s;
+        }
+
+        .social-btn:hover {
+            background-color: var(--gold);
+            color: var(--black);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--black);
+            color: var(--gold-light);
+            text-align: center;
+            padding: 4rem 2rem 2rem;
+            margin-top: 6rem;
+            position: relative;
+        }
+
+        footer h3 {
+            font-size: 1.3rem;
+            font-weight: 300;
+            letter-spacing: 3px;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        footer p {
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            font-weight: 300;
+        }
+
+        /* Admin Dot - Hidden */
+        .admin-dot {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 8px;
+            height: 8px;
+            background-color: var(--gold);
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 999;
+            opacity: 0.3;
+            transition: opacity 0.3s;
+        }
+
+        .admin-dot:hover {
+            opacity: 1;
         }
 
         /* Admin Panel */
@@ -357,10 +569,10 @@
             position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0,0,0,0.9);
-            z-index: 2000;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.95);
+            z-index: 3000;
             overflow-y: auto;
         }
 
@@ -370,77 +582,73 @@
 
         .admin-content {
             max-width: 800px;
-            margin: 2rem auto;
+            margin: 4rem auto;
             background-color: var(--white);
-            padding: 2rem;
-            border-radius: 10px;
+            padding: 3rem;
         }
 
-        .close-admin {
-            background-color: var(--dark-gray);
-            color: var(--white);
-            padding: 0.5rem 1rem;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            float: right;
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--black);
         }
 
-        /* Loading Spinner */
-        .spinner {
-            display: none;
-            border: 4px solid var(--beige);
-            border-top: 4px solid var(--gold);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 1rem auto;
+        .admin-section {
+            margin-bottom: 3rem;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .success-message {
-            background-color: var(--gold);
-            color: var(--black);
-            padding: 1rem;
-            border-radius: 5px;
-            margin: 1rem 0;
-            display: none;
-        }
-
-        .error-message {
-            background-color: #ff6b6b;
-            color: white;
-            padding: 1rem;
-            border-radius: 5px;
-            margin: 1rem 0;
-            display: none;
-        }
-
-        /* Mobile Menu */
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--gold);
+        .admin-section h3 {
             font-size: 1.5rem;
-            cursor: pointer;
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
         }
 
+        .admin-design-item {
+            background-color: var(--cream);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .delete-btn {
+            padding: 0.5rem 1rem;
+            background-color: #dc3545;
+            color: var(--white);
+            border: none;
+            cursor: pointer;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero-motto {
+                font-size: 1rem;
+            }
+
             nav ul {
                 display: none;
-                flex-direction: column;
-                position: absolute;
-                top: 100%;
+                position: fixed;
+                top: 0;
                 left: 0;
-                right: 0;
-                background-color: var(--black);
-                padding: 1rem;
+                width: 100%;
+                height: 100vh;
+                background-color: var(--white);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 2rem;
             }
 
             nav ul.active {
@@ -451,26 +659,50 @@
                 display: block;
             }
 
-            .hero h1 {
-                font-size: 2rem;
+            .masonry-grid {
+                column-count: 2;
             }
 
-            .highlight-boxes {
+            .contact-container {
                 grid-template-columns: 1fr;
             }
 
-            .gallery-grid {
-                grid-template-columns: 1fr;
+            .contact-left {
+                display: none;
             }
         }
 
-        /* Footer */
-        footer {
-            background-color: var(--black);
-            color: var(--gold);
+        @media (max-width: 480px) {
+            .masonry-grid {
+                column-count: 1;
+            }
+
+            .hero h1 {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Loading */
+        .loading {
             text-align: center;
             padding: 2rem;
-            margin-top: 3rem;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            color: #999;
+        }
+
+        /* Success Message */
+        .success-message {
+            background-color: var(--gold-light);
+            color: var(--black);
+            padding: 1rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
         }
     </style>
 </head>
@@ -481,13 +713,12 @@
     <!-- Header -->
     <header>
         <div class="header-content">
-            <div class="logo">Nelly J Stitches Global</div>
+            <div class="logo">Nelly J Stitches</div>
             <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
             <nav>
                 <ul id="mainNav">
                     <li><a href="#" onclick="showSection('home')">Home</a></li>
-                    <li><a href="#" onclick="showSection('gallery')">Designs</a></li>
-                    <li><a href="#" onclick="showSection('order')">Custom Order</a></li>
+                    <li><a href="#" onclick="showSection('collection')">Collection</a></li>
                     <li><a href="#" onclick="showSection('reviews')">Reviews</a></li>
                     <li><a href="#" onclick="showSection('contact')">Contact</a></li>
                 </ul>
@@ -498,238 +729,259 @@
     <!-- Hero Section -->
     <section id="home" class="active">
         <div class="hero">
-            <h1>Nelly J Stitches Global</h1>
-            <p class="tagline">Your Outfit Is Our Priority</p>
-            <p>Custom Tailoring Excellence for the Modern Woman</p>
-            
-            <div class="highlight-boxes">
-                <div class="highlight-box">
-                    <h3>Custom Tailoring</h3>
-                    <p>Bespoke designs crafted to perfection</p>
-                </div>
-                <div class="highlight-box">
-                    <h3>Fashion for Women</h3>
-                    <p>Elegant and sophisticated styles</p>
-                </div>
-                <div class="highlight-box">
-                    <h3>Global Delivery</h3>
-                    <p>We deliver worldwide with care</p>
-                </div>
+            <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1600&h=900&fit=crop" alt="Fashion Model" class="hero-image">
+            <div class="hero-content">
+                <h1>Nelly J Stitches Global</h1>
+                <p class="hero-motto">Your Outfit Is Our Priority</p>
+                <div class="gold-line"></div>
+                <a href="#" class="hero-btn" onclick="showSection('collection')">View Collection</a>
             </div>
         </div>
     </section>
 
-    <!-- Gallery Section -->
-    <section id="gallery">
-        <h2>Our Designs</h2>
-        <div class="gallery-grid" id="galleryGrid">
-            <!-- Designs will be loaded here -->
+    <!-- Collection Section -->
+    <section id="collection">
+        <div class="collection-header">
+            <h2>Our Collection</h2>
+            <div class="gold-line"></div>
         </div>
-    </section>
-
-    <!-- Order Form Section -->
-    <section id="order">
-        <h2>Place Your Custom Order</h2>
-        <div class="order-form">
-            <form id="orderForm">
-                <div class="form-group">
-                    <label for="fullName">Full Name *</label>
-                    <input type="text" id="fullName" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="phone">Phone/WhatsApp *</label>
-                    <input type="tel" id="phone" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="email">Email *</label>
-                    <input type="email" id="email" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="gender">Gender *</label>
-                    <select id="gender" required>
-                        <option value="">Select Gender</option>
-                        <option value="female">Female</option>
-                        <option value="male">Male</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="outfitType">Outfit Type *</label>
-                    <select id="outfitType" required>
-                        <option value="">Select Outfit Type</option>
-                        <option value="dress">Dress</option>
-                        <option value="suit">Suit</option>
-                        <option value="gown">Gown</option>
-                        <option value="traditional">Traditional Wear</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="referenceImage">Reference Image (Optional)</label>
-                    <input type="file" id="referenceImage" accept="image/*">
-                </div>
-                
-                <div class="form-group">
-                    <label for="measurements">Measurements (Optional)</label>
-                    <textarea id="measurements" rows="4" placeholder="Enter your measurements here..."></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label for="additionalDetails">Additional Details (Optional)</label>
-                    <textarea id="additionalDetails" rows="4" placeholder="Any special requests or details..."></textarea>
-                </div>
-                
-                <div class="spinner" id="orderSpinner"></div>
-                <div class="success-message" id="orderSuccess">Order submitted successfully!</div>
-                <div class="error-message" id="orderError">Error submitting order. Please try again.</div>
-                
-                <button type="submit" class="submit-btn">Submit Order</button>
-            </form>
+        <div class="masonry-grid" id="masonryGrid">
+            <!-- Designs will be loaded here -->
         </div>
     </section>
 
     <!-- Reviews Section -->
     <section id="reviews">
-        <h2>Customer Reviews</h2>
-        <div class="reviews-container">
-            <div id="reviewsList">
-                <!-- Reviews will be loaded here -->
-            </div>
-            
-            <div class="review-form">
-                <h3>Leave a Review</h3>
-                <form id="reviewForm">
-                    <div class="form-group">
-                        <label for="reviewName">Your Name *</label>
-                        <input type="text" id="reviewName" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="rating">Rating *</label>
-                        <select id="rating" required>
-                            <option value="">Select Rating</option>
-                            <option value="5">⭐⭐⭐⭐⭐ (5 stars)</option>
-                            <option value="4">⭐⭐⭐⭐ (4 stars)</option>
-                            <option value="3">⭐⭐⭐ (3 stars)</option>
-                            <option value="2">⭐⭐ (2 stars)</option>
-                            <option value="1">⭐ (1 star)</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="reviewText">Your Review *</label>
-                        <textarea id="reviewText" rows="4" required></textarea>
-                    </div>
-                    
-                    <div class="spinner" id="reviewSpinner"></div>
-                    <div class="success-message" id="reviewSuccess">Review submitted successfully!</div>
-                    
-                    <button type="submit" class="submit-btn">Submit Review</button>
-                </form>
-            </div>
+        <div class="collection-header">
+            <h2>What They Say</h2>
+            <div class="gold-line"></div>
+        </div>
+        <div class="reviews-container" id="reviewsContainer">
+            <!-- Reviews will be loaded here -->
         </div>
     </section>
 
     <!-- Contact Section -->
     <section id="contact">
-        <h2>Contact Us</h2>
-        <div class="contact-info">
-            <div class="contact-item">
-                <strong>Phone/WhatsApp:</strong>
-                <p>+1234567890</p>
+        <div class="collection-header">
+            <h2>Get In Touch</h2>
+            <div class="gold-line"></div>
+        </div>
+        <div class="contact-container">
+            <div class="contact-left">
+                ✂️
             </div>
-            
-            <div class="contact-item">
-                <strong>Email:</strong>
-                <p>info@nellystitches.com</p>
-            </div>
-            
-            <div class="contact-item">
-                <strong>Location:</strong>
-                <p>Global</p>
-            </div>
-            
-            <div class="contact-item">
-                <strong>Facebook:</strong>
-                <p>@nellyjstitches</p>
-            </div>
-            
-            <div class="contact-item">
-                <strong>Instagram:</strong>
-                <p>@nellyjstitches</p>
+            <div class="contact-right">
+                <div class="contact-item">
+                    <h3>Phone / WhatsApp</h3>
+                    <a href="tel:+2349067725503">+234 906 772 5503</a>
+                </div>
+                <div class="contact-item">
+                    <h3>Email</h3>
+                    <a href="mailto:nnennanwabueze95@gmail.com">nnennanwabueze95@gmail.com</a>
+                </div>
+                <div class="contact-item">
+                    <h3>Location</h3>
+                    <p>No 137 MCC Road, Aba, Abia State</p>
+                </div>
+                <div class="contact-item">
+                    <h3>Social</h3>
+                    <a href="https://m.facebook.com/317334014806014/" target="_blank" class="social-btn">Visit Facebook</a>
+                </div>
             </div>
         </div>
     </section>
 
+    <!-- Footer -->
+    <footer>
+        <h3>Nelly J Stitches Global</h3>
+        <p>Your Outfit Is Our Priority</p>
+        <div style="margin-top: 2rem; font-size: 0.8rem; opacity: 0.7;">
+            © 2024 All Rights Reserved
+        </div>
+    </footer>
+
+    <!-- Order Modal -->
+    <div class="modal" id="orderModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeOrderModal()">×</button>
+            <h3>Order This Style</h3>
+            <div class="success-message" id="orderSuccess">Order sent! We'll contact you soon.</div>
+            <form id="orderForm">
+                <input type="hidden" id="selectedDesignId">
+                <input type="hidden" id="selectedDesignName">
+                
+                <div class="form-group">
+                    <label>Reference Image (Optional)</label>
+                    <input type="file" id="referenceImage" accept="image/*">
+                </div>
+                
+                <div class="form-group">
+                    <label>Measurements (Optional)</label>
+                    <textarea id="measurements" rows="3" placeholder="Bust: 36, Waist: 28, Hips: 38..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Additional Note (Optional)</label>
+                    <textarea id="orderNote" rows="3" placeholder="Any special requests..."></textarea>
+                </div>
+                
+                <button type="submit" class="submit-btn">Send via WhatsApp</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Comments Panel -->
+    <div class="comments-panel" id="commentsPanel">
+        <div class="comments-header">
+            <h3 style="font-size: 1.3rem; font-weight: 300; letter-spacing: 2px;">Comments</h3>
+            <button class="close-modal" onclick="closeComments()">×</button>
+        </div>
+        <div id="commentsList"></div>
+        <div class="add-comment">
+            <input type="text" id="commentInput" placeholder="Add a comment...">
+            <button onclick="addComment()">Post</button>
+        </div>
+    </div>
+
     <!-- Admin Panel -->
     <div class="admin-panel" id="adminPanel">
         <div class="admin-content">
-            <button class="close-admin" onclick="toggleAdmin()">Close</button>
-            <h2>Admin Panel</h2>
-            
             <div id="adminLogin">
-                <h3>Login</h3>
+                <h2 style="margin-bottom: 2rem; font-weight: 300; letter-spacing: 2px;">Admin Login</h2>
                 <div class="form-group">
-                    <label>Username:</label>
+                    <label>Username</label>
                     <input type="text" id="adminUsername">
                 </div>
                 <div class="form-group">
-                    <label>Password:</label>
+                    <label>Password</label>
                     <input type="password" id="adminPassword">
                 </div>
+                <div class="success-message" id="loginError" style="background-color: #dc3545; color: white;">Invalid credentials</div>
                 <button class="submit-btn" onclick="adminLogin()">Login</button>
-                <div class="error-message" id="loginError">Invalid credentials</div>
             </div>
-            
-            <div id="adminDashboard" style="display:none;">
-                <h3>Upload New Design</h3>
-                <form id="uploadForm">
-                    <div class="form-group">
-                        <label>Design Name:</label>
-                        <input type="text" id="designName" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Description:</label>
-                        <textarea id="designDescription" required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Image:</label>
-                        <input type="file" id="designImage" accept="image/*" required>
-                    </div>
-                    <div class="spinner" id="uploadSpinner"></div>
-                    <div class="success-message" id="uploadSuccess">Design uploaded successfully!</div>
-                    <button type="submit" class="submit-btn">Upload Design</button>
-                </form>
-                
-                <h3 style="margin-top: 2rem;">Manage Designs</h3>
-                <div id="adminDesigns"></div>
-                
-                <h3 style="margin-top: 2rem;">Customer Orders</h3>
-                <div id="adminOrders"></div>
+
+            <div id="adminDashboard" style="display: none;">
+                <div class="admin-header">
+                    <h2 style="font-weight: 300; letter-spacing: 2px;">Admin Dashboard</h2>
+                    <button class="close-modal" onclick="toggleAdmin()">×</button>
+                </div>
+
+                <div class="admin-section">
+                    <h3>Upload New Design</h3>
+                    <form id="uploadForm">
+                        <div class="form-group">
+                            <label>Design Name</label>
+                            <input type="text" id="designName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Image</label>
+                            <input type="file" id="designImage" accept="image/*" required>
+                        </div>
+                        <div class="success-message" id="uploadSuccess">Design uploaded successfully!</div>
+                        <button type="submit" class="submit-btn">Upload Design</button>
+                    </form>
+                </div>
+
+                <div class="admin-section">
+                    <h3>Manage Designs</h3>
+                    <div id="adminDesigns"></div>
+                </div>
+
+                <div class="admin-section">
+                    <h3>Orders</h3>
+                    <div id="adminOrders"></div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2024 Nelly J Stitches Global. All Rights Reserved.</p>
-        <p>Your Outfit Is Our Priority</p>
-    </footer>
-
     <script>
-        // User ID Management
-        function getUserId() {
-            let userId = localStorage.getItem('userId');
-            if (!userId) {
-                userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-                localStorage.setItem('userId', userId);
+        // Variables
+        let currentDesignId = null;
+        let designs = [];
+        let reviews = [];
+
+        // Initialize
+        function init() {
+            loadSampleData();
+            loadDesigns();
+            loadReviews();
+        }
+
+        // Sample Data
+        function loadSampleData() {
+            if (!localStorage.getItem('designs')) {
+                designs = [
+                    {
+                        id: 'design_1',
+                        name: 'Ankara Gown',
+                        imageUrl: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&h=800&fit=crop',
+                        likes: 124,
+                        comments: [
+                            {author: 'Ada', text: 'This is so clean 😍'},
+                            {author: 'Blessing', text: 'I need this for my birthday'}
+                        ]
+                    },
+                    {
+                        id: 'design_2',
+                        name: 'Evening Dress',
+                        imageUrl: 'https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=600&h=900&fit=crop',
+                        likes: 98,
+                        comments: []
+                    },
+                    {
+                        id: 'design_3',
+                        name: 'Elegant Gown',
+                        imageUrl: 'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=600&h=750&fit=crop',
+                        likes: 156,
+                        comments: []
+                    },
+                    {
+                        id: 'design_4',
+                        name: 'Traditional Wear',
+                        imageUrl: 'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600&h=850&fit=crop',
+                        likes: 89,
+                        comments: []
+                    },
+                    {
+                        id: 'design_5',
+                        name: 'Cocktail Dress',
+                        imageUrl: 'https://images.unsplash.com/photo-1562137369-1a1a0bc66744?w=600&h=800&fit=crop',
+                        likes: 112,
+                        comments: []
+                    },
+                    {
+                        id: 'design_6',
+                        name: 'Bridal Collection',
+                        imageUrl: 'https://images.unsplash.com/photo-1519657337289-077653f724ed?w=600&h=900&fit=crop',
+                        likes: 203,
+                        comments: []
+                    }
+                ];
+                localStorage.setItem('designs', JSON.stringify(designs));
             }
-            return userId;
+
+            if (!localStorage.getItem('reviews')) {
+                reviews = [
+                    {
+                        id: 'review_1',
+                        text: 'She nailed the fitting perfectly.',
+                        author: 'Ada, Aba'
+                    },
+                    {
+                        id: 'review_2',
+                        text: 'Exactly what I imagined.',
+                        author: 'Blessing'
+                    },
+                    {
+                        id: 'review_3',
+                        text: 'The attention to detail is incredible.',
+                        author: 'Chioma, Lagos'
+                    }
+                ];
+                localStorage.setItem('reviews', JSON.stringify(reviews));
+            }
         }
 
         // Navigation
@@ -738,8 +990,9 @@
                 section.classList.remove('active');
             });
             document.getElementById(sectionId).classList.add('active');
-            
-            if (sectionId === 'gallery') {
+            window.scrollTo(0, 0);
+
+            if (sectionId === 'collection') {
                 loadDesigns();
             } else if (sectionId === 'reviews') {
                 loadReviews();
@@ -750,266 +1003,178 @@
             document.getElementById('mainNav').classList.toggle('active');
         }
 
-        // Mock Database (using localStorage)
-        const db = {
-            designs: [],
-            orders: [],
-            reviews: [],
-            interactions: {}
-        };
-
-        // Initialize with sample data
-        function initializeData() {
-            if (!localStorage.getItem('designs')) {
-                db.designs = [
-                    {
-                        id: 'design_1',
-                        name: 'Ankara Gown',
-                        description: 'Beautiful African print gown',
-                        imageUrl: 'https://via.placeholder.com/300x300/FFD700/000000?text=Ankara+Gown',
-                        likes: 15,
-                        dislikes: 2,
-                        comments: [
-                            {id: 'comment_1', author: 'Sarah', text: 'Love it!', timestamp: Date.now()}
-                        ]
-                    },
-                    {
-                        id: 'design_2',
-                        name: 'Evening Dress',
-                        description: 'Elegant evening wear',
-                        imageUrl: 'https://via.placeholder.com/300x300/FFD700/000000?text=Evening+Dress',
-                        likes: 23,
-                        dislikes: 1,
-                        comments: []
-                    },
-                    {
-                        id: 'design_3',
-                        name: 'Business Suit',
-                        description: 'Professional business attire',
-                        imageUrl: 'https://via.placeholder.com/300x300/FFD700/000000?text=Business+Suit',
-                        likes: 18,
-                        dislikes: 0,
-                        comments: []
-                    }
-                ];
-                localStorage.setItem('designs', JSON.stringify(db.designs));
-            }
-            
-            if (!localStorage.getItem('reviews')) {
-                db.reviews = [
-                    {
-                        id: 'review_1',
-                        name: 'Jane Smith',
-                        rating: 5,
-                        text: 'Excellent work! Highly recommend.',
-                        timestamp: Date.now()
-                    }
-                ];
-                localStorage.setItem('reviews', JSON.stringify(db.reviews));
-            }
-        }
-
         // Load Designs
         function loadDesigns() {
-            const designs = JSON.parse(localStorage.getItem('designs') || '[]');
-            const galleryGrid = document.getElementById('galleryGrid');
-            const userId = getUserId();
-            const interactions = JSON.parse(localStorage.getItem('interactions_' + userId) || '{}');
+            designs = JSON.parse(localStorage.getItem('designs') || '[]');
+            const grid = document.getElementById('masonryGrid');
+            const userLikes = JSON.parse(localStorage.getItem('userLikes') || '{}');
             
-            galleryGrid.innerHTML = designs.map(design => `
-                <div class="design-card">
+            grid.innerHTML = designs.map(design => `
+                <div class="design-item">
                     <img src="${design.imageUrl}" alt="${design.name}" class="design-image">
-                    <div class="design-info">
-                        <h3>${design.name}</h3>
-                        <p>${design.description}</p>
-                        <div class="interaction-buttons">
-                            <button class="btn like-btn" onclick="toggleLike('${design.id}')" 
-                                ${interactions[design.id]?.liked ? 'disabled' : ''}>
-                                👍 Like (${design.likes || 0})
+                    <div class="design-overlay">
+                        <div class="design-name">${design.name}</div>
+                        <div class="design-interactions">
+                            <button class="interaction-btn" onclick="toggleLike('${design.id}')" ${userLikes[design.id] ? 'disabled' : ''}>
+                                ❤️ ${design.likes || 0}
                             </button>
-                            <button class="btn dislike-btn" onclick="toggleDislike('${design.id}')"
-                                ${interactions[design.id]?.disliked ? 'disabled' : ''}>
-                                👎 (${design.dislikes || 0})
-                            </button>
-                            <button class="btn comment-btn" onclick="toggleComments('${design.id}')">
-                                💬 Comment
+                            <button class="interaction-btn" onclick="openComments('${design.id}')">
+                                💬 ${(design.comments || []).length}
                             </button>
                         </div>
-                        <div class="comment-section" id="comments_${design.id}" style="display:none;">
-                            <div id="commentsList_${design.id}">
-                                ${(design.comments || []).map(c => `
-                                    <div class="comment">
-                                        <strong>${c.author}:</strong> ${c.text}
-                                    </div>
-                                `).join('')}
-                            </div>
-                            <input type="text" id="commentInput_${design.id}" placeholder="Add a comment..." style="width:100%; margin-top:0.5rem; padding:0.5rem;">
-                            <button class="btn" onclick="addComment('${design.id}')" style="margin-top:0.5rem;">Post</button>
-                        </div>
+                        <button class="order-btn" onclick="openOrderModal('${design.id}', '${design.name}')">
+                            ✨ Order This Style
+                        </button>
                     </div>
                 </div>
             `).join('');
         }
 
-        // Like/Dislike System
+        // Like System
         function toggleLike(designId) {
-            const userId = getUserId();
-            const interactions = JSON.parse(localStorage.getItem('interactions_' + userId) || '{}');
+            const userLikes = JSON.parse(localStorage.getItem('userLikes') || '{}');
             
-            if (interactions[designId]?.liked) return;
+            if (userLikes[designId]) return;
             
-            const designs = JSON.parse(localStorage.getItem('designs') || '[]');
+            designs = JSON.parse(localStorage.getItem('designs') || '[]');
             const design = designs.find(d => d.id === designId);
+            
             if (design) {
                 design.likes = (design.likes || 0) + 1;
                 localStorage.setItem('designs', JSON.stringify(designs));
                 
-                interactions[designId] = {liked: true};
-                localStorage.setItem('interactions_' + userId, JSON.stringify(interactions));
+                userLikes[designId] = true;
+                localStorage.setItem('userLikes', JSON.stringify(userLikes));
                 
                 loadDesigns();
             }
         }
 
-        function toggleDislike(designId) {
-            const userId = getUserId();
-            const interactions = JSON.parse(localStorage.getItem('interactions_' + userId) || '{}');
-            
-            if (interactions[designId]?.disliked) return;
-            
-            const designs = JSON.parse(localStorage.getItem('designs') || '[]');
+        // Comments System
+        function openComments(designId) {
+            currentDesignId = designId;
+            designs = JSON.parse(localStorage.getItem('designs') || '[]');
             const design = designs.find(d => d.id === designId);
+            
             if (design) {
-                design.dislikes = (design.dislikes || 0) + 1;
-                localStorage.setItem('designs', JSON.stringify(designs));
+                const commentsList = document.getElementById('commentsList');
+                commentsList.innerHTML = (design.comments || []).map(comment => `
+                    <div class="comment-item">
+                        <div class="comment-author">${comment.author}</div>
+                        <div class="comment-text">${comment.text}</div>
+                    </div>
+                `).join('') || '<p style="text-align: center; color: #999;">No comments yet. Be the first!</p>';
                 
-                interactions[designId] = {disliked: true};
-                localStorage.setItem('interactions_' + userId, JSON.stringify(interactions));
-                
-                loadDesigns();
+                document.getElementById('commentsPanel').classList.add('active');
             }
         }
 
-        function toggleComments(designId) {
-            const commentsSection = document.getElementById('comments_' + designId);
-            commentsSection.style.display = commentsSection.style.display === 'none' ? 'block' : 'none';
+        function closeComments() {
+            document.getElementById('commentsPanel').classList.remove('active');
+            currentDesignId = null;
         }
 
-        function addComment(designId) {
-            const commentInput = document.getElementById('commentInput_' + designId);
-            const commentText = commentInput.value.trim();
+        function addComment() {
+            if (!currentDesignId) return;
             
-            if (!commentText) return;
+            const input = document.getElementById('commentInput');
+            const text = input.value.trim();
             
-            const name = prompt('Enter your name:');
-            if (!name) return;
+            if (!text) return;
             
-            const designs = JSON.parse(localStorage.getItem('designs') || '[]');
-            const design = designs.find(d => d.id === designId);
+            const author = prompt('Enter your name:');
+            if (!author) return;
+            
+            designs = JSON.parse(localStorage.getItem('designs') || '[]');
+            const design = designs.find(d => d.id === currentDesignId);
             
             if (design) {
                 if (!design.comments) design.comments = [];
                 design.comments.push({
-                    id: 'comment_' + Date.now(),
-                    author: name,
-                    text: commentText,
-                    timestamp: Date.now()
+                    author: author.trim(),
+                    text: text
                 });
                 
                 localStorage.setItem('designs', JSON.stringify(designs));
-                commentInput.value = '';
+                input.value = '';
+                openComments(currentDesignId);
                 loadDesigns();
             }
         }
 
-        // Order Form
-        document.getElementById('orderForm').addEventListener('submit', async function(e) {
+        // Order System
+        function openOrderModal(designId, designName) {
+            document.getElementById('selectedDesignId').value = designId;
+            document.getElementById('selectedDesignName').value = designName;
+            document.getElementById('orderModal').classList.add('active');
+        }
+
+        function closeOrderModal() {
+            document.getElementById('orderModal').classList.remove('active');
+            document.getElementById('orderForm').reset();
+            document.getElementById('orderSuccess').classList.remove('show');
+        }
+
+        document.getElementById('orderForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            const spinner = document.getElementById('orderSpinner');
-            const successMsg = document.getElementById('orderSuccess');
-            const errorMsg = document.getElementById('orderError');
+            const designName = document.getElementById('selectedDesignName').value;
+            const measurements = document.getElementById('measurements').value;
+            const note = document.getElementById('orderNote').value;
             
-            spinner.style.display = 'block';
-            successMsg.style.display = 'none';
-            errorMsg.style.display = 'none';
+            // Build WhatsApp message
+            let message = `Hi! I want to order this style: *${designName}*\n\n`;
             
+            if (measurements) {
+                message += `Measurements:\n${measurements}\n\n`;
+            }
+            
+            if (note) {
+                message += `Additional Note:\n${note}\n\n`;
+            }
+            
+            message += 'Please contact me to discuss further details.';
+            
+            // Save order
+            const order = {
+                id: 'order_' + Date.now(),
+                designId: document.getElementById('selectedDesignId').value,
+                designName: designName,
+                measurements: measurements,
+                note: note,
+                timestamp: Date.now()
+            };
+            
+            const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            orders.push(order);
+            localStorage.setItem('orders', JSON.stringify(orders));
+            
+            // Show success message
+            document.getElementById('orderSuccess').classList.add('show');
+            
+            // Open WhatsApp after 1 second
             setTimeout(() => {
-                const order = {
-                    id: 'order_' + Date.now(),
-                    name: document.getElementById('fullName').value,
-                    phone: document.getElementById('phone').value,
-                    email: document.getElementById('email').value,
-                    gender: document.getElementById('gender').value,
-                    outfitType: document.getElementById('outfitType').value,
-                    measurements: document.getElementById('measurements').value,
-                    details: document.getElementById('additionalDetails').value,
-                    timestamp: Date.now()
-                };
-                
-                const orders = JSON.parse(localStorage.getItem('orders') || '[]');
-                orders.push(order);
-                localStorage.setItem('orders', JSON.stringify(orders));
-                
-                spinner.style.display = 'none';
-                successMsg.style.display = 'block';
-                
-                document.getElementById('orderForm').reset();
+                const whatsappUrl = `https://wa.me/2349067725503?text=${encodeURIComponent(message)}`;
+                window.open(whatsappUrl, '_blank');
                 
                 setTimeout(() => {
-                    successMsg.style.display = 'none';
-                }, 3000);
-            }, 1500);
+                    closeOrderModal();
+                }, 500);
+            }, 1000);
         });
 
         // Reviews
         function loadReviews() {
-            const reviews = JSON.parse(localStorage.getItem('reviews') || '[]');
-            const reviewsList = document.getElementById('reviewsList');
+            reviews = JSON.parse(localStorage.getItem('reviews') || '[]');
+            const container = document.getElementById('reviewsContainer');
             
-            reviewsList.innerHTML = reviews.sort((a, b) => b.timestamp - a.timestamp).map(review => `
-                <div class="review-card">
-                    <div class="stars">${'⭐'.repeat(review.rating)}</div>
-                    <strong>${review.name}</strong>
-                    <p>${review.text}</p>
-                    <small>${new Date(review.timestamp).toLocaleDateString()}</small>
+            container.innerHTML = reviews.map(review => `
+                <div class="review-item">
+                    <div class="review-text">"${review.text}"</div>
+                    <div class="review-author">— ${review.author}</div>
                 </div>
             `).join('');
         }
-
-        document.getElementById('reviewForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const spinner = document.getElementById('reviewSpinner');
-            const successMsg = document.getElementById('reviewSuccess');
-            
-            spinner.style.display = 'block';
-            successMsg.style.display = 'none';
-            
-            setTimeout(() => {
-                const review = {
-                    id: 'review_' + Date.now(),
-                    name: document.getElementById('reviewName').value,
-                    rating: parseInt(document.getElementById('rating').value),
-                    text: document.getElementById('reviewText').value,
-                    timestamp: Date.now()
-                };
-                
-                const reviews = JSON.parse(localStorage.getItem('reviews') || '[]');
-                reviews.push(review);
-                localStorage.setItem('reviews', JSON.stringify(reviews));
-                
-                spinner.style.display = 'none';
-                successMsg.style.display = 'block';
-                
-                document.getElementById('reviewForm').reset();
-                loadReviews();
-                
-                setTimeout(() => {
-                    successMsg.style.display = 'none';
-                }, 3000);
-            }, 1000);
-        });
 
         // Admin Panel
         function toggleAdmin() {
@@ -1024,51 +1189,57 @@
             if (username === 'nellystitchesglobal' && password === 'nellyj!') {
                 document.getElementById('adminLogin').style.display = 'none';
                 document.getElementById('adminDashboard').style.display = 'block';
-                errorMsg.style.display = 'none';
+                errorMsg.classList.remove('show');
                 loadAdminData();
             } else {
-                errorMsg.style.display = 'block';
+                errorMsg.classList.add('show');
+                setTimeout(() => {
+                    errorMsg.classList.remove('show');
+                }, 3000);
             }
         }
 
         function loadAdminData() {
-            // Load designs for management
-            const designs = JSON.parse(localStorage.getItem('designs') || '[]');
+            // Load designs
+            designs = JSON.parse(localStorage.getItem('designs') || '[]');
             const adminDesigns = document.getElementById('adminDesigns');
             
             adminDesigns.innerHTML = designs.map(design => `
-                <div style="background-color: var(--beige); padding: 1rem; margin: 1rem 0; border-radius: 5px;">
-                    <h4>${design.name}</h4>
-                    <p>${design.description}</p>
-                    <p>Likes: ${design.likes || 0} | Dislikes: ${design.dislikes || 0} | Comments: ${(design.comments || []).length}</p>
-                    <button class="btn" onclick="deleteDesign('${design.id}')" style="background-color: #ff6b6b; color: white;">Delete</button>
+                <div class="admin-design-item">
+                    <div>
+                        <strong>${design.name}</strong>
+                        <p style="font-size: 0.9rem; color: #666; margin-top: 0.3rem;">
+                            Likes: ${design.likes || 0} | Comments: ${(design.comments || []).length}
+                        </p>
+                    </div>
+                    <button class="delete-btn" onclick="deleteDesign('${design.id}')">Delete</button>
                 </div>
-            `).join('');
+            `).join('') || '<p style="color: #999;">No designs yet.</p>';
             
             // Load orders
             const orders = JSON.parse(localStorage.getItem('orders') || '[]');
             const adminOrders = document.getElementById('adminOrders');
             
-            adminOrders.innerHTML = orders.map(order => `
-                <div style="background-color: var(--beige); padding: 1rem; margin: 1rem 0; border-radius: 5px;">
-                    <h4>${order.name}</h4>
-                    <p><strong>Phone:</strong> ${order.phone}</p>
-                    <p><strong>Email:</strong> ${order.email}</p>
-                    <p><strong>Gender:</strong> ${order.gender}</p>
-                    <p><strong>Outfit Type:</strong> ${order.outfitType}</p>
-                    <p><strong>Measurements:</strong> ${order.measurements || 'N/A'}</p>
-                    <p><strong>Details:</strong> ${order.details || 'N/A'}</p>
-                    <p><strong>Date:</strong> ${new Date(order.timestamp).toLocaleString()}</p>
-                    <button class="btn" onclick="deleteOrder('${order.id}')" style="background-color: #ff6b6b; color: white;">Delete</button>
+            adminOrders.innerHTML = orders.reverse().map(order => `
+                <div class="admin-design-item" style="flex-direction: column; align-items: flex-start;">
+                    <div style="width: 100%; margin-bottom: 1rem;">
+                        <strong>${order.designName}</strong>
+                        <p style="font-size: 0.85rem; color: #666; margin-top: 0.5rem;">
+                            ${new Date(order.timestamp).toLocaleString()}
+                        </p>
+                    </div>
+                    ${order.measurements ? `<p style="font-size: 0.9rem;"><strong>Measurements:</strong><br>${order.measurements}</p>` : ''}
+                    ${order.note ? `<p style="font-size: 0.9rem; margin-top: 0.5rem;"><strong>Note:</strong><br>${order.note}</p>` : ''}
+                    <button class="delete-btn" onclick="deleteOrder('${order.id}')" style="margin-top: 1rem;">Delete</button>
                 </div>
-            `).join('');
+            `).join('') || '<p style="color: #999;">No orders yet.</p>';
         }
 
         function deleteDesign(designId) {
             if (confirm('Are you sure you want to delete this design?')) {
-                const designs = JSON.parse(localStorage.getItem('designs') || '[]');
-                const updatedDesigns = designs.filter(d => d.id !== designId);
-                localStorage.setItem('designs', JSON.stringify(updatedDesigns));
+                designs = JSON.parse(localStorage.getItem('designs') || '[]');
+                designs = designs.filter(d => d.id !== designId);
+                localStorage.setItem('designs', JSON.stringify(designs));
                 loadAdminData();
                 loadDesigns();
             }
@@ -1076,9 +1247,9 @@
 
         function deleteOrder(orderId) {
             if (confirm('Are you sure you want to delete this order?')) {
-                const orders = JSON.parse(localStorage.getItem('orders') || '[]');
-                const updatedOrders = orders.filter(o => o.id !== orderId);
-                localStorage.setItem('orders', JSON.stringify(updatedOrders));
+                let orders = JSON.parse(localStorage.getItem('orders') || '[]');
+                orders = orders.filter(o => o.id !== orderId);
+                localStorage.setItem('orders', JSON.stringify(orders));
                 loadAdminData();
             }
         }
@@ -1087,66 +1258,58 @@
         document.getElementById('uploadForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            const spinner = document.getElementById('uploadSpinner');
-            const successMsg = document.getElementById('uploadSuccess');
-            
-            spinner.style.display = 'block';
-            successMsg.style.display = 'none';
-            
+            const name = document.getElementById('designName').value;
             const fileInput = document.getElementById('designImage');
             const file = fileInput.files[0];
             
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    setTimeout(() => {
-                        const design = {
-                            id: 'design_' + Date.now(),
-                            name: document.getElementById('designName').value,
-                            description: document.getElementById('designDescription').value,
-                            imageUrl: e.target.result,
-                            likes: 0,
-                            dislikes: 0,
-                            comments: []
-                        };
-                        
-                        const designs = JSON.parse(localStorage.getItem('designs') || '[]');
-                        designs.push(design);
-                        localStorage.setItem('designs', JSON.stringify(designs));
-                        
-                        spinner.style.display = 'none';
-                        successMsg.style.display = 'block';
-                        
-                        document.getElementById('uploadForm').reset();
-                        loadAdminData();
-                        
-                        setTimeout(() => {
-                            successMsg.style.display = 'none';
-                        }, 3000);
-                    }, 1500);
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const design = {
+                    id: 'design_' + Date.now(),
+                    name: name,
+                    imageUrl: e.target.result,
+                    likes: 0,
+                    comments: []
                 };
-                reader.readAsDataURL(file);
+                
+                designs = JSON.parse(localStorage.getItem('designs') || '[]');
+                designs.push(design);
+                localStorage.setItem('designs', JSON.stringify(designs));
+                
+                document.getElementById('uploadSuccess').classList.add('show');
+                document.getElementById('uploadForm').reset();
+                
+                setTimeout(() => {
+                    document.getElementById('uploadSuccess').classList.remove('show');
+                }, 3000);
+                
+                loadAdminData();
+                loadDesigns();
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // Close modals on outside click
+        window.onclick = function(event) {
+            const orderModal = document.getElementById('orderModal');
+            const commentsPanel = document.getElementById('commentsPanel');
+            
+            if (event.target === orderModal) {
+                closeOrderModal();
             }
-        });
+        };
 
-        // Initialize on page load
-        window.addEventListener('load', function() {
-            initializeData();
-            loadDesigns();
-        });
-
-        // Smooth scrolling
+        // Smooth scroll for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                }
             });
         });
+
+        // Initialize on load
+        window.addEventListener('load', init);
     </script>
 </body>
 </html>
