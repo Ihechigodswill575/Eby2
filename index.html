@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nelly J Stitches Global</title>
+    <title>Nelly J Stitches Global - Your Outfit Is Our Priority</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -12,195 +13,198 @@
         }
 
         :root {
-            --white: #FEFEFE;
-            --cream: #F8F6F3;
-            --black: #1A1A1A;
-            --gold: #C9A96E;
-            --gold-light: #E5D4B8;
+            --cream: #FAF8F3;
+            --charcoal: #2C2C2C;
+            --gold: #C9A961;
+            --near-black: #1A1A1A;
         }
 
         body {
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            background-color: var(--cream);
-            color: var(--black);
-            line-height: 1.6;
+            font-family: 'Inter', sans-serif;
+            background: var(--cream);
+            color: var(--charcoal);
             overflow-x: hidden;
         }
 
-        /* Header - Minimal */
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background-color: rgba(254, 254, 254, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 1.5rem 5%;
-            z-index: 1000;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
         }
 
-        .header-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.1rem;
-            font-weight: 600;
-            letter-spacing: 2px;
-            color: var(--black);
-            text-transform: uppercase;
-        }
-
-        nav ul {
-            list-style: none;
-            display: flex;
-            gap: 3rem;
-        }
-
-        nav a {
-            color: var(--black);
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 400;
-            letter-spacing: 1px;
-            transition: color 0.3s;
-        }
-
-        nav a:hover {
-            color: var(--gold);
-        }
-
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--black);
-        }
-
-        /* Hero Section - Full Screen */
+        /* HERO SECTION - Split Screen */
         .hero {
             height: 100vh;
-            position: relative;
             display: flex;
-            align-items: flex-end;
+            position: relative;
+        }
+
+        .hero-left {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
             justify-content: center;
+            padding: 0 8%;
+            background: var(--cream);
+            z-index: 2;
+        }
+
+        .hero-left h1 {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .hero-left p {
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            color: #666;
+            margin-bottom: 2.5rem;
+            font-weight: 300;
+            font-style: italic;
+        }
+
+        .btn-explore {
+            display: inline-block;
+            padding: 1rem 3rem;
+            background: var(--charcoal);
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            align-self: flex-start;
+        }
+
+        .btn-explore::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gold);
+            transition: width 0.4s;
+        }
+
+        .btn-explore:hover::after {
+            width: 100%;
+        }
+
+        .hero-right {
+            flex: 1;
+            position: relative;
             overflow: hidden;
         }
 
-        .hero-image {
+        .hero-slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+        }
+
+        .hero-slide.active {
+            opacity: 1;
+        }
+
+        .placeholder-hero {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        /* STORY SECTION */
+        .story {
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 5%;
+            background: var(--cream);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .story::before {
+            content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            filter: brightness(0.75);
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><rect fill="%23C9A961" opacity="0.03" width="100" height="100"/></svg>');
+            z-index: 0;
         }
 
-        .hero-content {
-            position: relative;
-            z-index: 2;
+        .story-content {
+            max-width: 900px;
             text-align: center;
-            padding: 4rem 2rem;
-            color: var(--white);
+            z-index: 1;
+            position: relative;
         }
 
-        .hero h1 {
-            font-size: 3.5rem;
-            font-weight: 300;
-            letter-spacing: 3px;
-            margin-bottom: 1rem;
-            text-transform: uppercase;
-        }
-
-        .hero-motto {
-            font-size: 1.2rem;
-            font-weight: 300;
-            letter-spacing: 2px;
+        .story h2 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
             margin-bottom: 2rem;
+            font-weight: 600;
         }
 
-        .gold-line {
-            width: 60px;
-            height: 1px;
-            background-color: var(--gold);
-            margin: 2rem auto;
-        }
-
-        .hero-btn {
-            display: inline-block;
-            padding: 1rem 3rem;
-            background-color: transparent;
-            color: var(--white);
-            border: 1px solid var(--white);
-            text-decoration: none;
-            font-size: 0.9rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            transition: all 0.4s;
-            cursor: pointer;
-        }
-
-        .hero-btn:hover {
-            background-color: var(--white);
-            color: var(--black);
-        }
-
-        /* Section Container */
-        section {
-            display: none;
-            padding: 6rem 5%;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        section.active {
-            display: block;
-        }
-
-        /* Collection Grid - Masonry Style */
-        .collection-header {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-
-        .collection-header h2 {
-            font-size: 2.5rem;
+        .story p {
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            line-height: 1.8;
+            color: #555;
             font-weight: 300;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            margin-bottom: 1rem;
         }
 
-        .masonry-grid {
-            column-count: 3;
-            column-gap: 1.5rem;
+        /* DESIGN SHOWCASE - Horizontal Scroll */
+        .showcase {
+            padding: 5rem 0;
+            background: white;
         }
 
-        .design-item {
-            break-inside: avoid;
-            margin-bottom: 1.5rem;
+        .showcase-title {
+            text-align: center;
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 3rem;
+            font-weight: 600;
+        }
+
+        .showcase-scroll {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 2rem;
+            padding: 2rem 5%;
+            scrollbar-width: none;
+        }
+
+        .showcase-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .design-card {
+            min-width: 400px;
+            height: 600px;
+            scroll-snap-align: center;
             position: relative;
+            border-radius: 4px;
             overflow: hidden;
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
-
-        .design-item:hover {
-            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
         }
 
         .design-image {
             width: 100%;
-            display: block;
-            transition: filter 0.3s;
+            height: 100%;
+            object-fit: cover;
         }
 
         .design-overlay {
@@ -208,108 +212,227 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-            padding: 2rem 1.5rem 1.5rem;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .design-item:hover .design-overlay {
-            opacity: 1;
-        }
-
-        .design-name {
-            color: var(--white);
-            font-size: 1.1rem;
-            font-weight: 500;
-            margin-bottom: 0.8rem;
-        }
-
-        .design-interactions {
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            padding: 2rem;
             display: flex;
-            gap: 1.5rem;
-            align-items: center;
-            color: var(--white);
-            font-size: 0.9rem;
+            justify-content: space-between;
+            align-items: flex-end;
         }
 
-        .interaction-btn {
-            background: none;
+        .design-title {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .design-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .design-btn {
+            background: white;
+            color: var(--charcoal);
             border: none;
-            color: var(--white);
+            padding: 0.8rem 1.5rem;
             cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .design-btn:hover {
+            background: var(--gold);
+            color: white;
+        }
+
+        .placeholder-design {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        /* REVIEWS SECTION */
+        .reviews {
+            min-height: 50vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5rem 5%;
+            background: var(--cream);
+        }
+
+        .review-container {
+            max-width: 800px;
+            text-align: center;
+        }
+
+        .review-text {
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            font-style: italic;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            font-family: 'Playfair Display', serif;
+            color: var(--charcoal);
+        }
+
+        .review-author {
+            font-size: 1rem;
+            color: #888;
+            font-weight: 500;
+        }
+
+        /* CONTACT SECTION */
+        .contact {
+            padding: 8rem 5%;
+            background: white;
+            text-align: center;
+        }
+
+        .contact h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 4rem;
+            font-weight: 600;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            max-width: 1000px;
+            margin: 0 auto 4rem;
+        }
+
+        .contact-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .contact-icon {
+            font-size: 2.5rem;
+        }
+
+        .contact-text {
+            font-size: 1.1rem;
+            color: #666;
+        }
+
+        .contact-link {
+            color: var(--charcoal);
+            text-decoration: none;
+            font-weight: 500;
             transition: color 0.3s;
         }
 
-        .interaction-btn:hover {
+        .contact-link:hover {
             color: var(--gold);
         }
 
-        .order-btn {
-            margin-top: 1rem;
-            padding: 0.7rem 1.5rem;
-            background-color: var(--white);
-            color: var(--black);
-            border: none;
-            font-size: 0.85rem;
-            letter-spacing: 1px;
+        .social-btn {
+            display: inline-block;
+            padding: 1rem 3rem;
+            background: #1877f2;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: 2rem;
+            transition: all 0.3s;
+        }
+
+        .social-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--near-black);
+            color: var(--gold);
+            padding: 3rem 5%;
+            text-align: center;
+            position: relative;
+        }
+
+        footer h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        footer p {
+            font-style: italic;
+            opacity: 0.8;
+        }
+
+        .admin-dot {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 12px;
+            height: 12px;
+            background: var(--gold);
+            border-radius: 50%;
             cursor: pointer;
             transition: all 0.3s;
-            text-transform: uppercase;
         }
 
-        .order-btn:hover {
-            background-color: var(--gold);
+        .admin-dot:hover {
+            transform: scale(1.5);
+            box-shadow: 0 0 20px var(--gold);
         }
 
-        /* Modal */
-        .modal {
+        /* ADMIN PANEL */
+        .admin-overlay {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.9);
-            z-index: 2000;
+            background: rgba(0,0,0,0.95);
+            z-index: 9999;
             overflow-y: auto;
         }
 
-        .modal.active {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-content {
-            background-color: var(--white);
+        .admin-panel {
+            max-width: 800px;
+            margin: 3rem auto;
             padding: 3rem;
-            max-width: 500px;
-            width: 90%;
-            position: relative;
-            border-radius: 2px;
+            background: white;
+            border-radius: 8px;
         }
 
-        .close-modal {
-            position: absolute;
-            top: 1.5rem;
-            right: 1.5rem;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--black);
-        }
-
-        .modal h3 {
-            font-size: 1.8rem;
-            font-weight: 300;
-            letter-spacing: 2px;
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 2rem;
-            text-transform: uppercase;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--gold);
+        }
+
+        .admin-close {
+            background: var(--charcoal);
+            color: white;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .admin-section {
+            margin-bottom: 3rem;
+        }
+
+        .admin-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--charcoal);
         }
 
         .form-group {
@@ -319,997 +442,714 @@
         .form-group label {
             display: block;
             margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-            letter-spacing: 1px;
-            color: var(--black);
+            font-weight: 500;
+            color: var(--charcoal);
         }
 
-        .form-group input,
-        .form-group textarea {
+        .form-group input[type="text"],
+        .form-group input[type="file"] {
             width: 100%;
             padding: 0.8rem;
-            border: 1px solid rgba(0,0,0,0.1);
-            background-color: var(--cream);
-            font-size: 0.95rem;
-            font-family: inherit;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: 'Inter', sans-serif;
         }
 
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--gold);
+        .form-group input[type="file"] {
+            padding: 0.5rem;
         }
 
-        .submit-btn {
-            width: 100%;
-            padding: 1rem;
-            background-color: var(--black);
-            color: var(--white);
+        .btn-upload {
+            background: var(--gold);
+            color: white;
             border: none;
-            font-size: 0.9rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
+            padding: 1rem 2rem;
             cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .submit-btn:hover {
-            background-color: var(--gold);
-            color: var(--black);
-        }
-
-        /* Comments Panel */
-        .comments-panel {
-            display: none;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background-color: var(--white);
-            max-height: 70vh;
-            overflow-y: auto;
-            z-index: 1500;
-            padding: 2rem;
-            box-shadow: 0 -5px 30px rgba(0,0,0,0.2);
-            border-radius: 20px 20px 0 0;
-        }
-
-        .comments-panel.active {
-            display: block;
-            animation: slideUp 0.3s ease;
-        }
-
-        @keyframes slideUp {
-            from { transform: translateY(100%); }
-            to { transform: translateY(0); }
-        }
-
-        .comments-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid rgba(0,0,0,0.1);
-        }
-
-        .comment-item {
-            padding: 1rem 0;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-        }
-
-        .comment-author {
-            font-weight: 600;
-            margin-bottom: 0.3rem;
-        }
-
-        .comment-text {
-            color: #555;
-            line-height: 1.6;
-        }
-
-        .add-comment {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        .add-comment input {
-            flex: 1;
-            padding: 0.8rem;
-            border: 1px solid rgba(0,0,0,0.1);
-            background-color: var(--cream);
-        }
-
-        .add-comment button {
-            padding: 0.8rem 1.5rem;
-            background-color: var(--black);
-            color: var(--white);
-            border: none;
-            cursor: pointer;
-            letter-spacing: 1px;
-        }
-
-        /* Reviews Section */
-        .reviews-container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .review-item {
-            padding: 3rem 0;
-            border-bottom: 1px solid rgba(0,0,0,0.1);
-            text-align: center;
-        }
-
-        .review-text {
-            font-size: 1.5rem;
-            font-weight: 300;
-            line-height: 1.8;
-            margin-bottom: 1rem;
-            font-style: italic;
-        }
-
-        .review-author {
-            font-size: 1rem;
-            color: #777;
-            letter-spacing: 1px;
-        }
-
-        /* Contact Section */
-        .contact-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .contact-left {
-            background-color: var(--white);
-            padding: 3rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 8rem;
-        }
-
-        .contact-right {
-            padding: 3rem 0;
-        }
-
-        .contact-item {
-            margin-bottom: 2.5rem;
-        }
-
-        .contact-item h3 {
-            font-size: 0.85rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: #999;
-            margin-bottom: 0.5rem;
-        }
-
-        .contact-item p,
-        .contact-item a {
-            font-size: 1.2rem;
-            color: var(--black);
-            text-decoration: none;
-            font-weight: 300;
-        }
-
-        .contact-item a:hover {
-            color: var(--gold);
-        }
-
-        .social-btn {
-            display: inline-block;
-            padding: 0.8rem 2rem;
-            background-color: var(--black);
-            color: var(--white);
-            text-decoration: none;
-            font-size: 0.9rem;
-            letter-spacing: 1px;
-            margin-top: 1rem;
-            border-radius: 30px;
+            font-weight: 500;
             transition: all 0.3s;
         }
 
-        .social-btn:hover {
-            background-color: var(--gold);
-            color: var(--black);
+        .btn-upload:hover {
+            background: var(--charcoal);
         }
 
-        /* Footer */
-        footer {
-            background-color: var(--black);
-            color: var(--gold-light);
-            text-align: center;
-            padding: 4rem 2rem 2rem;
-            margin-top: 6rem;
+        .designs-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .design-item {
             position: relative;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
         }
 
-        footer h3 {
-            font-size: 1.3rem;
-            font-weight: 300;
-            letter-spacing: 3px;
-            margin-bottom: 0.5rem;
-            text-transform: uppercase;
+        .design-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
         }
 
-        footer p {
-            font-size: 0.9rem;
-            letter-spacing: 1px;
-            font-weight: 300;
+        .design-item-info {
+            padding: 1rem;
         }
 
-        /* Admin Dot - Hidden */
-        .admin-dot {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 8px;
-            height: 8px;
-            background-color: var(--gold);
-            border-radius: 50%;
+        .btn-delete {
+            width: 100%;
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 0.5rem;
             cursor: pointer;
-            z-index: 999;
-            opacity: 0.3;
-            transition: opacity 0.3s;
+            margin-top: 0.5rem;
         }
 
-        .admin-dot:hover {
-            opacity: 1;
+        .btn-delete:hover {
+            background: #c82333;
         }
 
-        /* Admin Panel */
-        .admin-panel {
+        /* ORDER MODAL */
+        .order-overlay {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.95);
-            z-index: 3000;
-            overflow-y: auto;
+            background: rgba(0,0,0,0.95);
+            z-index: 9998;
+            justify-content: center;
+            align-items: center;
         }
 
-        .admin-panel.active {
-            display: block;
-        }
-
-        .admin-content {
-            max-width: 800px;
-            margin: 4rem auto;
-            background-color: var(--white);
+        .order-modal {
+            background: white;
             padding: 3rem;
+            max-width: 600px;
+            width: 90%;
+            border-radius: 8px;
+            position: relative;
         }
 
-        .admin-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 3rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid var(--black);
-        }
-
-        .admin-section {
-            margin-bottom: 3rem;
-        }
-
-        .admin-section h3 {
-            font-size: 1.5rem;
-            font-weight: 300;
-            letter-spacing: 2px;
-            margin-bottom: 1.5rem;
-            text-transform: uppercase;
-        }
-
-        .admin-design-item {
-            background-color: var(--cream);
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .delete-btn {
-            padding: 0.5rem 1rem;
-            background-color: #dc3545;
-            color: var(--white);
+        .order-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
             border: none;
+            font-size: 2rem;
             cursor: pointer;
-            font-size: 0.85rem;
-            letter-spacing: 1px;
+            color: #666;
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2rem;
-            }
-
-            .hero-motto {
-                font-size: 1rem;
-            }
-
-            nav ul {
-                display: none;
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100vh;
-                background-color: var(--white);
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                gap: 2rem;
-            }
-
-            nav ul.active {
-                display: flex;
-            }
-
-            .mobile-menu-btn {
-                display: block;
-            }
-
-            .masonry-grid {
-                column-count: 2;
-            }
-
-            .contact-container {
-                grid-template-columns: 1fr;
-            }
-
-            .contact-left {
-                display: none;
-            }
+        .order-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--gold);
         }
 
-        @media (max-width: 480px) {
-            .masonry-grid {
-                column-count: 1;
-            }
-
-            .hero h1 {
-                font-size: 1.5rem;
-            }
-        }
-
-        /* Loading */
-        .loading {
-            text-align: center;
-            padding: 2rem;
-            font-size: 0.9rem;
-            letter-spacing: 1px;
+        .step {
+            font-weight: 500;
             color: #999;
         }
 
-        /* Success Message */
-        .success-message {
-            background-color: var(--gold-light);
-            color: var(--black);
-            padding: 1rem;
+        .step.active {
+            color: var(--gold);
+        }
+
+        .btn-whatsapp {
+            width: 100%;
+            background: #25D366;
+            color: white;
+            border: none;
+            padding: 1.2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: all 0.3s;
+        }
+
+        .btn-whatsapp:hover {
+            background: #20BA5A;
+        }
+
+        /* LOGIN MODAL */
+        .login-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-modal {
+            background: white;
+            padding: 3rem;
+            max-width: 400px;
+            width: 90%;
+            border-radius: 8px;
             text-align: center;
-            margin-bottom: 1rem;
+        }
+
+        .login-modal h2 {
+            margin-bottom: 2rem;
+            color: var(--charcoal);
+        }
+
+        .btn-login {
+            width: 100%;
+            background: var(--charcoal);
+            color: white;
+            border: none;
+            padding: 1rem;
+            cursor: pointer;
+            font-weight: 500;
+            margin-top: 1rem;
+        }
+
+        .login-error {
+            color: #dc3545;
+            margin-top: 1rem;
             display: none;
         }
 
-        .success-message.show {
-            display: block;
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .hero {
+                flex-direction: column;
+            }
+
+            .hero-left, .hero-right {
+                flex: none;
+                height: 50vh;
+            }
+
+            .design-card {
+                min-width: 300px;
+                height: 500px;
+            }
+
+            .showcase-scroll {
+                padding: 2rem 2%;
+            }
+
+            .admin-panel {
+                padding: 2rem 1rem;
+            }
+        }
+
+        .upload-progress {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #f0f0f0;
+            border-radius: 4px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gold);
+            width: 0%;
+            transition: width 0.3s;
         }
     </style>
 </head>
 <body>
-    <!-- Admin Dot -->
-    <div class="admin-dot" onclick="toggleAdmin()"></div>
-
-    <!-- Header -->
-    <header>
-        <div class="header-content">
-            <div class="logo">Nelly J Stitches</div>
-            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
-            <nav>
-                <ul id="mainNav">
-                    <li><a href="#" onclick="showSection('home')">Home</a></li>
-                    <li><a href="#" onclick="showSection('collection')">Collection</a></li>
-                    <li><a href="#" onclick="showSection('reviews')">Reviews</a></li>
-                    <li><a href="#" onclick="showSection('contact')">Contact</a></li>
-                </ul>
-            </nav>
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="hero-left">
+            <h1>Custom Fashion<br>Designed For You</h1>
+            <p>Your Outfit Is Our Priority</p>
+            <a href="#showcase" class="btn-explore">Explore Designs</a>
         </div>
-    </header>
+        <div class="hero-right" id="heroSlider">
+            <div class="placeholder-hero">Your Beautiful Fashion Images Will Display Here</div>
+        </div>
+    </section>
 
-    <!-- Hero Section -->
-    <section id="home" class="active">
-        <div class="hero">
-            <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1600&h=900&fit=crop" alt="Fashion Model" class="hero-image">
-            <div class="hero-content">
-                <h1>Nelly J Stitches Global</h1>
-                <p class="hero-motto">Your Outfit Is Our Priority</p>
-                <div class="gold-line"></div>
-                <a href="#" class="hero-btn" onclick="showSection('collection')">View Collection</a>
+    <!-- STORY SECTION -->
+    <section class="story">
+        <div class="story-content">
+            <h2>Every Stitch Has Meaning</h2>
+            <p>From fabric selection to final fitting, every piece is crafted with care, precision, and passion.</p>
+        </div>
+    </section>
+
+    <!-- DESIGN SHOWCASE -->
+    <section class="showcase" id="showcase">
+        <h2 class="showcase-title">Our Designs</h2>
+        <div class="showcase-scroll" id="designShowcase">
+            <div class="design-card">
+                <div class="placeholder-design">Your Stunning Designs Will Appear Here</div>
             </div>
         </div>
     </section>
 
-    <!-- Collection Section -->
-    <section id="collection">
-        <div class="collection-header">
-            <h2>Our Collection</h2>
-            <div class="gold-line"></div>
-        </div>
-        <div class="masonry-grid" id="masonryGrid">
-            <!-- Designs will be loaded here -->
+    <!-- REVIEWS SECTION -->
+    <section class="reviews">
+        <div class="review-container">
+            <p class="review-text">"She understands body shape perfectly."</p>
+            <p class="review-author">— Client, Aba</p>
         </div>
     </section>
 
-    <!-- Reviews Section -->
-    <section id="reviews">
-        <div class="collection-header">
-            <h2>What They Say</h2>
-            <div class="gold-line"></div>
-        </div>
-        <div class="reviews-container" id="reviewsContainer">
-            <!-- Reviews will be loaded here -->
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact">
-        <div class="collection-header">
-            <h2>Get In Touch</h2>
-            <div class="gold-line"></div>
-        </div>
-        <div class="contact-container">
-            <div class="contact-left">
-                ✂️
+    <!-- CONTACT SECTION -->
+    <section class="contact">
+        <h2>Let's Create Your Perfect Outfit</h2>
+        <div class="contact-grid">
+            <div class="contact-item">
+                <div class="contact-icon">📞</div>
+                <div class="contact-text">
+                    <a href="tel:+2349067725503" class="contact-link">+234 906 772 5503</a>
+                </div>
             </div>
-            <div class="contact-right">
-                <div class="contact-item">
-                    <h3>Phone / WhatsApp</h3>
-                    <a href="tel:+2349067725503">+234 906 772 5503</a>
+            <div class="contact-item">
+                <div class="contact-icon">✉️</div>
+                <div class="contact-text">
+                    <a href="mailto:nnennanwabueze95@gmail.com" class="contact-link">nnennanwabueze95@gmail.com</a>
                 </div>
-                <div class="contact-item">
-                    <h3>Email</h3>
-                    <a href="mailto:nnennanwabueze95@gmail.com">nnennanwabueze95@gmail.com</a>
-                </div>
-                <div class="contact-item">
-                    <h3>Location</h3>
-                    <p>No 137 MCC Road, Aba, Abia State</p>
-                </div>
-                <div class="contact-item">
-                    <h3>Social</h3>
-                    <a href="https://m.facebook.com/317334014806014/" target="_blank" class="social-btn">Visit Facebook</a>
+            </div>
+            <div class="contact-item">
+                <div class="contact-icon">📍</div>
+                <div class="contact-text">
+                    No 137 MCC Road<br>Aba, Abia State
                 </div>
             </div>
         </div>
+        <a href="https://m.facebook.com/317334014806014/" target="_blank" class="social-btn">Visit Our Facebook Page</a>
     </section>
 
-    <!-- Footer -->
+    <!-- FOOTER -->
     <footer>
         <h3>Nelly J Stitches Global</h3>
         <p>Your Outfit Is Our Priority</p>
-        <div style="margin-top: 2rem; font-size: 0.8rem; opacity: 0.7;">
-            © 2024 All Rights Reserved
-        </div>
+        <div class="admin-dot" onclick="showLogin()"></div>
     </footer>
 
-    <!-- Order Modal -->
-    <div class="modal" id="orderModal">
-        <div class="modal-content">
-            <button class="close-modal" onclick="closeOrderModal()">×</button>
-            <h3>Order This Style</h3>
-            <div class="success-message" id="orderSuccess">Order sent! We'll contact you soon.</div>
-            <form id="orderForm">
-                <input type="hidden" id="selectedDesignId">
-                <input type="hidden" id="selectedDesignName">
-                
-                <div class="form-group">
-                    <label>Reference Image (Optional)</label>
-                    <input type="file" id="referenceImage" accept="image/*">
-                </div>
-                
-                <div class="form-group">
-                    <label>Measurements (Optional)</label>
-                    <textarea id="measurements" rows="3" placeholder="Bust: 36, Waist: 28, Hips: 38..."></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label>Additional Note (Optional)</label>
-                    <textarea id="orderNote" rows="3" placeholder="Any special requests..."></textarea>
-                </div>
-                
-                <button type="submit" class="submit-btn">Send via WhatsApp</button>
-            </form>
+    <!-- LOGIN MODAL -->
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-modal">
+            <h2>Admin Login</h2>
+            <div class="form-group">
+                <input type="text" id="adminUsername" placeholder="Username">
+            </div>
+            <div class="form-group">
+                <input type="password" id="adminPassword" placeholder="Password">
+            </div>
+            <button class="btn-login" onclick="login()">Login</button>
+            <p class="login-error" id="loginError">Invalid credentials</p>
         </div>
     </div>
 
-    <!-- Comments Panel -->
-    <div class="comments-panel" id="commentsPanel">
-        <div class="comments-header">
-            <h3 style="font-size: 1.3rem; font-weight: 300; letter-spacing: 2px;">Comments</h3>
-            <button class="close-modal" onclick="closeComments()">×</button>
-        </div>
-        <div id="commentsList"></div>
-        <div class="add-comment">
-            <input type="text" id="commentInput" placeholder="Add a comment...">
-            <button onclick="addComment()">Post</button>
-        </div>
-    </div>
-
-    <!-- Admin Panel -->
-    <div class="admin-panel" id="adminPanel">
-        <div class="admin-content">
-            <div id="adminLogin">
-                <h2 style="margin-bottom: 2rem; font-weight: 300; letter-spacing: 2px;">Admin Login</h2>
-                <div class="form-group">
-                    <label>Username</label>
-                    <input type="text" id="adminUsername">
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" id="adminPassword">
-                </div>
-                <div class="success-message" id="loginError" style="background-color: #dc3545; color: white;">Invalid credentials</div>
-                <button class="submit-btn" onclick="adminLogin()">Login</button>
+    <!-- ADMIN PANEL -->
+    <div class="admin-overlay" id="adminOverlay">
+        <div class="admin-panel">
+            <div class="admin-header">
+                <h2>Admin Panel</h2>
+                <button class="admin-close" onclick="closeAdmin()">Close</button>
             </div>
 
-            <div id="adminDashboard" style="display: none;">
-                <div class="admin-header">
-                    <h2 style="font-weight: 300; letter-spacing: 2px;">Admin Dashboard</h2>
-                    <button class="close-modal" onclick="toggleAdmin()">×</button>
+            <!-- UPLOAD SECTION -->
+            <div class="admin-section">
+                <h3>Upload New Design</h3>
+                <div class="form-group">
+                    <label>Design Title</label>
+                    <input type="text" id="designTitle" placeholder="e.g., Classic Ankara Gown">
                 </div>
+                <div class="form-group">
+                    <label>Design Image</label>
+                    <input type="file" id="designImage" accept="image/*">
+                </div>
+                <button class="btn-upload" onclick="uploadDesign()">Upload Design</button>
+                <div class="upload-progress" id="uploadProgress">
+                    <p>Uploading... <span id="progressText">0%</span></p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                </div>
+            </div>
 
-                <div class="admin-section">
-                    <h3>Upload New Design</h3>
-                    <form id="uploadForm">
-                        <div class="form-group">
-                            <label>Design Name</label>
-                            <input type="text" id="designName" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Image</label>
-                            <input type="file" id="designImage" accept="image/*" required>
-                        </div>
-                        <div class="success-message" id="uploadSuccess">Design uploaded successfully!</div>
-                        <button type="submit" class="submit-btn">Upload Design</button>
-                    </form>
-                </div>
-
-                <div class="admin-section">
-                    <h3>Manage Designs</h3>
-                    <div id="adminDesigns"></div>
-                </div>
-
-                <div class="admin-section">
-                    <h3>Orders</h3>
-                    <div id="adminOrders"></div>
-                </div>
+            <!-- MANAGE DESIGNS -->
+            <div class="admin-section">
+                <h3>Manage Designs</h3>
+                <div class="designs-list" id="designsList"></div>
             </div>
         </div>
     </div>
 
-    <script>
-        // Variables
-        let currentDesignId = null;
-        let designs = [];
-        let reviews = [];
+    <!-- ORDER MODAL -->
+    <div class="order-overlay" id="orderOverlay">
+        <div class="order-modal">
+            <button class="order-close" onclick="closeOrder()">×</button>
+            <div class="order-steps">
+                <span class="step active">Design</span>
+                <span class="step">Details</span>
+                <span class="step">Send</span>
+            </div>
+            <h2 id="orderTitle">Order This Design</h2>
+            <div class="form-group">
+                <label>Your Name</label>
+                <input type="text" id="orderName" placeholder="Enter your name">
+            </div>
+            <div class="form-group">
+                <label>Measurements (Optional)</label>
+                <input type="text" id="orderMeasurements" placeholder="e.g., Bust: 36, Waist: 28, Hip: 38">
+            </div>
+            <div class="form-group">
+                <label>Reference Image (Optional)</label>
+                <input type="file" id="orderImage" accept="image/*">
+            </div>
+            <button class="btn-whatsapp" onclick="sendToWhatsApp()">Send Order via WhatsApp</button>
+        </div>
+    </div>
 
-        // Initialize
-        function init() {
-            loadSampleData();
-            loadDesigns();
-            loadReviews();
-        }
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, push, set, onValue, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-        // Sample Data
-        function loadSampleData() {
-            if (!localStorage.getItem('designs')) {
-                designs = [
-                    {
-                        id: 'design_1',
-                        name: 'Ankara Gown',
-                        imageUrl: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&h=800&fit=crop',
-                        likes: 124,
-                        comments: [
-                            {author: 'Ada', text: 'This is so clean 😍'},
-                            {author: 'Blessing', text: 'I need this for my birthday'}
-                        ]
-                    },
-                    {
-                        id: 'design_2',
-                        name: 'Evening Dress',
-                        imageUrl: 'https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=600&h=900&fit=crop',
-                        likes: 98,
-                        comments: []
-                    },
-                    {
-                        id: 'design_3',
-                        name: 'Elegant Gown',
-                        imageUrl: 'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=600&h=750&fit=crop',
-                        likes: 156,
-                        comments: []
-                    },
-                    {
-                        id: 'design_4',
-                        name: 'Traditional Wear',
-                        imageUrl: 'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600&h=850&fit=crop',
-                        likes: 89,
-                        comments: []
-                    },
-                    {
-                        id: 'design_5',
-                        name: 'Cocktail Dress',
-                        imageUrl: 'https://images.unsplash.com/photo-1562137369-1a1a0bc66744?w=600&h=800&fit=crop',
-                        likes: 112,
-                        comments: []
-                    },
-                    {
-                        id: 'design_6',
-                        name: 'Bridal Collection',
-                        imageUrl: 'https://images.unsplash.com/photo-1519657337289-077653f724ed?w=600&h=900&fit=crop',
-                        likes: 203,
-                        comments: []
-                    }
-                ];
-                localStorage.setItem('designs', JSON.stringify(designs));
-            }
-
-            if (!localStorage.getItem('reviews')) {
-                reviews = [
-                    {
-                        id: 'review_1',
-                        text: 'She nailed the fitting perfectly.',
-                        author: 'Ada, Aba'
-                    },
-                    {
-                        id: 'review_2',
-                        text: 'Exactly what I imagined.',
-                        author: 'Blessing'
-                    },
-                    {
-                        id: 'review_3',
-                        text: 'The attention to detail is incredible.',
-                        author: 'Chioma, Lagos'
-                    }
-                ];
-                localStorage.setItem('reviews', JSON.stringify(reviews));
-            }
-        }
-
-        // Navigation
-        function showSection(sectionId) {
-            document.querySelectorAll('section').forEach(section => {
-                section.classList.remove('active');
-            });
-            document.getElementById(sectionId).classList.add('active');
-            window.scrollTo(0, 0);
-
-            if (sectionId === 'collection') {
-                loadDesigns();
-            } else if (sectionId === 'reviews') {
-                loadReviews();
-            }
-        }
-
-        function toggleMobileMenu() {
-            document.getElementById('mainNav').classList.toggle('active');
-        }
-
-        // Load Designs
-        function loadDesigns() {
-            designs = JSON.parse(localStorage.getItem('designs') || '[]');
-            const grid = document.getElementById('masonryGrid');
-            const userLikes = JSON.parse(localStorage.getItem('userLikes') || '{}');
-            
-            grid.innerHTML = designs.map(design => `
-                <div class="design-item">
-                    <img src="${design.imageUrl}" alt="${design.name}" class="design-image">
-                    <div class="design-overlay">
-                        <div class="design-name">${design.name}</div>
-                        <div class="design-interactions">
-                            <button class="interaction-btn" onclick="toggleLike('${design.id}')" ${userLikes[design.id] ? 'disabled' : ''}>
-                                ❤️ ${design.likes || 0}
-                            </button>
-                            <button class="interaction-btn" onclick="openComments('${design.id}')">
-                                💬 ${(design.comments || []).length}
-                            </button>
-                        </div>
-                        <button class="order-btn" onclick="openOrderModal('${design.id}', '${design.name}')">
-                            ✨ Order This Style
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // Like System
-        function toggleLike(designId) {
-            const userLikes = JSON.parse(localStorage.getItem('userLikes') || '{}');
-            
-            if (userLikes[designId]) return;
-            
-            designs = JSON.parse(localStorage.getItem('designs') || '[]');
-            const design = designs.find(d => d.id === designId);
-            
-            if (design) {
-                design.likes = (design.likes || 0) + 1;
-                localStorage.setItem('designs', JSON.stringify(designs));
-                
-                userLikes[designId] = true;
-                localStorage.setItem('userLikes', JSON.stringify(userLikes));
-                
-                loadDesigns();
-            }
-        }
-
-        // Comments System
-        function openComments(designId) {
-            currentDesignId = designId;
-            designs = JSON.parse(localStorage.getItem('designs') || '[]');
-            const design = designs.find(d => d.id === designId);
-            
-            if (design) {
-                const commentsList = document.getElementById('commentsList');
-                commentsList.innerHTML = (design.comments || []).map(comment => `
-                    <div class="comment-item">
-                        <div class="comment-author">${comment.author}</div>
-                        <div class="comment-text">${comment.text}</div>
-                    </div>
-                `).join('') || '<p style="text-align: center; color: #999;">No comments yet. Be the first!</p>';
-                
-                document.getElementById('commentsPanel').classList.add('active');
-            }
-        }
-
-        function closeComments() {
-            document.getElementById('commentsPanel').classList.remove('active');
-            currentDesignId = null;
-        }
-
-        function addComment() {
-            if (!currentDesignId) return;
-            
-            const input = document.getElementById('commentInput');
-            const text = input.value.trim();
-            
-            if (!text) return;
-            
-            const author = prompt('Enter your name:');
-            if (!author) return;
-            
-            designs = JSON.parse(localStorage.getItem('designs') || '[]');
-            const design = designs.find(d => d.id === currentDesignId);
-            
-            if (design) {
-                if (!design.comments) design.comments = [];
-                design.comments.push({
-                    author: author.trim(),
-                    text: text
-                });
-                
-                localStorage.setItem('designs', JSON.stringify(designs));
-                input.value = '';
-                openComments(currentDesignId);
-                loadDesigns();
-            }
-        }
-
-        // Order System
-        function openOrderModal(designId, designName) {
-            document.getElementById('selectedDesignId').value = designId;
-            document.getElementById('selectedDesignName').value = designName;
-            document.getElementById('orderModal').classList.add('active');
-        }
-
-        function closeOrderModal() {
-            document.getElementById('orderModal').classList.remove('active');
-            document.getElementById('orderForm').reset();
-            document.getElementById('orderSuccess').classList.remove('show');
-        }
-
-        document.getElementById('orderForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const designName = document.getElementById('selectedDesignName').value;
-            const measurements = document.getElementById('measurements').value;
-            const note = document.getElementById('orderNote').value;
-            
-            // Build WhatsApp message
-            let message = `Hi! I want to order this style: *${designName}*\n\n`;
-            
-            if (measurements) {
-                message += `Measurements:\n${measurements}\n\n`;
-            }
-            
-            if (note) {
-                message += `Additional Note:\n${note}\n\n`;
-            }
-            
-            message += 'Please contact me to discuss further details.';
-            
-            // Save order
-            const order = {
-                id: 'order_' + Date.now(),
-                designId: document.getElementById('selectedDesignId').value,
-                designName: designName,
-                measurements: measurements,
-                note: note,
-                timestamp: Date.now()
-            };
-            
-            const orders = JSON.parse(localStorage.getItem('orders') || '[]');
-            orders.push(order);
-            localStorage.setItem('orders', JSON.stringify(orders));
-            
-            // Show success message
-            document.getElementById('orderSuccess').classList.add('show');
-            
-            // Open WhatsApp after 1 second
-            setTimeout(() => {
-                const whatsappUrl = `https://wa.me/2349067725503?text=${encodeURIComponent(message)}`;
-                window.open(whatsappUrl, '_blank');
-                
-                setTimeout(() => {
-                    closeOrderModal();
-                }, 500);
-            }, 1000);
-        });
-
-        // Reviews
-        function loadReviews() {
-            reviews = JSON.parse(localStorage.getItem('reviews') || '[]');
-            const container = document.getElementById('reviewsContainer');
-            
-            container.innerHTML = reviews.map(review => `
-                <div class="review-item">
-                    <div class="review-text">"${review.text}"</div>
-                    <div class="review-author">— ${review.author}</div>
-                </div>
-            `).join('');
-        }
-
-        // Admin Panel
-        function toggleAdmin() {
-            document.getElementById('adminPanel').classList.toggle('active');
-        }
-
-        function adminLogin() {
-            const username = document.getElementById('adminUsername').value;
-            const password = document.getElementById('adminPassword').value;
-            const errorMsg = document.getElementById('loginError');
-            
-            if (username === 'nellystitchesglobal' && password === 'nellyj!') {
-                document.getElementById('adminLogin').style.display = 'none';
-                document.getElementById('adminDashboard').style.display = 'block';
-                errorMsg.classList.remove('show');
-                loadAdminData();
-            } else {
-                errorMsg.classList.add('show');
-                setTimeout(() => {
-                    errorMsg.classList.remove('show');
-                }, 3000);
-            }
-        }
-
-        function loadAdminData() {
-            // Load designs
-            designs = JSON.parse(localStorage.getItem('designs') || '[]');
-            const adminDesigns = document.getElementById('adminDesigns');
-            
-            adminDesigns.innerHTML = designs.map(design => `
-                <div class="admin-design-item">
-                    <div>
-                        <strong>${design.name}</strong>
-                        <p style="font-size: 0.9rem; color: #666; margin-top: 0.3rem;">
-                            Likes: ${design.likes || 0} | Comments: ${(design.comments || []).length}
-                        </p>
-                    </div>
-                    <button class="delete-btn" onclick="deleteDesign('${design.id}')">Delete</button>
-                </div>
-            `).join('') || '<p style="color: #999;">No designs yet.</p>';
-            
-            // Load orders
-            const orders = JSON.parse(localStorage.getItem('orders') || '[]');
-            const adminOrders = document.getElementById('adminOrders');
-            
-            adminOrders.innerHTML = orders.reverse().map(order => `
-                <div class="admin-design-item" style="flex-direction: column; align-items: flex-start;">
-                    <div style="width: 100%; margin-bottom: 1rem;">
-                        <strong>${order.designName}</strong>
-                        <p style="font-size: 0.85rem; color: #666; margin-top: 0.5rem;">
-                            ${new Date(order.timestamp).toLocaleString()}
-                        </p>
-                    </div>
-                    ${order.measurements ? `<p style="font-size: 0.9rem;"><strong>Measurements:</strong><br>${order.measurements}</p>` : ''}
-                    ${order.note ? `<p style="font-size: 0.9rem; margin-top: 0.5rem;"><strong>Note:</strong><br>${order.note}</p>` : ''}
-                    <button class="delete-btn" onclick="deleteOrder('${order.id}')" style="margin-top: 1rem;">Delete</button>
-                </div>
-            `).join('') || '<p style="color: #999;">No orders yet.</p>';
-        }
-
-        function deleteDesign(designId) {
-            if (confirm('Are you sure you want to delete this design?')) {
-                designs = JSON.parse(localStorage.getItem('designs') || '[]');
-                designs = designs.filter(d => d.id !== designId);
-                localStorage.setItem('designs', JSON.stringify(designs));
-                loadAdminData();
-                loadDesigns();
-            }
-        }
-
-        function deleteOrder(orderId) {
-            if (confirm('Are you sure you want to delete this order?')) {
-                let orders = JSON.parse(localStorage.getItem('orders') || '[]');
-                orders = orders.filter(o => o.id !== orderId);
-                localStorage.setItem('orders', JSON.stringify(orders));
-                loadAdminData();
-            }
-        }
-
-        // Upload Design
-        document.getElementById('uploadForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const name = document.getElementById('designName').value;
-            const fileInput = document.getElementById('designImage');
-            const file = fileInput.files[0];
-            
-            if (!file) return;
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const design = {
-                    id: 'design_' + Date.now(),
-                    name: name,
-                    imageUrl: e.target.result,
-                    likes: 0,
-                    comments: []
-                };
-                
-                designs = JSON.parse(localStorage.getItem('designs') || '[]');
-                designs.push(design);
-                localStorage.setItem('designs', JSON.stringify(designs));
-                
-                document.getElementById('uploadSuccess').classList.add('show');
-                document.getElementById('uploadForm').reset();
-                
-                setTimeout(() => {
-                    document.getElementById('uploadSuccess').classList.remove('show');
-                }, 3000);
-                
-                loadAdminData();
-                loadDesigns();
-            };
-            reader.readAsDataURL(file);
-        });
-
-        // Close modals on outside click
-        window.onclick = function(event) {
-            const orderModal = document.getElementById('orderModal');
-            const commentsPanel = document.getElementById('commentsPanel');
-            
-            if (event.target === orderModal) {
-                closeOrderModal();
-            }
+        const firebaseConfig = {
+            apiKey: "AIzaSyBzUELxbbaL6Wb_M1uNhjwlZHVTorN9XJs",
+            authDomain: "my-whatsapp-2c1af.firebaseapp.com",
+            databaseURL: "https://my-whatsapp-2c1af-default-rtdb.firebaseio.com",
+            projectId: "my-whatsapp-2c1af",
+            storageBucket: "my-whatsapp-2c1af.firebasestorage.app",
+            messagingSenderId: "1089455460888",
+            appId: "1:1089455460888:web:d0c8dea185ba6769ebe96d"
         };
 
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        // Make functions globally available
+        window.database = database;
+        window.ref = ref;
+        window.push = push;
+        window.set = set;
+        window.onValue = onValue;
+        window.remove = remove;
+
+        // Load designs on page load
+        loadDesigns();
+    </script>
+
+    <script>
+        let currentOrderDesign = null;
+
+        // Admin Login
+        function showLogin() {
+            document.getElementById('loginOverlay').style.display = 'flex';
+        }
+
+        function login() {
+            const username = document.getElementById('adminUsername').value;
+            const password = document.getElementById('adminPassword').value;
+
+            if (username === 'nellystitchesglobal' && password === 'nellyj!') {
+                document.getElementById('loginOverlay').style.display = 'none';
+                document.getElementById('adminOverlay').style.display = 'block';
+                loadAdminDesigns();
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+            }
+        }
+
+        function closeAdmin() {
+            document.getElementById('adminOverlay').style.display = 'none';
+            document.getElementById('adminUsername').value = '';
+            document.getElementById('adminPassword').value = '';
+            document.getElementById('loginError').style.display = 'none';
+        }
+
+        // Upload Design to Cloudinary and Firebase
+        async function uploadDesign() {
+            const title = document.getElementById('designTitle').value;
+            const imageFile = document.getElementById('designImage').files[0];
+
+            if (!title || !imageFile) {
+                alert('Please fill all fields');
+                return;
+            }
+
+            const progressDiv = document.getElementById('uploadProgress');
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+
+            progressDiv.style.display = 'block';
+            progressFill.style.width = '20%';
+            progressText.textContent = '20%';
+
+            try {
+                // Upload to Cloudinary
+                const formData = new FormData();
+                formData.append('file', imageFile);
+                formData.append('upload_preset', 'Godswill');
+
+                const cloudinaryResponse = await fetch('https://api.cloudinary.com/v1_1/dnsr8wyzx/image/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                progressFill.style.width = '60%';
+                progressText.textContent = '60%';
+
+                const cloudinaryData = await cloudinaryResponse.json();
+                const imageUrl = cloudinaryData.secure_url;
+
+                // Save to Firebase
+                const designsRef = window.ref(window.database, 'designs');
+                const newDesignRef = window.push(designsRef);
+                
+                await window.set(newDesignRef, {
+                    title: title,
+                    imageUrl: imageUrl,
+                    timestamp: Date.now()
+                });
+
+                progressFill.style.width = '100%';
+                progressText.textContent = '100%';
+
+                alert('Design uploaded successfully!');
+                
+                // Reset form
+                document.getElementById('designTitle').value = '';
+                document.getElementById('designImage').value = '';
+                
+                setTimeout(() => {
+                    progressDiv.style.display = 'none';
+                    progressFill.style.width = '0%';
+                }, 1000);
+
+                loadAdminDesigns();
+                loadDesigns();
+
+            } catch (error) {
+                console.error('Upload error:', error);
+                alert('Upload failed. Please try again.');
+                progressDiv.style.display = 'none';
+            }
+        }
+
+        // Load designs for showcase
+        function loadDesigns() {
+            const designsRef = window.ref(window.database, 'designs');
+            window.onValue(designsRef, (snapshot) => {
+                const showcaseContainer = document.getElementById('designShowcase');
+                showcaseContainer.innerHTML = '';
+
+                const data = snapshot.val();
+                if (data) {
+                    Object.entries(data).forEach(([key, design]) => {
+                        const card = document.createElement('div');
+                        card.className = 'design-card';
+                        card.innerHTML = `
+                            <img src="${design.imageUrl}" alt="${design.title}" class="design-image">
+                            <div class="design-overlay">
+                                <h3 class="design-title">${design.title}</h3>
+                                <div class="design-actions">
+                                    <button class="design-btn" onclick="openOrder('${design.title}', '${design.imageUrl}')">✨ Order</button>
+                                </div>
+                            </div>
+                        `;
+                        showcaseContainer.appendChild(card);
+                    });
+                } else {
+                    showcaseContainer.innerHTML = '<div class="design-card"><div class="placeholder-design">No designs yet. Admin can upload designs.</div></div>';
+                }
             });
+        }
+
+        // Load designs for admin panel
+        function loadAdminDesigns() {
+            const designsRef = window.ref(window.database, 'designs');
+            window.onValue(designsRef, (snapshot) => {
+                const listContainer = document.getElementById('designsList');
+                listContainer.innerHTML = '';
+
+                const data = snapshot.val();
+                if (data) {
+                    Object.entries(data).forEach(([key, design]) => {
+                        const item = document.createElement('div');
+                        item.className = 'design-item';
+                        item.innerHTML = `
+                            <img src="${design.imageUrl}" alt="${design.title}">
+                            <div class="design-item-info">
+                                <p><strong>${design.title}</strong></p>
+                                <button class="btn-delete" onclick="deleteDesign('${key}')">Delete</button>
+                            </div>
+                        `;listContainer.appendChild(item);
+                    });
+                } else {
+                    listContainer.innerHTML = '<p>No designs uploaded yet.</p>';
+                }
+            });
+        }
+
+        // Delete Design
+        async function deleteDesign(designId) {
+            if (confirm('Are you sure you want to delete this design?')) {
+                const designRef = window.ref(window.database, `designs/${designId}`);
+                await window.remove(designRef);
+                alert('Design deleted successfully!');
+                loadAdminDesigns();
+                loadDesigns();
+            }
+        }
+
+        // Open Order Modal
+        function openOrder(title, imageUrl) {
+            currentOrderDesign = { title, imageUrl };
+            document.getElementById('orderTitle').textContent = `Order: ${title}`;
+            document.getElementById('orderOverlay').style.display = 'flex';
+        }
+
+        // Close Order Modal
+        function closeOrder() {
+            document.getElementById('orderOverlay').style.display = 'none';
+            document.getElementById('orderName').value = '';
+            document.getElementById('orderMeasurements').value = '';
+            document.getElementById('orderImage').value = '';
+        }
+
+        // Send to WhatsApp
+        async function sendToWhatsApp() {
+            const name = document.getElementById('orderName').value;
+            const measurements = document.getElementById('orderMeasurements').value;
+            const imageFile = document.getElementById('orderImage').files[0];
+
+            if (!name) {
+                alert('Please enter your name');
+                return;
+            }
+
+            let message = `Hello! I'm ${name}.%0A%0AI want to order: *${currentOrderDesign.title}*%0A`;
+            
+            if (measurements) {
+                message += `%0AMeasurements: ${measurements}%0A`;
+            }
+
+            message += `%0ADesign Reference: ${currentOrderDesign.imageUrl}`;
+
+            // If customer uploaded reference image, upload to Cloudinary first
+            if (imageFile) {
+                try {
+                    const formData = new FormData();
+                    formData.append('file', imageFile);
+                    formData.append('upload_preset', 'Godswill');
+
+                    const response = await fetch('https://api.cloudinary.com/v1_1/dnsr8wyzx/image/upload', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    const data = await response.json();
+                    message += `%0A%0AMy Reference Image: ${data.secure_url}`;
+                } catch (error) {
+                    console.error('Image upload failed:', error);
+                }
+            }
+
+            // Open WhatsApp
+            const whatsappUrl = `https://wa.me/2349067725503?text=${message}`;
+            window.open(whatsappUrl, '_blank');
+            
+            closeOrder();
+        }
+
+        // Hero Slider (if images are loaded)
+        let heroSlideIndex = 0;
+        function startHeroSlider() {
+            const slides = document.querySelectorAll('.hero-slide');
+            if (slides.length > 0) {
+                slides.forEach((slide, index) => {
+                    slide.classList.remove('active');
+                    if (index === heroSlideIndex) {
+                        slide.classList.add('active');
+                    }
+                });
+                heroSlideIndex = (heroSlideIndex + 1) % slides.length;
+            }
+        }
+
+        // Check for hero images from Firebase (optional feature)
+        function loadHeroImages() {
+            const heroRef = window.ref(window.database, 'hero-images');
+            window.onValue(heroRef, (snapshot) => {
+                const heroContainer = document.getElementById('heroSlider');
+                const data = snapshot.val();
+                
+                if (data && Object.keys(data).length > 0) {
+                    heroContainer.innerHTML = '';
+                    Object.values(data).forEach((image, index) => {
+                        const img = document.createElement('img');
+                        img.src = image.url;
+                        img.className = 'hero-slide';
+                        if (index === 0) img.classList.add('active');
+                        heroContainer.appendChild(img);
+                    });
+                    setInterval(startHeroSlider, 4000);
+                }
+            });
+        }
+
+        // Initialize
+        window.onload = function() {
+            loadDesigns();
+            loadHeroImages();
+        };
+
+        // Smooth scroll
+        document.querySelector('.btn-explore').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelector('#showcase').scrollIntoView({ behavior: 'smooth' });
         });
 
-        // Initialize on load
-        window.addEventListener('load', init);
+        // Mobile swipe for showcase
+        const showcaseScroll = document.querySelector('.showcase-scroll');
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        showcaseScroll.addEventListener('mousedown', (e) => {
+            isDown = true;
+            startX = e.pageX - showcaseScroll.offsetLeft;
+            scrollLeft = showcaseScroll.scrollLeft;
+        });
+
+        showcaseScroll.addEventListener('mouseleave', () => {
+            isDown = false;
+        });
+
+        showcaseScroll.addEventListener('mouseup', () => {
+            isDown = false;
+        });
+
+        showcaseScroll.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - showcaseScroll.offsetLeft;
+            const walk = (x - startX) * 2;
+            showcaseScroll.scrollLeft = scrollLeft - walk;
+        });
     </script>
 </body>
 </html>
