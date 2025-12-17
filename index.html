@@ -1,565 +1,1152 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nelly J Stitches - Luxury Fashion</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap');
-    
-    body {
-      font-family: 'Montserrat', sans-serif;
-    }
-    
-    h1, h2, h3, h4, h5, h6 {
-      font-family: 'Playfair Display', serif;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nelly J Stitches Global - Your Outfit Is Our Priority</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    .hidden {
-      display: none !important;
-    }
+        :root {
+            --black: #000000;
+            --gold: #FFD700;
+            --beige: #f5f5dc;
+            --dark-gray: #2d2d2d;
+            --white: #ffffff;
+        }
 
-    .modal-backdrop {
-      background: rgba(0, 0, 0, 0.5);
-    }
-  </style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--beige);
+            color: var(--black);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--black);
+            color: var(--gold);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--gold);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--white);
+        }
+
+        .admin-dot {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 15px;
+            height: 15px;
+            background-color: var(--gold);
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1001;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--black) 0%, var(--dark-gray) 100%);
+            color: var(--white);
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            font-style: italic;
+            color: var(--gold);
+        }
+
+        .highlight-boxes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 3rem auto 0;
+        }
+
+        .highlight-box {
+            background-color: var(--gold);
+            color: var(--black);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            transition: transform 0.3s;
+        }
+
+        .highlight-box:hover {
+            transform: translateY(-5px);
+        }
+
+        .highlight-box h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Sections */
+        section {
+            display: none;
+            padding: 3rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        section.active {
+            display: block;
+        }
+
+        h2 {
+            color: var(--black);
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            border-bottom: 3px solid var(--gold);
+            padding-bottom: 0.5rem;
+        }
+
+        /* Gallery */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .design-card {
+            background-color: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .design-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .design-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            background-color: var(--dark-gray);
+        }
+
+        .design-info {
+            padding: 1.5rem;
+        }
+
+        .design-info h3 {
+            color: var(--black);
+            margin-bottom: 0.5rem;
+        }
+
+        .design-info p {
+            color: var(--dark-gray);
+            margin-bottom: 1rem;
+        }
+
+        .interaction-buttons {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .like-btn {
+            background-color: var(--gold);
+            color: var(--black);
+        }
+
+        .like-btn:hover {
+            background-color: var(--black);
+            color: var(--gold);
+        }
+
+        .dislike-btn {
+            background-color: var(--dark-gray);
+            color: var(--white);
+        }
+
+        .dislike-btn:hover {
+            background-color: var(--black);
+        }
+
+        .comment-btn {
+            background-color: var(--beige);
+            color: var(--black);
+        }
+
+        .comment-section {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--beige);
+        }
+
+        .comment {
+            background-color: var(--beige);
+            padding: 0.5rem;
+            margin: 0.5rem 0;
+            border-radius: 5px;
+        }
+
+        .comment strong {
+            color: var(--black);
+        }
+
+        /* Order Form */
+        .order-form {
+            background-color: var(--white);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--black);
+            font-weight: bold;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--beige);
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        .submit-btn {
+            background-color: var(--gold);
+            color: var(--black);
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--black);
+            color: var(--gold);
+        }
+
+        /* Reviews */
+        .reviews-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .review-card {
+            background-color: var(--white);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .stars {
+            color: var(--gold);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .review-form {
+            background-color: var(--white);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-top: 2rem;
+        }
+
+        /* Contact */
+        .contact-info {
+            background-color: var(--white);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact-item {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background-color: var(--beige);
+            border-radius: 5px;
+        }
+
+        .contact-item strong {
+            color: var(--black);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Admin Panel */
+        .admin-panel {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.9);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+
+        .admin-panel.active {
+            display: block;
+        }
+
+        .admin-content {
+            max-width: 800px;
+            margin: 2rem auto;
+            background-color: var(--white);
+            padding: 2rem;
+            border-radius: 10px;
+        }
+
+        .close-admin {
+            background-color: var(--dark-gray);
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            float: right;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: none;
+            border: 4px solid var(--beige);
+            border-top: 4px solid var(--gold);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 1rem auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .success-message {
+            background-color: var(--gold);
+            color: var(--black);
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+            display: none;
+        }
+
+        .error-message {
+            background-color: #ff6b6b;
+            color: white;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+            display: none;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--gold);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background-color: var(--black);
+                padding: 1rem;
+            }
+
+            nav ul.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .highlight-boxes {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--black);
+            color: var(--gold);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+    </style>
 </head>
-<body class="bg-gradient-to-br from-amber-50 via-white to-amber-50">
+<body>
+    <!-- Admin Dot -->
+    <div class="admin-dot" onclick="toggleAdmin()"></div>
 
-  <div id="app"></div>
-
-  <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-    import { getDatabase, ref, set, push, onValue, update, remove } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyCXp9tBR0fBhc8lsv6_0o-8V9SIcBMYp4M",
-      authDomain: "websites-171ae.firebaseapp.com",
-      databaseURL: "https://websites-171ae-default-rtdb.firebaseio.com",
-      projectId: "websites-171ae",
-      storageBucket: "websites-171ae.firebasestorage.app",
-      messagingSenderId: "1027026269504",
-      appId: "1:1027026269504:web:2d797316248b4c1458b6a5"
-    };
-
-    const CLOUDINARY_CLOUD_NAME = "dykqgn7xu";
-    const CLOUDINARY_UPLOAD_PRESET = "dzxckgbzp";
-    const ADMIN_CREDENTIALS = { username: 'nelly_admin', password: 'NellyJ2025!' };
-
-    const app = initializeApp(firebaseConfig);
-    const database = getDatabase(app);
-
-    let designs = [];
-    let isAdmin = localStorage.getItem('nellyAdminSession') === 'true';
-    let currentPage = isAdmin ? 'admin' : 'home';
-    let selectedDesignId = null;
-
-    const designsRef = ref(database, 'designs');
-    onValue(designsRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        designs = Object.entries(data).map(([id, design]) => ({
-          id,
-          ...design,
-          comments: design.comments ? Object.entries(design.comments).map(([cid, comment]) => ({
-            id: cid,
-            ...comment
-          })) : []
-        })).sort((a, b) => b.timestamp - a.timestamp);
-      } else {
-        designs = [];
-      }
-      render();
-    });
-
-    async function uploadToCloudinary(file) {
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
-      formData.append('cloud_name', CLOUDINARY_CLOUD_NAME);
-
-      const response = await fetch(
-        `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
-        { method: 'POST', body: formData }
-      );
-      const data = await response.json();
-      return data.secure_url;
-    }
-
-    window.handleAdminLogin = function() {
-      const username = document.getElementById('adminUsername').value;
-      const password = document.getElementById('adminPassword').value;
-      
-      if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
-        isAdmin = true;
-        localStorage.setItem('nellyAdminSession', 'true');
-        currentPage = 'admin';
-        render();
-      } else {
-        alert('Invalid credentials!');
-      }
-    };
-
-    window.handleAdminLogout = function() {
-      isAdmin = false;
-      localStorage.removeItem('nellyAdminSession');
-      currentPage = 'home';
-      render();
-    };
-
-    window.handleDesignUpload = async function(e) {
-      e.preventDefault();
-      const title = document.getElementById('designTitle').value;
-      const category = document.getElementById('designCategory').value;
-      const description = document.getElementById('designDescription').value;
-      const fileInput = document.getElementById('designImage');
-      const file = fileInput.files[0];
-
-      if (!title || !file) {
-        alert('Please fill in title and select an image!');
-        return;
-      }
-
-      const btn = document.getElementById('uploadBtn');
-      btn.disabled = true;
-      btn.textContent = 'Uploading...';
-
-      try {
-        const imageUrl = await uploadToCloudinary(file);
-        
-        const designRef = push(ref(database, 'designs'));
-        await set(designRef, {
-          title,
-          category,
-          description,
-          imageUrl,
-          likes: 0,
-          dislikes: 0,
-          timestamp: Date.now()
-        });
-
-        alert('Design uploaded successfully!');
-        document.getElementById('uploadForm').reset();
-        document.getElementById('uploadSection').classList.add('hidden');
-      } catch (error) {
-        alert('Upload failed: ' + error.message);
-      }
-
-      btn.disabled = false;
-      btn.textContent = 'Post Design ✓';
-    };
-
-    window.handleLike = async function(designId, currentLikes) {
-      await update(ref(database, `designs/${designId}`), { likes: currentLikes + 1 });
-    };
-
-    window.handleDislike = async function(designId, currentDislikes) {
-      await update(ref(database, `designs/${designId}`), { dislikes: currentDislikes + 1 });
-    };
-
-    window.showCommentModal = function(designId) {
-      selectedDesignId = designId;
-      const design = designs.find(d => d.id === designId);
-      if (!design) return;
-
-      const modal = document.getElementById('commentModal');
-      const title = document.getElementById('modalDesignTitle');
-      const commentsList = document.getElementById('approvedComments');
-      
-      title.textContent = design.title;
-      
-      const approvedComments = design.comments?.filter(c => c.status === 'approved') || [];
-      commentsList.innerHTML = approvedComments.length ? approvedComments.map(comment => `
-        <div class="border-b pb-3 mb-3">
-          <p class="font-semibold">${escapeHtml(comment.name)}</p>
-          <p class="text-gray-700">${escapeHtml(comment.text)}</p>
-          <p class="text-xs text-gray-400 mt-1">
-            ${new Date(comment.timestamp).toLocaleDateString()}
-          </p>
-        </div>
-      `).join('') : '<p class="text-gray-500">No comments yet. Be the first!</p>';
-      
-      modal.classList.remove('hidden');
-    };
-
-    window.closeCommentModal = function() {
-      document.getElementById('commentModal').classList.add('hidden');
-      document.getElementById('commentName').value = '';
-      document.getElementById('commentText').value = '';
-      selectedDesignId = null;
-    };
-
-    window.handleCommentSubmit = async function() {
-      const name = document.getElementById('commentName').value.trim();
-      const text = document.getElementById('commentText').value.trim();
-
-      if (!name || !text) {
-        alert('Please fill in both name and comment!');
-        return;
-      }
-
-      const commentRef = push(ref(database, `designs/${selectedDesignId}/comments`));
-      await set(commentRef, {
-        name,
-        text,
-        status: 'pending',
-        timestamp: Date.now()
-      });
-
-      alert('Comment submitted for approval!');
-      closeCommentModal();
-    };
-
-    window.approveComment = async function(designId, commentId) {
-      await update(ref(database, `designs/${designId}/comments/${commentId}`), { status: 'approved' });
-    };
-
-    window.rejectComment = async function(designId, commentId) {
-      await remove(ref(database, `designs/${designId}/comments/${commentId}`));
-    };
-
-    window.deleteDesign = async function(designId) {
-      if (confirm('Are you sure you want to delete this design?')) {
-        await remove(ref(database, `designs/${designId}`));
-      }
-    };
-
-    window.goToPage = function(page) {
-      currentPage = page;
-      render();
-    };
-
-    window.toggleUploadSection = function() {
-      document.getElementById('uploadSection').classList.toggle('hidden');
-    };
-
-    function escapeHtml(text) {
-      const div = document.createElement('div');
-      div.textContent = text;
-      return div.innerHTML;
-    }
-
-    function getPendingCount() {
-      let count = 0;
-      designs.forEach(design => {
-        design.comments?.forEach(comment => {
-          if (comment.status === 'pending') count++;
-        });
-      });
-      return count;
-    }
-
-    function render() {
-      const appDiv = document.getElementById('app');
-      
-      if (currentPage === 'admin-login') {
-        appDiv.innerHTML = `
-          <div class="min-h-screen flex items-center justify-center p-4">
-            <div class="bg-white rounded-lg shadow-2xl p-8 max-w-md w-full">
-              <div class="text-center mb-8">
-                <div class="text-6xl mb-4">✂️</div>
-                <h2 class="text-3xl font-bold text-gray-900">Admin Login</h2>
-                <p class="text-gray-600 mt-2">Nelly J Stitches Dashboard</p>
-              </div>
-              
-              <div class="space-y-4">
-                <input
-                  type="text"
-                  id="adminUsername"
-                  placeholder="Username"
-                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500"
-                />
-                <input
-                  type="password"
-                  id="adminPassword"
-                  placeholder="Password"
-                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500"
-                  onkeypress="if(event.key==='Enter') handleAdminLogin()"
-                />
-                <button
-                  onclick="handleAdminLogin()"
-                  class="w-full bg-amber-600 text-white py-3 rounded-lg hover:bg-amber-700 font-semibold"
-                >
-                  Login
-                </button>
-                <button
-                  onclick="goToPage('home')"
-                  class="w-full bg-gray-200 text-gray-700 py-3 rounded-lg hover:bg-gray-300"
-                >
-                  Back to Website
-                </button>
-              </div>
-            </div>
-          </div>
-        `;
-        return;
-      }
-
-      if (currentPage === 'admin' && isAdmin) {
-        const pendingCount = getPendingCount();
-        const totalLikes = designs.reduce((sum, d) => sum + (d.likes || 0), 0);
-        
-        appDiv.innerHTML = `
-          <div class="min-h-screen bg-gray-50">
-            <div class="bg-white shadow-md p-4 flex justify-between items-center">
-              <h1 class="text-2xl font-bold text-gray-900">🎨 Nelly J Admin</h1>
-              <button onclick="handleAdminLogout()" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">
-                Logout
-              </button>
-            </div>
-
-            <div class="max-w-7xl mx-auto p-6">
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                  <h3 class="text-gray-600 text-sm font-semibold">Total Designs</h3>
-                  <p class="text-4xl font-bold text-amber-600 mt-2">${designs.length}</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                  <h3 class="text-gray-600 text-sm font-semibold">Total Likes</h3>
-                  <p class="text-4xl font-bold text-red-500 mt-2">${totalLikes}</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                  <h3 class="text-gray-600 text-sm font-semibold">Pending Comments</h3>
-                  <p class="text-4xl font-bold text-yellow-600 mt-2">${pendingCount}</p>
-                </div>
-              </div>
-
-              <button onclick="toggleUploadSection()" class="w-full bg-amber-600 text-white py-4 rounded-lg hover:bg-amber-700 font-semibold mb-6">
-                📤 Upload New Design
-              </button>
-
-              <div id="uploadSection" class="hidden bg-white p-6 rounded-lg shadow-md mb-8">
-                <h3 class="text-xl font-bold mb-4">Upload New Design</h3>
-                <form id="uploadForm" onsubmit="handleDesignUpload(event)" class="space-y-4">
-                  <input type="text" id="designTitle" placeholder="Design Title" required class="w-full px-4 py-3 border rounded-lg" />
-                  <select id="designCategory" class="w-full px-4 py-3 border rounded-lg">
-                    <option>Bridal</option>
-                    <option>Casual</option>
-                    <option>Corporate</option>
-                    <option>Aso-ebi</option>
-                  </select>
-                  <textarea id="designDescription" placeholder="Description" class="w-full px-4 py-3 border rounded-lg h-24"></textarea>
-                  <input type="file" id="designImage" accept="image/*" required class="w-full px-4 py-3 border rounded-lg" />
-                  <button type="submit" id="uploadBtn" class="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700">
-                    Post Design ✓
-                  </button>
-                </form>
-              </div>
-
-              ${pendingCount > 0 ? `
-                <div class="bg-yellow-50 border-2 border-yellow-400 p-6 rounded-lg mb-8">
-                  <h3 class="text-xl font-bold mb-4">📬 Pending Comments (${pendingCount})</h3>
-                  <div class="space-y-4">
-                    ${designs.map(design => 
-                      design.comments?.filter(c => c.status === 'pending').map(comment => `
-                        <div class="bg-white p-4 rounded-lg shadow">
-                          <p class="font-semibold text-sm text-gray-600">Design: ${escapeHtml(design.title)}</p>
-                          <p class="font-semibold mt-2">From: ${escapeHtml(comment.name)}</p>
-                          <p class="text-gray-700 mt-1">"${escapeHtml(comment.text)}"</p>
-                          <div class="flex gap-2 mt-3">
-                            <button onclick="approveComment('${design.id}', '${comment.id}')" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">
-                              ✓ Approve
-                            </button>
-                            <button onclick="rejectComment('${design.id}', '${comment.id}')" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">
-                              ✕ Reject
-                            </button>
-                          </div>
-                        </div>
-                      `).join('') || ''
-                    ).join('')}
-                  </div>
-                </div>
-              ` : ''}
-
-              <div class="bg-white p-6 rounded-lg shadow-md">
-                <h3 class="text-xl font-bold mb-4">🎨 All Designs</h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  ${designs.map(design => `
-                    <div class="border rounded-lg overflow-hidden">
-                      <img src="${design.imageUrl}" alt="${escapeHtml(design.title)}" class="w-full h-48 object-cover" />
-                      <div class="p-4">
-                        <h4 class="font-bold">${escapeHtml(design.title)}</h4>
-                        <p class="text-sm text-gray-600">${escapeHtml(design.category)}</p>
-                        <div class="flex gap-2 mt-3 text-sm">
-                          <span>❤️ ${design.likes || 0}</span>
-                          <span>💬 ${design.comments?.filter(c => c.status === 'approved').length || 0}</span>
-                        </div>
-                        <button onclick="deleteDesign('${design.id}')" class="w-full mt-3 bg-red-500 text-white py-2 rounded hover:bg-red-600">
-                          🗑️ Delete
-                        </button>
-                      </div>
-                    </div>
-                  `).join('')}
-                </div>
-              </div>
-            </div>
-          </div>
-        `;
-        return;
-      }
-
-      // Public Website
-      appDiv.innerHTML = `
-        <header class="fixed top-0 w-full z-50 bg-white shadow-md">
-          <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-3">
-              <span class="text-3xl">✂️</span>
-              <h1 class="text-2xl md:text-3xl font-bold text-gray-900">Nelly J Stitches</h1>
-            </div>
-            <nav class="hidden md:flex gap-8 text-gray-700 font-medium">
-              <a href="#home" class="hover:text-amber-600">Home</a>
-              <a href="#designs" class="hover:text-amber-600">Designs</a>
-              <a href="#about" class="hover:text-amber-600">About</a>
-              <a href="#contact" class="hover:text-amber-600">Contact</a>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo">Nelly J Stitches Global</div>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+            <nav>
+                <ul id="mainNav">
+                    <li><a href="#" onclick="showSection('home')">Home</a></li>
+                    <li><a href="#" onclick="showSection('gallery')">Designs</a></li>
+                    <li><a href="#" onclick="showSection('order')">Custom Order</a></li>
+                    <li><a href="#" onclick="showSection('reviews')">Reviews</a></li>
+                    <li><a href="#" onclick="showSection('contact')">Contact</a></li>
+                </ul>
             </nav>
-          </div>
-        </header>
-
-        <section id="home" class="pt-32 pb-20 px-4">
-          <div class="max-w-7xl mx-auto text-center">
-            <h2 class="text-5xl md:text-7xl font-bold text-gray-900 mb-6">Handcrafted Elegance</h2>
-            <p class="text-xl md:text-2xl text-gray-600 mb-8">Custom tailoring made with perfection</p>
-            <div class="flex gap-4 justify-center flex-wrap">
-              <a href="#designs" class="bg-amber-600 text-white px-8 py-4 rounded-lg hover:bg-amber-700 font-semibold">
-                View Designs
-              </a>
-              <a href="https://wa.me/2348012345678" class="bg-gray-900 text-white px-8 py-4 rounded-lg hover:bg-gray-800 font-semibold">
-                Book a Fitting
-              </a>
-            </div>
-          </div>
-        </section>
-
-        <section id="designs" class="py-20 px-4 bg-white">
-          <div class="max-w-7xl mx-auto">
-            <h2 class="text-4xl font-bold text-center mb-12">Latest Designs</h2>
-            
-            ${designs.length === 0 ? `
-              <div class="text-center text-gray-500 py-20">
-                <p class="text-xl">No designs yet. Check back soon!</p>
-              </div>
-            ` : `
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                ${designs.map(design => `
-                  <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition-all">
-                    <img src="${design.imageUrl}" alt="${escapeHtml(design.title)}" class="w-full h-80 object-cover" />
-                    
-                    <div class="p-6">
-                      <h3 class="text-xl font-bold mb-2">${escapeHtml(design.title)}</h3>
-                      <p class="text-sm text-gray-600 mb-2">${escapeHtml(design.category)}</p>
-                      <p class="text-gray-700 mb-4">${escapeHtml(design.description || '')}</p>
-                      
-                      <div class="flex gap-6 mb-4 text-gray-600">
-                        <button onclick="handleLike('${design.id}', ${design.likes || 0})" class="flex items-center gap-2 hover:text-red-500 cursor-pointer">
-                          <span>❤️</span>
-                          <span>${design.likes || 0}</span>
-                        </button>
-                        <button onclick="handleDislike('${design.id}', ${design.dislikes || 0})" class="flex items-center gap-2 hover:text-gray-800 cursor-pointer">
-                          <span>👎</span>
-                          <span>${design.dislikes || 0}</span>
-                        </button>
-                        <button onclick="showCommentModal('${design.id}')" class="flex items-center gap-2 hover:text-amber-600 cursor-pointer">
-                          <span>💬</span>
-                          <span>${design.comments?.filter(c => c.status === 'approved').length || 0}</span>
-                        </button>
-                      </div>
-
-                      ${design.comments?.filter(c => c.status === 'approved').slice(0, 2).map(comment => `
-                        <div class="border-t pt-3 mt-3">
-                          <p class="font-semibold text-sm">${escapeHtml(comment.name)}</p>
-                          <p class="text-sm text-gray-600">${escapeHtml(comment.text)}</p>
-                        </div>
-                      `).join('') || ''}
-                    </div>
-                  </div>
-                `).join('')}
-              </div>
-            `}
-          </div>
-        </section>
-
-        <section id="about" class="py-20 px-4">
-          <div class="max-w-4xl mx-auto text-center">
-            <h2 class="text-4xl font-bold mb-6">About Nelly J Stitches</h2>
-            <p class="text-lg text-gray-700 leading-relaxed mb-8">
-              With years of passion and craftsmanship, Nelly J Stitches brings you custom-tailored 
-              elegance that fits perfectly. Every stitch tells a story of dedication, quality, 
-              and timeless fashion.
-            </p>
-          </div>
-        </section>
-
-        <section class="py-20 px-4 bg-gradient-to-r from-amber-600 to-amber-800 text-white">
-          <div class="max-w-4xl mx-auto text-center">
-            <h2 class="text-4xl md:text-5xl font-bold mb-6">Your Style, Perfectly Stitched</h2>
-            <p class="text-xl mb-8">Ready to create your dream outfit?</p>
-            <a href="https://wa.me/2348012345678" class="inline-block bg-white text-amber-600 px-8 py-4 rounded-lg hover:bg-gray-100 font-semibold">
-              📞 WhatsApp Order
-            </a>
-          </div>
-        </section>
-
-        <footer id="contact" class="bg-gray-900 text-white py-12 px-4">
-          <div class="max-w-7xl mx-auto">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-              <div>
-                <div class="flex items-center gap-3 mb-4">
-                  <span class="text-3xl">✂️</span>
-                  <h3 class="text-2xl font-bold">Nelly J Stitches</h3>
-                </div>
-                <p class="text-gray-400">Handcrafted elegance, custom tailoring made with perfection.</p>
-              </div>
-              
-              <div>
-                <h4 class="font-bold text-lg mb-4">Contact</h4>
-                <div class="space-y-3 text-gray-400">
-                  <div>📞 +234 801 234 5678</div>
-                  <div>📍 Lagos, Nigeria</div>
-                </div>
-              </div>
-
-              <div>
-                <h4 class="font-bold text-lg mb-4">Follow Us</h4>
-                <div class="flex gap-4 text-2xl">
-                  <a href="https://instagram.com/nellyjstitches" class="hover:text-amber-400">📷</a>
-                  <a href="https://wa.me/2348012345678" class="hover:text-amber-400">📞</a>
-                </div>
-              </div>
-            </div>
-
-            <div class="border-t border-gray-800 pt-8 text-center text-gray-400">
-              <p>&copy; 2025 Nelly J Stitches. All rights reserved.</p>
-              ${!isAdmin ? `
-                <button onclick="goToPage('admin-login')" class="text-xs text-gray-600 hover:text-gray-400 mt-2">•</button>
-              ` : ''}
-            </div>
-          </div>
-        </footer>
-
-        <div id="commentModal" class="hidden fixed inset-0 modal-backdrop flex items-center justify-center z-50 p-4">
-          <div class="bg-white rounded-lg max-w-md w-full max-h-[80vh] overflow-y-auto p-6">
-            <div class="flex justify-between items-center mb-4">
-              <h3 id="modalDesignTitle" class="text-xl font-bold">Comments</h3>
-              <button onclick="closeCommentModal()" class="text-2xl hover:text-gray-600">✕</button>
-            </div>
-
-            <div id="approvedComments" class="space-y-4 mb-6"></div>
-
-            <div class="space-y-3">
-              <input type="text" id="commentName" placeholder="Your Name" class="w-full px-4 py-2 border rounded-lg" />
-              <textarea id="commentText" placeholder="Your Comment" class="w-full px-4 py-2 border rounded-lg h-24"></textarea>
-              <button onclick="handleCommentSubmit()" class="w-full bg-amber-600 text-white py-3 rounded-lg hover:bg-amber-700">
-                Submit Comment
-              </button>
-            </div>
-          </div>
         </div>
-      `;
-    }
+    </header>
 
-    render();
-  </script>
+    <!-- Hero Section -->
+    <section id="home" class="active">
+        <div class="hero">
+            <h1>Nelly J Stitches Global</h1>
+            <p class="tagline">Your Outfit Is Our Priority</p>
+            <p>Custom Tailoring Excellence for the Modern Woman</p>
+            
+            <div class="highlight-boxes">
+                <div class="highlight-box">
+                    <h3>Custom Tailoring</h3>
+                    <p>Bespoke designs crafted to perfection</p>
+                </div>
+                <div class="highlight-box">
+                    <h3>Fashion for Women</h3>
+                    <p>Elegant and sophisticated styles</p>
+                </div>
+                <div class="highlight-box">
+                    <h3>Global Delivery</h3>
+                    <p>We deliver worldwide with care</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
+    <!-- Gallery Section -->
+    <section id="gallery">
+        <h2>Our Designs</h2>
+        <div class="gallery-grid" id="galleryGrid">
+            <!-- Designs will be loaded here -->
+        </div>
+    </section>
+
+    <!-- Order Form Section -->
+    <section id="order">
+        <h2>Place Your Custom Order</h2>
+        <div class="order-form">
+            <form id="orderForm">
+                <div class="form-group">
+                    <label for="fullName">Full Name *</label>
+                    <input type="text" id="fullName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Phone/WhatsApp *</label>
+                    <input type="tel" id="phone" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="gender">Gender *</label>
+                    <select id="gender" required>
+                        <option value="">Select Gender</option>
+                        <option value="female">Female</option>
+                        <option value="male">Male</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="outfitType">Outfit Type *</label>
+                    <select id="outfitType" required>
+                        <option value="">Select Outfit Type</option>
+                        <option value="dress">Dress</option>
+                        <option value="suit">Suit</option>
+                        <option value="gown">Gown</option>
+                        <option value="traditional">Traditional Wear</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="referenceImage">Reference Image (Optional)</label>
+                    <input type="file" id="referenceImage" accept="image/*">
+                </div>
+                
+                <div class="form-group">
+                    <label for="measurements">Measurements (Optional)</label>
+                    <textarea id="measurements" rows="4" placeholder="Enter your measurements here..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="additionalDetails">Additional Details (Optional)</label>
+                    <textarea id="additionalDetails" rows="4" placeholder="Any special requests or details..."></textarea>
+                </div>
+                
+                <div class="spinner" id="orderSpinner"></div>
+                <div class="success-message" id="orderSuccess">Order submitted successfully!</div>
+                <div class="error-message" id="orderError">Error submitting order. Please try again.</div>
+                
+                <button type="submit" class="submit-btn">Submit Order</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section id="reviews">
+        <h2>Customer Reviews</h2>
+        <div class="reviews-container">
+            <div id="reviewsList">
+                <!-- Reviews will be loaded here -->
+            </div>
+            
+            <div class="review-form">
+                <h3>Leave a Review</h3>
+                <form id="reviewForm">
+                    <div class="form-group">
+                        <label for="reviewName">Your Name *</label>
+                        <input type="text" id="reviewName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="rating">Rating *</label>
+                        <select id="rating" required>
+                            <option value="">Select Rating</option>
+                            <option value="5">⭐⭐⭐⭐⭐ (5 stars)</option>
+                            <option value="4">⭐⭐⭐⭐ (4 stars)</option>
+                            <option value="3">⭐⭐⭐ (3 stars)</option>
+                            <option value="2">⭐⭐ (2 stars)</option>
+                            <option value="1">⭐ (1 star)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="reviewText">Your Review *</label>
+                        <textarea id="reviewText" rows="4" required></textarea>
+                    </div>
+                    
+                    <div class="spinner" id="reviewSpinner"></div>
+                    <div class="success-message" id="reviewSuccess">Review submitted successfully!</div>
+                    
+                    <button type="submit" class="submit-btn">Submit Review</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <h2>Contact Us</h2>
+        <div class="contact-info">
+            <div class="contact-item">
+                <strong>Phone/WhatsApp:</strong>
+                <p>+1234567890</p>
+            </div>
+            
+            <div class="contact-item">
+                <strong>Email:</strong>
+                <p>info@nellystitches.com</p>
+            </div>
+            
+            <div class="contact-item">
+                <strong>Location:</strong>
+                <p>Global</p>
+            </div>
+            
+            <div class="contact-item">
+                <strong>Facebook:</strong>
+                <p>@nellyjstitches</p>
+            </div>
+            
+            <div class="contact-item">
+                <strong>Instagram:</strong>
+                <p>@nellyjstitches</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Admin Panel -->
+    <div class="admin-panel" id="adminPanel">
+        <div class="admin-content">
+            <button class="close-admin" onclick="toggleAdmin()">Close</button>
+            <h2>Admin Panel</h2>
+            
+            <div id="adminLogin">
+                <h3>Login</h3>
+                <div class="form-group">
+                    <label>Username:</label>
+                    <input type="text" id="adminUsername">
+                </div>
+                <div class="form-group">
+                    <label>Password:</label>
+                    <input type="password" id="adminPassword">
+                </div>
+                <button class="submit-btn" onclick="adminLogin()">Login</button>
+                <div class="error-message" id="loginError">Invalid credentials</div>
+            </div>
+            
+            <div id="adminDashboard" style="display:none;">
+                <h3>Upload New Design</h3>
+                <form id="uploadForm">
+                    <div class="form-group">
+                        <label>Design Name:</label>
+                        <input type="text" id="designName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description:</label>
+                        <textarea id="designDescription" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Image:</label>
+                        <input type="file" id="designImage" accept="image/*" required>
+                    </div>
+                    <div class="spinner" id="uploadSpinner"></div>
+                    <div class="success-message" id="uploadSuccess">Design uploaded successfully!</div>
+                    <button type="submit" class="submit-btn">Upload Design</button>
+                </form>
+                
+                <h3 style="margin-top: 2rem;">Manage Designs</h3>
+                <div id="adminDesigns"></div>
+                
+                <h3 style="margin-top: 2rem;">Customer Orders</h3>
+                <div id="adminOrders"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Nelly J Stitches Global. All Rights Reserved.</p>
+        <p>Your Outfit Is Our Priority</p>
+    </footer>
+
+    <script>
+        // User ID Management
+        function getUserId() {
+            let userId = localStorage.getItem('userId');
+            if (!userId) {
+                userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                localStorage.setItem('userId', userId);
+            }
+            return userId;
+        }
+
+        // Navigation
+        function showSection(sectionId) {
+            document.querySelectorAll('section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+            
+            if (sectionId === 'gallery') {
+                loadDesigns();
+            } else if (sectionId === 'reviews') {
+                loadReviews();
+            }
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('mainNav').classList.toggle('active');
+        }
+
+        // Mock Database (using localStorage)
+        const db = {
+            designs: [],
+            orders: [],
+            reviews: [],
+            interactions: {}
+        };
+
+        // Initialize with sample data
+        function initializeData() {
+            if (!localStorage.getItem('designs')) {
+                db.designs = [
+                    {
+                        id: 'design_1',
+                        name: 'Ankara Gown',
+                        description: 'Beautiful African print gown',
+                        imageUrl: 'https://via.placeholder.com/300x300/FFD700/000000?text=Ankara+Gown',
+                        likes: 15,
+                        dislikes: 2,
+                        comments: [
+                            {id: 'comment_1', author: 'Sarah', text: 'Love it!', timestamp: Date.now()}
+                        ]
+                    },
+                    {
+                        id: 'design_2',
+                        name: 'Evening Dress',
+                        description: 'Elegant evening wear',
+                        imageUrl: 'https://via.placeholder.com/300x300/FFD700/000000?text=Evening+Dress',
+                        likes: 23,
+                        dislikes: 1,
+                        comments: []
+                    },
+                    {
+                        id: 'design_3',
+                        name: 'Business Suit',
+                        description: 'Professional business attire',
+                        imageUrl: 'https://via.placeholder.com/300x300/FFD700/000000?text=Business+Suit',
+                        likes: 18,
+                        dislikes: 0,
+                        comments: []
+                    }
+                ];
+                localStorage.setItem('designs', JSON.stringify(db.designs));
+            }
+            
+            if (!localStorage.getItem('reviews')) {
+                db.reviews = [
+                    {
+                        id: 'review_1',
+                        name: 'Jane Smith',
+                        rating: 5,
+                        text: 'Excellent work! Highly recommend.',
+                        timestamp: Date.now()
+                    }
+                ];
+                localStorage.setItem('reviews', JSON.stringify(db.reviews));
+            }
+        }
+
+        // Load Designs
+        function loadDesigns() {
+            const designs = JSON.parse(localStorage.getItem('designs') || '[]');
+            const galleryGrid = document.getElementById('galleryGrid');
+            const userId = getUserId();
+            const interactions = JSON.parse(localStorage.getItem('interactions_' + userId) || '{}');
+            
+            galleryGrid.innerHTML = designs.map(design => `
+                <div class="design-card">
+                    <img src="${design.imageUrl}" alt="${design.name}" class="design-image">
+                    <div class="design-info">
+                        <h3>${design.name}</h3>
+                        <p>${design.description}</p>
+                        <div class="interaction-buttons">
+                            <button class="btn like-btn" onclick="toggleLike('${design.id}')" 
+                                ${interactions[design.id]?.liked ? 'disabled' : ''}>
+                                👍 Like (${design.likes || 0})
+                            </button>
+                            <button class="btn dislike-btn" onclick="toggleDislike('${design.id}')"
+                                ${interactions[design.id]?.disliked ? 'disabled' : ''}>
+                                👎 (${design.dislikes || 0})
+                            </button>
+                            <button class="btn comment-btn" onclick="toggleComments('${design.id}')">
+                                💬 Comment
+                            </button>
+                        </div>
+                        <div class="comment-section" id="comments_${design.id}" style="display:none;">
+                            <div id="commentsList_${design.id}">
+                                ${(design.comments || []).map(c => `
+                                    <div class="comment">
+                                        <strong>${c.author}:</strong> ${c.text}
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <input type="text" id="commentInput_${design.id}" placeholder="Add a comment..." style="width:100%; margin-top:0.5rem; padding:0.5rem;">
+                            <button class="btn" onclick="addComment('${design.id}')" style="margin-top:0.5rem;">Post</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Like/Dislike System
+        function toggleLike(designId) {
+            const userId = getUserId();
+            const interactions = JSON.parse(localStorage.getItem('interactions_' + userId) || '{}');
+            
+            if (interactions[designId]?.liked) return;
+            
+            const designs = JSON.parse(localStorage.getItem('designs') || '[]');
+            const design = designs.find(d => d.id === designId);
+            if (design) {
+                design.likes = (design.likes || 0) + 1;
+                localStorage.setItem('designs', JSON.stringify(designs));
+                
+                interactions[designId] = {liked: true};
+                localStorage.setItem('interactions_' + userId, JSON.stringify(interactions));
+                
+                loadDesigns();
+            }
+        }
+
+        function toggleDislike(designId) {
+            const userId = getUserId();
+            const interactions = JSON.parse(localStorage.getItem('interactions_' + userId) || '{}');
+            
+            if (interactions[designId]?.disliked) return;
+            
+            const designs = JSON.parse(localStorage.getItem('designs') || '[]');
+            const design = designs.find(d => d.id === designId);
+            if (design) {
+                design.dislikes = (design.dislikes || 0) + 1;
+                localStorage.setItem('designs', JSON.stringify(designs));
+                
+                interactions[designId] = {disliked: true};
+                localStorage.setItem('interactions_' + userId, JSON.stringify(interactions));
+                
+                loadDesigns();
+            }
+        }
+
+        function toggleComments(designId) {
+            const commentsSection = document.getElementById('comments_' + designId);
+            commentsSection.style.display = commentsSection.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function addComment(designId) {
+            const commentInput = document.getElementById('commentInput_' + designId);
+            const commentText = commentInput.value.trim();
+            
+            if (!commentText) return;
+            
+            const name = prompt('Enter your name:');
+            if (!name) return;
+            
+            const designs = JSON.parse(localStorage.getItem('designs') || '[]');
+            const design = designs.find(d => d.id === designId);
+            
+            if (design) {
+                if (!design.comments) design.comments = [];
+                design.comments.push({
+                    id: 'comment_' + Date.now(),
+                    author: name,
+                    text: commentText,
+                    timestamp: Date.now()
+                });
+                
+                localStorage.setItem('designs', JSON.stringify(designs));
+                commentInput.value = '';
+                loadDesigns();
+            }
+        }
+
+        // Order Form
+        document.getElementById('orderForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const spinner = document.getElementById('orderSpinner');
+            const successMsg = document.getElementById('orderSuccess');
+            const errorMsg = document.getElementById('orderError');
+            
+            spinner.style.display = 'block';
+            successMsg.style.display = 'none';
+            errorMsg.style.display = 'none';
+            
+            setTimeout(() => {
+                const order = {
+                    id: 'order_' + Date.now(),
+                    name: document.getElementById('fullName').value,
+                    phone: document.getElementById('phone').value,
+                    email: document.getElementById('email').value,
+                    gender: document.getElementById('gender').value,
+                    outfitType: document.getElementById('outfitType').value,
+                    measurements: document.getElementById('measurements').value,
+                    details: document.getElementById('additionalDetails').value,
+                    timestamp: Date.now()
+                };
+                
+                const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+                orders.push(order);
+                localStorage.setItem('orders', JSON.stringify(orders));
+                
+                spinner.style.display = 'none';
+                successMsg.style.display = 'block';
+                
+                document.getElementById('orderForm').reset();
+                
+                setTimeout(() => {
+                    successMsg.style.display = 'none';
+                }, 3000);
+            }, 1500);
+        });
+
+        // Reviews
+        function loadReviews() {
+            const reviews = JSON.parse(localStorage.getItem('reviews') || '[]');
+            const reviewsList = document.getElementById('reviewsList');
+            
+            reviewsList.innerHTML = reviews.sort((a, b) => b.timestamp - a.timestamp).map(review => `
+                <div class="review-card">
+                    <div class="stars">${'⭐'.repeat(review.rating)}</div>
+                    <strong>${review.name}</strong>
+                    <p>${review.text}</p>
+                    <small>${new Date(review.timestamp).toLocaleDateString()}</small>
+                </div>
+            `).join('');
+        }
+
+        document.getElementById('reviewForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const spinner = document.getElementById('reviewSpinner');
+            const successMsg = document.getElementById('reviewSuccess');
+            
+            spinner.style.display = 'block';
+            successMsg.style.display = 'none';
+            
+            setTimeout(() => {
+                const review = {
+                    id: 'review_' + Date.now(),
+                    name: document.getElementById('reviewName').value,
+                    rating: parseInt(document.getElementById('rating').value),
+                    text: document.getElementById('reviewText').value,
+                    timestamp: Date.now()
+                };
+                
+                const reviews = JSON.parse(localStorage.getItem('reviews') || '[]');
+                reviews.push(review);
+                localStorage.setItem('reviews', JSON.stringify(reviews));
+                
+                spinner.style.display = 'none';
+                successMsg.style.display = 'block';
+                
+                document.getElementById('reviewForm').reset();
+                loadReviews();
+                
+                setTimeout(() => {
+                    successMsg.style.display = 'none';
+                }, 3000);
+            }, 1000);
+        });
+
+        // Admin Panel
+        function toggleAdmin() {
+            document.getElementById('adminPanel').classList.toggle('active');
+        }
+
+        function adminLogin() {
+            const username = document.getElementById('adminUsername').value;
+            const password = document.getElementById('adminPassword').value;
+            const errorMsg = document.getElementById('loginError');
+            
+            if (username === 'nellystitchesglobal' && password === 'nellyj!') {
+                document.getElementById('adminLogin').style.display = 'none';
+                document.getElementById('adminDashboard').style.display = 'block';
+                errorMsg.style.display = 'none';
+                loadAdminData();
+            } else {
+                errorMsg.style.display = 'block';
+            }
+        }
+
+        function loadAdminData() {
+            // Load designs for management
+            const designs = JSON.parse(localStorage.getItem('designs') || '[]');
+            const adminDesigns = document.getElementById('adminDesigns');
+            
+            adminDesigns.innerHTML = designs.map(design => `
+                <div style="background-color: var(--beige); padding: 1rem; margin: 1rem 0; border-radius: 5px;">
+                    <h4>${design.name}</h4>
+                    <p>${design.description}</p>
+                    <p>Likes: ${design.likes || 0} | Dislikes: ${design.dislikes || 0} | Comments: ${(design.comments || []).length}</p>
+                    <button class="btn" onclick="deleteDesign('${design.id}')" style="background-color: #ff6b6b; color: white;">Delete</button>
+                </div>
+            `).join('');
+            
+            // Load orders
+            const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            const adminOrders = document.getElementById('adminOrders');
+            
+            adminOrders.innerHTML = orders.map(order => `
+                <div style="background-color: var(--beige); padding: 1rem; margin: 1rem 0; border-radius: 5px;">
+                    <h4>${order.name}</h4>
+                    <p><strong>Phone:</strong> ${order.phone}</p>
+                    <p><strong>Email:</strong> ${order.email}</p>
+                    <p><strong>Gender:</strong> ${order.gender}</p>
+                    <p><strong>Outfit Type:</strong> ${order.outfitType}</p>
+                    <p><strong>Measurements:</strong> ${order.measurements || 'N/A'}</p>
+                    <p><strong>Details:</strong> ${order.details || 'N/A'}</p>
+                    <p><strong>Date:</strong> ${new Date(order.timestamp).toLocaleString()}</p>
+                    <button class="btn" onclick="deleteOrder('${order.id}')" style="background-color: #ff6b6b; color: white;">Delete</button>
+                </div>
+            `).join('');
+        }
+
+        function deleteDesign(designId) {
+            if (confirm('Are you sure you want to delete this design?')) {
+                const designs = JSON.parse(localStorage.getItem('designs') || '[]');
+                const updatedDesigns = designs.filter(d => d.id !== designId);
+                localStorage.setItem('designs', JSON.stringify(updatedDesigns));
+                loadAdminData();
+                loadDesigns();
+            }
+        }
+
+        function deleteOrder(orderId) {
+            if (confirm('Are you sure you want to delete this order?')) {
+                const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+                const updatedOrders = orders.filter(o => o.id !== orderId);
+                localStorage.setItem('orders', JSON.stringify(updatedOrders));
+                loadAdminData();
+            }
+        }
+
+        // Upload Design
+        document.getElementById('uploadForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const spinner = document.getElementById('uploadSpinner');
+            const successMsg = document.getElementById('uploadSuccess');
+            
+            spinner.style.display = 'block';
+            successMsg.style.display = 'none';
+            
+            const fileInput = document.getElementById('designImage');
+            const file = fileInput.files[0];
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    setTimeout(() => {
+                        const design = {
+                            id: 'design_' + Date.now(),
+                            name: document.getElementById('designName').value,
+                            description: document.getElementById('designDescription').value,
+                            imageUrl: e.target.result,
+                            likes: 0,
+                            dislikes: 0,
+                            comments: []
+                        };
+                        
+                        const designs = JSON.parse(localStorage.getItem('designs') || '[]');
+                        designs.push(design);
+                        localStorage.setItem('designs', JSON.stringify(designs));
+                        
+                        spinner.style.display = 'none';
+                        successMsg.style.display = 'block';
+                        
+                        document.getElementById('uploadForm').reset();
+                        loadAdminData();
+                        
+                        setTimeout(() => {
+                            successMsg.style.display = 'none';
+                        }, 3000);
+                    }, 1500);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Initialize on page load
+        window.addEventListener('load', function() {
+            initializeData();
+            loadDesigns();
+        });
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>
