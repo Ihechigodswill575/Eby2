@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nelly J Stitches Global - Your Outfit Is Our Priority</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <title>Marvel FX - Video Editor</title>
     <style>
         * {
             margin: 0;
@@ -12,820 +11,553 @@
             box-sizing: border-box;
         }
 
-        :root {
-            --cream: #FAF8F3;
-            --charcoal: #2C2C2C;
-            --gold: #C9A961;
-            --near-black: #1A1A1A;
-        }
-
         body {
-            font-family: 'Inter', sans-serif;
-            background: var(--cream);
-            color: var(--charcoal);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
             overflow-x: hidden;
         }
 
-        h1, h2, h3 {
-            font-family: 'Playfair Display', serif;
-        }
-
-        /* HERO SECTION - Split Screen */
-        .hero {
-            height: 100vh;
+        header {
+            position: sticky;
+            top: 0;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px 5%;
             display: flex;
-            position: relative;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid #222;
         }
 
-        .hero-left {
-            flex: 1;
+        .logo h1 {
+            font-size: 24px;
+            color: #00d9ff;
+        }
+
+        .logo p {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: #1a1a1a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: 0.3s;
+            font-size: 20px;
+        }
+
+        .social-links a:hover {
+            background: #00d9ff;
+            transform: scale(1.1);
+        }
+
+        .hero {
+            height: 80vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            padding: 0 8%;
-            background: var(--cream);
-            z-index: 2;
-        }
-
-        .hero-left h1 {
-            font-size: clamp(2.5rem, 6vw, 5rem);
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-            font-weight: 700;
-        }
-
-        .hero-left p {
-            font-size: clamp(1rem, 2vw, 1.3rem);
-            color: #666;
-            margin-bottom: 2.5rem;
-            font-weight: 300;
-            font-style: italic;
-        }
-
-        .btn-explore {
-            display: inline-block;
-            padding: 1rem 3rem;
-            background: var(--charcoal);
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-            align-self: flex-start;
-        }
-
-        .btn-explore::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--gold);
-            transition: width 0.4s;
-        }
-
-        .btn-explore:hover::after {
-            width: 100%;
-        }
-
-        .hero-right {
-            flex: 1;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-slide {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0;
-            transition: opacity 1.5s ease-in-out;
-        }
-
-        .hero-slide.active {
-            opacity: 1;
-        }
-
-        .placeholder-hero {
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
             align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.5rem;
             text-align: center;
-            padding: 2rem;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            padding: 20px;
         }
 
-        /* STORY SECTION */
-        .story {
-            min-height: 60vh;
+        .hero h2 {
+            font-size: 42px;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #00d9ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero button {
+            padding: 15px 40px;
+            font-size: 18px;
+            background: #00d9ff;
+            color: #000;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .hero button:hover {
+            background: #00ff88;
+            transform: scale(1.05);
+        }
+
+        .portfolio {
+            padding: 60px 5%;
+            min-height: 50vh;
+        }
+
+        .portfolio h2 {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 40px;
+            color: #00d9ff;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .video-card {
+            background: #1a1a1a;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 217, 255, 0.3);
+        }
+
+        .video-thumbnail {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: #0a0a0a;
+        }
+
+        .play-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 200px;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 8rem 5%;
-            background: var(--cream);
-            position: relative;
-            overflow: hidden;
+            background: rgba(0, 0, 0, 0.3);
+            transition: 0.3s;
         }
 
-        .story::before {
-            content: '';
-            position: absolute;
+        .video-card:hover .play-overlay {
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .play-icon {
+            font-size: 50px;
+            color: #00d9ff;
+        }
+
+        .video-info {
+            padding: 15px;
+        }
+
+        .video-title {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .video-stats {
+            display: flex;
+            gap: 15px;
+            font-size: 14px;
+            color: #888;
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .like-btn {
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 16px;
+        }
+
+        .like-btn:hover {
+            transform: scale(1.2);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><rect fill="%23C9A961" opacity="0.03" width="100" height="100"/></svg>');
-            z-index: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
         }
 
-        .story-content {
-            max-width: 900px;
-            text-align: center;
-            z-index: 1;
+        .modal-content {
             position: relative;
-        }
-
-        .story h2 {
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            margin-bottom: 2rem;
-            font-weight: 600;
-        }
-
-        .story p {
-            font-size: clamp(1.1rem, 2vw, 1.4rem);
-            line-height: 1.8;
-            color: #555;
-            font-weight: 300;
-        }
-
-        /* DESIGN SHOWCASE - Horizontal Scroll */
-        .showcase {
-            padding: 5rem 0;
-            background: white;
-        }
-
-        .showcase-title {
-            text-align: center;
-            font-size: clamp(2rem, 4vw, 3rem);
-            margin-bottom: 3rem;
-            font-weight: 600;
-        }
-
-        .showcase-scroll {
+            max-width: 90%;
+            max-height: 90%;
             display: flex;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            gap: 2rem;
-            padding: 2rem 5%;
-            scrollbar-width: none;
+            flex-direction: column;
+            align-items: center;
         }
 
-        .showcase-scroll::-webkit-scrollbar {
-            display: none;
+        .modal video {
+            max-width: 100%;
+            max-height: 80vh;
+            border-radius: 8px;
         }
 
-        .design-card {
-            min-width: 400px;
-            height: 600px;
-            scroll-snap-align: center;
-            position: relative;
-            border-radius: 4px;
-            overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-        }
-
-        .design-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .design-overlay {
+        .close-modal {
             position: absolute;
-            bottom: 0;
-            left: 0;
+            top: -40px;
             right: 0;
-            background: linear-gradient(transparent, rgba(0,0,0,0.8));
-            padding: 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-        }
-
-        .design-title {
-            color: white;
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
-
-        .design-actions {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .design-btn {
-            background: white;
-            color: var(--charcoal);
-            border: none;
-            padding: 0.8rem 1.5rem;
+            font-size: 30px;
+            color: #fff;
             cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s;
-        }
-
-        .design-btn:hover {
-            background: var(--gold);
-            color: white;
-        }
-
-        .placeholder-design {
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            background: #ff0055;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-size: 1.2rem;
         }
 
-        /* REVIEWS SECTION */
-        .reviews {
-            min-height: 50vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 5rem 5%;
-            background: var(--cream);
-        }
-
-        .review-container {
-            max-width: 800px;
+        .about {
+            padding: 60px 5%;
             text-align: center;
+            background: #0f0f0f;
         }
 
-        .review-text {
-            font-size: clamp(1.5rem, 3vw, 2.5rem);
-            font-style: italic;
-            line-height: 1.6;
-            margin-bottom: 2rem;
-            font-family: 'Playfair Display', serif;
-            color: var(--charcoal);
+        .about h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: #00d9ff;
         }
 
-        .review-author {
-            font-size: 1rem;
-            color: #888;
-            font-weight: 500;
+        .about p {
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.8;
+            color: #aaa;
+            font-size: 16px;
         }
 
-        /* CONTACT SECTION */
         .contact {
-            padding: 8rem 5%;
-            background: white;
+            padding: 60px 5%;
             text-align: center;
         }
 
         .contact h2 {
-            font-size: clamp(2rem, 4vw, 3rem);
-            margin-bottom: 4rem;
-            font-weight: 600;
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: #00d9ff;
         }
 
-        .contact-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 3rem;
-            max-width: 1000px;
-            margin: 0 auto 4rem;
+        .contact p {
+            color: #888;
+            margin-bottom: 10px;
         }
 
-        .contact-item {
+        .contact-buttons {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
         }
 
-        .contact-icon {
-            font-size: 2.5rem;
-        }
-
-        .contact-text {
-            font-size: 1.1rem;
-            color: #666;
-        }
-
-        .contact-link {
-            color: var(--charcoal);
+        .contact-btn {
+            padding: 15px 40px;
+            font-size: 18px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
             text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-
-        .contact-link:hover {
-            color: var(--gold);
-        }
-
-        .social-btn {
+            transition: 0.3s;
             display: inline-block;
-            padding: 1rem 3rem;
-            background: #1877f2;
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            margin-top: 2rem;
-            transition: all 0.3s;
         }
 
-        .social-btn:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
+        .whatsapp-btn {
+            background: #25D366;
+            color: #fff;
         }
 
-        /* FOOTER */
+        .tiktok-btn {
+            background: #000;
+            color: #fff;
+            border: 2px solid #00f2ea;
+        }
+
+        .contact-btn:hover {
+            transform: scale(1.05);
+        }
+
         footer {
-            background: var(--near-black);
-            color: var(--gold);
-            padding: 3rem 5%;
+            background: #0a0a0a;
+            padding: 30px 5%;
             text-align: center;
-            position: relative;
-        }
-
-        footer h3 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        footer p {
-            font-style: italic;
-            opacity: 0.8;
+            border-top: 1px solid #222;
         }
 
         .admin-dot {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            width: 12px;
-            height: 12px;
-            background: var(--gold);
-            border-radius: 50%;
+            display: inline;
             cursor: pointer;
-            transition: all 0.3s;
+            color: #333;
+            user-select: none;
         }
 
-        .admin-dot:hover {
-            transform: scale(1.5);
-            box-shadow: 0 0 20px var(--gold);
-        }
-
-        /* ADMIN PANEL */
-        .admin-overlay {
+        .admin-login, .admin-panel {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 9999;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 3000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .admin-box {
+            background: #1a1a1a;
+            padding: 40px;
+            border-radius: 12px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
             overflow-y: auto;
         }
 
-        .admin-panel {
-            max-width: 800px;
-            margin: 3rem auto;
-            padding: 3rem;
-            background: white;
-            border-radius: 8px;
+        .admin-box h2 {
+            margin-bottom: 20px;
+            color: #00d9ff;
         }
 
-        .admin-header {
+        .admin-box h3 {
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: #00ff88;
+            font-size: 18px;
+        }
+
+        .admin-box input, .admin-box button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #333;
+            background: #0a0a0a;
+            color: #fff;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .admin-box button {
+            background: #00d9ff;
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+        }
+
+        .admin-box button:hover {
+            background: #00ff88;
+        }
+
+        .upload-status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 6px;
+            text-align: center;
+            display: none;
+        }
+
+        .upload-status.success {
+            background: #00ff8844;
+            color: #00ff88;
+        }
+
+        .upload-status.error {
+            background: #ff005544;
+            color: #ff0055;
+        }
+
+        .upload-status.loading {
+            background: #00d9ff44;
+            color: #00d9ff;
+        }
+
+        .video-list {
+            margin-top: 20px;
+        }
+
+        .admin-video-item {
+            background: #0a0a0a;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 6px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid var(--gold);
+            gap: 10px;
         }
 
-        .admin-close {
-            background: var(--charcoal);
-            color: white;
-            border: none;
-            padding: 0.5rem 1.5rem;
-            cursor: pointer;
-            font-weight: 500;
+        .admin-video-item span {
+            flex: 1;
+            font-size: 14px;
         }
 
-        .admin-section {
-            margin-bottom: 3rem;
+        .delete-btn {
+            background: #ff0055 !important;
+            padding: 8px 15px !important;
+            width: auto !important;
+            margin: 0 !important;
         }
 
-        .admin-section h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
-            color: var(--charcoal);
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: var(--charcoal);
-        }
-
-        .form-group input[type="text"],
-        .form-group input[type="file"] {
-            width: 100%;
-            padding: 0.8rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .form-group input[type="file"] {
-            padding: 0.5rem;
-        }
-
-        .btn-upload {
-            background: var(--gold);
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s;
-        }
-
-        .btn-upload:hover {
-            background: var(--charcoal);
-        }
-
-        .designs-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 1rem;
-        }
-
-        .design-item {
-            position: relative;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .design-item img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-
-        .design-item-info {
-            padding: 1rem;
-        }
-
-        .btn-delete {
-            width: 100%;
-            background: #dc3545;
-            color: white;
-            border: none;
-            padding: 0.5rem;
-            cursor: pointer;
-            margin-top: 0.5rem;
-        }
-
-        .btn-delete:hover {
-            background: #c82333;
-        }
-
-        /* ORDER MODAL */
-        .order-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 9998;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .order-modal {
-            background: white;
-            padding: 3rem;
-            max-width: 600px;
-            width: 90%;
-            border-radius: 8px;
-            position: relative;
-        }
-
-        .order-close {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: none;
-            border: none;
-            font-size: 2rem;
-            cursor: pointer;
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
             color: #666;
         }
 
-        .order-steps {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid var(--gold);
+        .empty-state h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
         }
 
-        .step {
-            font-weight: 500;
-            color: #999;
-        }
-
-        .step.active {
-            color: var(--gold);
-        }
-
-        .btn-whatsapp {
-            width: 100%;
-            background: #25D366;
-            color: white;
-            border: none;
-            padding: 1.2rem;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 1rem;
-            transition: all 0.3s;
-        }
-
-        .btn-whatsapp:hover {
-            background: #20BA5A;
-        }
-
-        /* LOGIN MODAL */
-        .login-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 10000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .login-modal {
-            background: white;
-            padding: 3rem;
-            max-width: 400px;
-            width: 90%;
-            border-radius: 8px;
-            text-align: center;
-        }
-
-        .login-modal h2 {
-            margin-bottom: 2rem;
-            color: var(--charcoal);
-        }
-
-        .btn-login {
-            width: 100%;
-            background: var(--charcoal);
-            color: white;
-            border: none;
-            padding: 1rem;
-            cursor: pointer;
-            font-weight: 500;
-            margin-top: 1rem;
-        }
-
-        .login-error {
-            color: #dc3545;
-            margin-top: 1rem;
-            display: none;
-        }
-
-        /* RESPONSIVE */
         @media (max-width: 768px) {
-            .hero {
+            .hero h2 {
+                font-size: 28px;
+            }
+
+            .video-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .admin-box {
+                padding: 20px;
+            }
+
+            .admin-video-item {
                 flex-direction: column;
+                align-items: flex-start;
             }
 
-            .hero-left, .hero-right {
-                flex: none;
-                height: 50vh;
-            }
-
-            .design-card {
-                min-width: 300px;
-                height: 500px;
-            }
-
-            .showcase-scroll {
-                padding: 2rem 2%;
-            }
-
-            .admin-panel {
-                padding: 2rem 1rem;
+            .delete-btn {
+                width: 100% !important;
             }
         }
 
-        .upload-progress {
-            display: none;
-            margin-top: 1rem;
-            padding: 1rem;
-            background: #f0f0f0;
-            border-radius: 4px;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 20px;
-            background: #e0e0e0;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-top: 0.5rem;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: var(--gold);
-            width: 0%;
-            transition: width 0.3s;
+        @media (max-width: 480px) {
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- HERO SECTION -->
+
+    <header>
+        <div class="logo">
+            <h1>Marvel FX</h1>
+            <p>🎬 Video Edits</p>
+        </div>
+        <div class="social-links">
+            <a href="https://tiktok.com/@marvel_fx44" target="_blank">📱</a>
+            <a href="https://wa.me/2348021491167" target="_blank">💬</a>
+        </div>
+    </header>
+
     <section class="hero">
-        <div class="hero-left">
-            <h1>Custom Fashion<br>Designed For You</h1>
-            <p>Your Outfit Is Our Priority</p>
-            <a href="#showcase" class="btn-explore">Explore Designs</a>
-        </div>
-        <div class="hero-right" id="heroSlider">
-            <div class="placeholder-hero">Your Beautiful Fashion Images Will Display Here</div>
-        </div>
+        <h2>High-Energy Mobile Video Edits</h2>
+        <button onclick="document.querySelector('.portfolio').scrollIntoView({behavior: 'smooth'})">▶ Watch My Work</button>
     </section>
 
-    <!-- STORY SECTION -->
-    <section class="story">
-        <div class="story-content">
-            <h2>Every Stitch Has Meaning</h2>
-            <p>From fabric selection to final fitting, every piece is crafted with care, precision, and passion.</p>
-        </div>
-    </section>
-
-    <!-- DESIGN SHOWCASE -->
-    <section class="showcase" id="showcase">
-        <h2 class="showcase-title">Our Designs</h2>
-        <div class="showcase-scroll" id="designShowcase">
-            <div class="design-card">
-                <div class="placeholder-design">Your Stunning Designs Will Appear Here</div>
+    <section class="portfolio">
+        <h2>My Work</h2>
+        <div class="video-grid" id="videoGrid">
+            <div class="empty-state">
+                <h3>No videos yet</h3>
+                <p>Check back soon for amazing edits!</p>
             </div>
         </div>
     </section>
 
-    <!-- REVIEWS SECTION -->
-    <section class="reviews">
-        <div class="review-container">
-            <p class="review-text">"She understands body shape perfectly."</p>
-            <p class="review-author">— Client, Aba</p>
-        </div>
+    <section class="about">
+        <h2>About Me</h2>
+        <p>I'm Marvel FX, a mobile video editor focused on clean, and all round video edits. I deliver smooth transitions, beat sync, and sharp visuals.</p>
     </section>
 
-    <!-- CONTACT SECTION -->
     <section class="contact">
-        <h2>Let's Create Your Perfect Outfit</h2>
-        <div class="contact-grid">
-            <div class="contact-item">
-                <div class="contact-icon">📞</div>
-                <div class="contact-text">
-                    <a href="tel:+2349067725503" class="contact-link">+234 906 772 5503</a>
-                </div>
-            </div>
-            <div class="contact-item">
-                <div class="contact-icon">✉️</div>
-                <div class="contact-text">
-                    <a href="mailto:nnennanwabueze95@gmail.com" class="contact-link">nnennanwabueze95@gmail.com</a>
-                </div>
-            </div>
-            <div class="contact-item">
-                <div class="contact-icon">📍</div>
-                <div class="contact-text">
-                    No 137 MCC Road<br>Aba, Abia State
-                </div>
-            </div>
+        <h2>Let's Work Together</h2>
+        <p>Tap to work with me</p>
+        <div class="contact-buttons">
+            <a href="https://wa.me/2348021491167" class="contact-btn whatsapp-btn">💬 WhatsApp</a>
+            <a href="https://tiktok.com/@marvel_fx44" target="_blank" class="contact-btn tiktok-btn">📱 TikTok</a>
         </div>
-        <a href="https://m.facebook.com/317334014806014/" target="_blank" class="social-btn">Visit Our Facebook Page</a>
     </section>
 
-    <!-- FOOTER -->
     <footer>
-        <h3>Nelly J Stitches Global</h3>
-        <p>Your Outfit Is Our Priority</p>
-        <div class="admin-dot" onclick="showLogin()"></div>
+        <p>© Marvel FX<span class="admin-dot" onclick="showAdminLogin()">.</span></p>
     </footer>
 
-    <!-- LOGIN MODAL -->
-    <div class="login-overlay" id="loginOverlay">
-        <div class="login-modal">
-            <h2>Admin Login</h2>
-            <div class="form-group">
-                <input type="text" id="adminUsername" placeholder="Username">
-            </div>
-            <div class="form-group">
-                <input type="password" id="adminPassword" placeholder="Password">
-            </div>
-            <button class="btn-login" onclick="login()">Login</button>
-            <p class="login-error" id="loginError">Invalid credentials</p>
+    <div class="modal" id="videoModal" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="close-modal" onclick="closeModal()">✕</span>
+            <video id="modalVideo" controls></video>
         </div>
     </div>
 
-    <!-- ADMIN PANEL -->
-    <div class="admin-overlay" id="adminOverlay">
-        <div class="admin-panel">
-            <div class="admin-header">
-                <h2>Admin Panel</h2>
-                <button class="admin-close" onclick="closeAdmin()">Close</button>
-            </div>
-
-            <!-- UPLOAD SECTION -->
-            <div class="admin-section">
-                <h3>Upload New Design</h3>
-                <div class="form-group">
-                    <label>Design Title</label>
-                    <input type="text" id="designTitle" placeholder="e.g., Classic Ankara Gown">
-                </div>
-                <div class="form-group">
-                    <label>Design Image</label>
-                    <input type="file" id="designImage" accept="image/*">
-                </div>
-                <button class="btn-upload" onclick="uploadDesign()">Upload Design</button>
-                <div class="upload-progress" id="uploadProgress">
-                    <p>Uploading... <span id="progressText">0%</span></p>
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progressFill"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- MANAGE DESIGNS -->
-            <div class="admin-section">
-                <h3>Manage Designs</h3>
-                <div class="designs-list" id="designsList"></div>
-            </div>
+    <div class="admin-login" id="adminLogin">
+        <div class="admin-box">
+            <h2>🔐 Admin Access</h2>
+            <input type="password" id="adminPassword" placeholder="Enter password" onkeypress="if(event.key==='Enter') adminLogin()">
+            <button onclick="adminLogin()">Login</button>
+            <button onclick="closeAdminLogin()" style="background: #666;">Cancel</button>
         </div>
     </div>
 
-    <!-- ORDER MODAL -->
-    <div class="order-overlay" id="orderOverlay">
-        <div class="order-modal">
-            <button class="order-close" onclick="closeOrder()">×</button>
-            <div class="order-steps">
-                <span class="step active">Design</span>
-                <span class="step">Details</span>
-                <span class="step">Send</span>
+    <div class="admin-panel" id="adminPanel">
+        <div class="admin-box">
+            <h2>📊 Admin Dashboard</h2>
+            
+            <h3>📤 Upload New Edit</h3>
+            <input type="file" id="videoFile" accept="video/*">
+            <input type="text" id="videoTitle" placeholder="Video Title (optional)">
+            <button onclick="uploadVideo()">Upload Video</button>
+            <div class="upload-status" id="uploadStatus"></div>
+
+            <h3>🎬 Manage Edits</h3>
+            <div class="video-list" id="adminVideoList">
+                <p style="color: #666; text-align: center;">Loading...</p>
             </div>
-            <h2 id="orderTitle">Order This Design</h2>
-            <div class="form-group">
-                <label>Your Name</label>
-                <input type="text" id="orderName" placeholder="Enter your name">
-            </div>
-            <div class="form-group">
-                <label>Measurements (Optional)</label>
-                <input type="text" id="orderMeasurements" placeholder="e.g., Bust: 36, Waist: 28, Hip: 38">
-            </div>
-            <div class="form-group">
-                <label>Reference Image (Optional)</label>
-                <input type="file" id="orderImage" accept="image/*">
-            </div>
-            <button class="btn-whatsapp" onclick="sendToWhatsApp()">Send Order via WhatsApp</button>
+
+            <button onclick="logout()" style="background: #ff0055; margin-top: 20px;">Logout</button>
         </div>
     </div>
 
-    <!-- Firebase SDK -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, push, set, onValue, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        import { getDatabase, ref, set, get, push, remove, onValue, increment, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBzUELxbbaL6Wb_M1uNhjwlZHVTorN9XJs",
@@ -834,322 +566,251 @@
             projectId: "my-whatsapp-2c1af",
             storageBucket: "my-whatsapp-2c1af.firebasestorage.app",
             messagingSenderId: "1089455460888",
-            appId: "1:1089455460888:web:d0c8dea185ba6769ebe96d"
+            appId: "1:1089455460888:web:15bd0820546c813febe96d"
         };
 
         const app = initializeApp(firebaseConfig);
-        const database = getDatabase(app);
+        const db = getDatabase(app);
 
-        // Make functions globally available
-        window.database = database;
-        window.ref = ref;
-        window.push = push;
-        window.set = set;
-        window.onValue = onValue;
-        window.remove = remove;
+        window.db = db;
+        window.dbRef = ref;
+        window.dbSet = set;
+        window.dbGet = get;
+        window.dbPush = push;
+        window.dbRemove = remove;
+        window.dbOnValue = onValue;
+        window.dbIncrement = increment;
+        window.dbUpdate = update;
 
-        // Load designs on page load
-        loadDesigns();
+        loadVideos();
     </script>
 
     <script>
-        let currentOrderDesign = null;
+        const ADMIN_PASSWORD = "marvellousmarvelfx@gmail.com";
+        const CLOUDINARY_CLOUD_NAME = "dykqgn7xu";
+        const CLOUDINARY_UPLOAD_PRESET = "Goodswill";
 
-        // Admin Login
-        function showLogin() {
-            document.getElementById('loginOverlay').style.display = 'flex';
+        let isAdmin = false;
+        let userLikes = JSON.parse(localStorage.getItem('userLikes') || '{}');
+
+        function showAdminLogin() {
+            document.getElementById('adminLogin').style.display = 'flex';
+            document.getElementById('adminPassword').focus();
         }
 
-        function login() {
-            const username = document.getElementById('adminUsername').value;
-            const password = document.getElementById('adminPassword').value;
+        function closeAdminLogin() {
+            document.getElementById('adminLogin').style.display = 'none';
+            document.getElementById('adminPassword').value = '';
+        }
 
-            if (username === 'nellystitchesglobal' && password === 'nellyj!') {
-                document.getElementById('loginOverlay').style.display = 'none';
-                document.getElementById('adminOverlay').style.display = 'block';
-                loadAdminDesigns();
+        function adminLogin() {
+            const password = document.getElementById('adminPassword').value;
+            if (password === ADMIN_PASSWORD) {
+                isAdmin = true;
+                closeAdminLogin();
+                document.getElementById('adminPanel').style.display = 'flex';
+                loadAdminVideos();
             } else {
-                document.getElementById('loginError').style.display = 'block';
+                alert('❌ Incorrect password');
+                document.getElementById('adminPassword').value = '';
             }
         }
 
-        function closeAdmin() {
-            document.getElementById('adminOverlay').style.display = 'none';
-            document.getElementById('adminUsername').value = '';
-            document.getElementById('adminPassword').value = '';
-            document.getElementById('loginError').style.display = 'none';
+        function logout() {
+            isAdmin = false;
+            document.getElementById('adminPanel').style.display = 'none';
         }
 
-        // Upload Design to Cloudinary and Firebase
-        async function uploadDesign() {
-            const title = document.getElementById('designTitle').value;
-            const imageFile = document.getElementById('designImage').files[0];
+        function showStatus(message, type) {
+            const status = document.getElementById('uploadStatus');
+            status.textContent = message;
+            status.className = 'upload-status ' + type;
+            status.style.display = 'block';
+            
+            if (type !== 'loading') {
+                setTimeout(() => {
+                    status.style.display = 'none';
+                }, 3000);
+            }
+        }
 
-            if (!title || !imageFile) {
-                alert('Please fill all fields');
+        async function uploadVideo() {
+            const file = document.getElementById('videoFile').files[0];
+            const title = document.getElementById('videoTitle').value || 'Untitled Edit';
+
+            if (!file) {
+                alert('⚠️ Please select a video file');
                 return;
             }
 
-            const progressDiv = document.getElementById('uploadProgress');
-            const progressFill = document.getElementById('progressFill');
-            const progressText = document.getElementById('progressText');
+            if (file.size > 100 * 1024 * 1024) {
+                alert('⚠️ File size must be less than 100MB');
+                return;
+            }
 
-            progressDiv.style.display = 'block';
-            progressFill.style.width = '20%';
-            progressText.textContent = '20%';
+            showStatus('⏳ Uploading video...', 'loading');
+
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+            formData.append('folder', 'marvel_fx_edits');
 
             try {
-                // Upload to Cloudinary
-                const formData = new FormData();
-                formData.append('file', imageFile);
-                formData.append('upload_preset', 'Godswill');
-
-                const cloudinaryResponse = await fetch('https://api.cloudinary.com/v1_1/dnsr8wyzx/image/upload', {
+                const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/video/upload`, {
                     method: 'POST',
                     body: formData
                 });
 
-                progressFill.style.width = '60%';
-                progressText.textContent = '60%';
+                if (!response.ok) {
+                    throw new Error('Upload failed');
+                }
 
-                const cloudinaryData = await cloudinaryResponse.json();
-                const imageUrl = cloudinaryData.secure_url;
-
-                // Save to Firebase
-                const designsRef = window.ref(window.database, 'designs');
-                const newDesignRef = window.push(designsRef);
+                const data = await response.json();
                 
-                await window.set(newDesignRef, {
+                const thumbnailUrl = data.secure_url.replace('/upload/', '/upload/w_400,h_300,c_fill,q_auto,f_jpg/').split('.').slice(0, -1).join('.') + '.jpg';
+                
+                const videoData = {
+                    url: data.secure_url,
+                    thumbnail: thumbnailUrl,
                     title: title,
-                    imageUrl: imageUrl,
+                    views: 0,
+                    likes: 0,
                     timestamp: Date.now()
-                });
+                };
 
-                progressFill.style.width = '100%';
-                progressText.textContent = '100%';
+                const newVideoRef = window.dbPush(window.dbRef(window.db, 'videos'));
+                await window.dbSet(newVideoRef, videoData);
 
-                alert('Design uploaded successfully!');
-                
-                // Reset form
-                document.getElementById('designTitle').value = '';
-                document.getElementById('designImage').value = '';
-                
-                setTimeout(() => {
-                    progressDiv.style.display = 'none';
-                    progressFill.style.width = '0%';
-                }, 1000);
-
-                loadAdminDesigns();
-                loadDesigns();
-
+                showStatus('✅ Video uploaded successfully!', 'success');
+                document.getElementById('videoFile').value = '';
+                document.getElementById('videoTitle').value = '';
+                loadAdminVideos();
             } catch (error) {
                 console.error('Upload error:', error);
-                alert('Upload failed. Please try again.');
-                progressDiv.style.display = 'none';
+                showStatus('❌ Upload failed. Please try again.', 'error');
             }
         }
 
-        // Load designs for showcase
-        function loadDesigns() {
-            const designsRef = window.ref(window.database, 'designs');
-            window.onValue(designsRef, (snapshot) => {
-                const showcaseContainer = document.getElementById('designShowcase');
-                showcaseContainer.innerHTML = '';
-
-                const data = snapshot.val();
-                if (data) {
-                    Object.entries(data).forEach(([key, design]) => {
-                        const card = document.createElement('div');
-                        card.className = 'design-card';
-                        card.innerHTML = `
-                            <img src="${design.imageUrl}" alt="${design.title}" class="design-image">
-                            <div class="design-overlay">
-                                <h3 class="design-title">${design.title}</h3>
-                                <div class="design-actions">
-                                    <button class="design-btn" onclick="openOrder('${design.title}', '${design.imageUrl}')">✨ Order</button>
-                                </div>
-                            </div>
-                        `;
-                        showcaseContainer.appendChild(card);
-                    });
-                } else {
-                    showcaseContainer.innerHTML = '<div class="design-card"><div class="placeholder-design">No designs yet. Admin can upload designs.</div></div>';
-                }
-            });
-        }
-
-        // Load designs for admin panel
-        function loadAdminDesigns() {
-            const designsRef = window.ref(window.database, 'designs');
-            window.onValue(designsRef, (snapshot) => {
-                const listContainer = document.getElementById('designsList');
-                listContainer.innerHTML = '';
-
-                const data = snapshot.val();
-                if (data) {
-                    Object.entries(data).forEach(([key, design]) => {
-                        const item = document.createElement('div');
-                        item.className = 'design-item';
-                        item.innerHTML = `
-                            <img src="${design.imageUrl}" alt="${design.title}">
-                            <div class="design-item-info">
-                                <p><strong>${design.title}</strong></p>
-                                <button class="btn-delete" onclick="deleteDesign('${key}')">Delete</button>
-                            </div>
-                        `;listContainer.appendChild(item);
-                    });
-                } else {
-                    listContainer.innerHTML = '<p>No designs uploaded yet.</p>';
-                }
-            });
-        }
-
-        // Delete Design
-        async function deleteDesign(designId) {
-            if (confirm('Are you sure you want to delete this design?')) {
-                const designRef = window.ref(window.database, `designs/${designId}`);
-                await window.remove(designRef);
-                alert('Design deleted successfully!');
-                loadAdminDesigns();
-                loadDesigns();
+        async function deleteVideo(videoId, videoTitle) {
+            if (confirm(`Delete "${videoTitle}"?`)) {
+                await window.dbRemove(window.dbRef(window.db, `videos/${videoId}`));
+                loadAdminVideos();
             }
         }
 
-        // Open Order Modal
-        function openOrder(title, imageUrl) {
-            currentOrderDesign = { title, imageUrl };
-            document.getElementById('orderTitle').textContent = `Order: ${title}`;
-            document.getElementById('orderOverlay').style.display = 'flex';
+        async function loadVideos() {
+            const videosRef = window.dbRef(window.db, 'videos');
+            window.dbOnValue(videosRef, (snapshot) => {
+                const videos = snapshot.val();
+                const grid = document.getElementById('videoGrid');
+                grid.innerHTML = '';
+
+                if (!videos || Object.keys(videos).length === 0) {
+                    grid.innerHTML = `
+                        <div class="empty-state">
+                            <h3>No videos yet</h3>
+                            <p>Check back soon for amazing edits!</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const videoArray = Object.entries(videos).sort((a, b) => b[1].timestamp - a[1].timestamp);
+
+                videoArray.forEach(([id, video]) => {
+                    const card = document.createElement('div');
+                    card.className = 'video-card';
+                    
+                    const likeIcon = userLikes[id] ? '❤️' : '🤍';
+                    
+                    card.innerHTML = `
+                        <img src="${video.thumbnail}" class="video-thumbnail" alt="${video.title}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%231a1a1a%22 width=%22400%22 height=%22300%22/%3E%3Ctext fill=%22%23666%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 font-family=%22sans-serif%22%3EVideo%3C/text%3E%3C/svg%3E'">
+                        <div class="play-overlay">
+                            <div class="play-icon">▶</div>
+                        </div>
+                        <div class="video-info">
+                            <div class="video-title">${video.title}</div>
+                            <div class="video-stats">
+                                <span class="stat">
+                                    <span class="like-btn" onclick="event.stopPropagation(); toggleLike('${id}')">${likeIcon}</span>
+                                    <span>${video.likes || 0}</span>
+                                </span>
+                                <span class="stat">
+                                    👁️ <span>${video.views || 0}</span>
+                                </span>
+                            </div>
+                        </div>
+                    `;
+                    card.onclick = () => playVideo(video.url, id);
+                    grid.appendChild(card);
+                });
+            });
         }
 
-        // Close Order Modal
-        function closeOrder() {
-            document.getElementById('orderOverlay').style.display = 'none';
-            document.getElementById('orderName').value = '';
-            document.getElementById('orderMeasurements').value = '';
-            document.getElementById('orderImage').value = '';
-        }
+        async function loadAdminVideos() {
+            const videosRef = window.dbRef(window.db, 'videos');
+            const snapshot = await window.dbGet(videosRef);
+            const videos = snapshot.val();
+            const list = document.getElementById('adminVideoList');
+            list.innerHTML = '';
 
-        // Send to WhatsApp
-        async function sendToWhatsApp() {
-            const name = document.getElementById('orderName').value;
-            const measurements = document.getElementById('orderMeasurements').value;
-            const imageFile = document.getElementById('orderImage').files[0];
-
-            if (!name) {
-                alert('Please enter your name');
+            if (!videos || Object.keys(videos).length === 0) {
+                list.innerHTML = '<p style="color: #666; text-align: center;">No videos uploaded yet</p>';
                 return;
             }
 
-            let message = `Hello! I'm ${name}.%0A%0AI want to order: *${currentOrderDesign.title}*%0A`;
-            
-            if (measurements) {
-                message += `%0AMeasurements: ${measurements}%0A`;
-            }
+            const videoArray = Object.entries(videos).sort((a, b) => b[1].timestamp - a[1].timestamp);
 
-            message += `%0ADesign Reference: ${currentOrderDesign.imageUrl}`;
-
-            // If customer uploaded reference image, upload to Cloudinary first
-            if (imageFile) {
-                try {
-                    const formData = new FormData();
-                    formData.append('file', imageFile);
-                    formData.append('upload_preset', 'Godswill');
-
-                    const response = await fetch('https://api.cloudinary.com/v1_1/dnsr8wyzx/image/upload', {
-                        method: 'POST',
-                        body: formData
-                    });
-
-                    const data = await response.json();
-                    message += `%0A%0AMy Reference Image: ${data.secure_url}`;
-                } catch (error) {
-                    console.error('Image upload failed:', error);
-                }
-            }
-
-            // Open WhatsApp
-            const whatsappUrl = `https://wa.me/2349067725503?text=${message}`;
-            window.open(whatsappUrl, '_blank');
-            
-            closeOrder();
-        }
-
-        // Hero Slider (if images are loaded)
-        let heroSlideIndex = 0;
-        function startHeroSlider() {
-            const slides = document.querySelectorAll('.hero-slide');
-            if (slides.length > 0) {
-                slides.forEach((slide, index) => {
-                    slide.classList.remove('active');
-                    if (index === heroSlideIndex) {
-                        slide.classList.add('active');
-                    }
-                });
-                heroSlideIndex = (heroSlideIndex + 1) % slides.length;
-            }
-        }
-
-        // Check for hero images from Firebase (optional feature)
-        function loadHeroImages() {
-            const heroRef = window.ref(window.database, 'hero-images');
-            window.onValue(heroRef, (snapshot) => {
-                const heroContainer = document.getElementById('heroSlider');
-                const data = snapshot.val();
-                
-                if (data && Object.keys(data).length > 0) {
-                    heroContainer.innerHTML = '';
-                    Object.values(data).forEach((image, index) => {
-                        const img = document.createElement('img');
-                        img.src = image.url;
-                        img.className = 'hero-slide';
-                        if (index === 0) img.classList.add('active');
-                        heroContainer.appendChild(img);
-                    });
-                    setInterval(startHeroSlider, 4000);
-                }
+            videoArray.forEach(([id, video]) => {
+                const item = document.createElement('div');
+                item.className = 'admin-video-item';
+                item.innerHTML = `
+                    <span><strong>${video.title}</strong><br>
+                    👁️ ${video.views || 0} views • ❤️ ${video.likes || 0} likes</span>
+                    <button class="delete-btn" onclick="deleteVideo('${id}', '${video.title}')">🗑️ Delete</button>
+                `;
+                list.appendChild(item);
             });
         }
 
-        // Initialize
-        window.onload = function() {
-            loadDesigns();
-            loadHeroImages();
-        };
+        async function playVideo(url, videoId) {
+            const modal = document.getElementById('videoModal');
+            const video = document.getElementById('modalVideo');
+            video.src = url;
+            modal.style.display = 'flex';
+            video.play();
 
-        // Smooth scroll
-        document.querySelector('.btn-explore').addEventListener('click', function(e) {
-            e.preventDefault();
-            document.querySelector('#showcase').scrollIntoView({ behavior: 'smooth' });
-        });
+            const viewRef = window.dbRef(window.db, `videos/${videoId}/views`);
+            await window.dbSet(viewRef, window.dbIncrement(1));
+        }
 
-        // Mobile swipe for showcase
-        const showcaseScroll = document.querySelector('.showcase-scroll');
-        let isDown = false;
-        let startX;
-        let scrollLeft;
+        function closeModal() {
+            const modal = document.getElementById('videoModal');
+            const video = document.getElementById('modalVideo');
+            video.pause();
+            video.src = '';
+            modal.style.display = 'none';
+        }
 
-        showcaseScroll.addEventListener('mousedown', (e) => {
-            isDown = true;
-            startX = e.pageX - showcaseScroll.offsetLeft;
-            scrollLeft = showcaseScroll.scrollLeft;
-        });
+        async function toggleLike(videoId) {
+            if (userLikes[videoId]) {
+                delete userLikes[videoId];
+                await window.dbSet(window.dbRef(window.db, `videos/${videoId}/likes`), window.dbIncrement(-1));
+            } else {
+                userLikes[videoId] = true;
+                await window.dbSet(window.dbRef(window.db, `videos/${videoId}/likes`), window.dbIncrement(1));
+            }
+            
+            localStorage.setItem('userLikes', JSON.stringify(userLikes));
+        }
 
-        showcaseScroll.addEventListener('mouseleave', () => {
-            isDown = false;
-        });
-
-        showcaseScroll.addEventListener('mouseup', () => {
-            isDown = false;
-        });
-
-        showcaseScroll.addEventListener('mousemove', (e) => {
-            if (!isDown) return;
-            e.preventDefault();
-            const x = e.pageX - showcaseScroll.offsetLeft;
-            const walk = (x - startX) * 2;
-            showcaseScroll.scrollLeft = scrollLeft - walk;
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+                if (!isAdmin) closeAdminLogin();
+            }
         });
     </script>
+
 </body>
 </html>
