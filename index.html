@@ -697,10 +697,10 @@
       </div>
       <div class="header-right">
         <select class="model-selector" id="modelSelector">
-          <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
-          <option value="gemini-2.5-pro">Gemini 2.5 Pro</option>
-          <option value="gemini-3-flash-preview">Gemini 3 Flash (Preview)</option>
-          <option value="gemini-3-pro-preview">Gemini 3 Pro (Preview)</option>
+          <option value="llama-3.3-70b-versatile">Llama 3.3 70B</option>
+          <option value="llama-3.1-70b-versatile">Llama 3.1 70B</option>
+          <option value="llama-3.1-8b-instant">Llama 3.1 8B (Fast)</option>
+          <option value="mixtral-8x7b-32768">Mixtral 8x7B</option>
         </select>
         <button class="dark-mode-toggle" onclick="toggleDarkMode()">
           ☀️ <span>Light</span>
@@ -755,7 +755,7 @@
   </div>
 
   <script>
-    const GEMINI_API_KEY = 'AIzaSyC-SOHl4EIrc6dF_GU7TqWbB64FO-1bd3M';
+    const GROQ_API_KEY = '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';
     
     let recognition;
     let isRecording = false;
@@ -931,7 +931,7 @@
       addMessage(message, 'user');
       conversationHistory.push({
         role: 'user',
-        parts: [{text: message}]
+        content: message
       });
 
       input.value = '';
@@ -945,39 +945,21 @@
 
       try {
         const modelName = document.getElementById('modelSelector').value;
-        const url = `https://generativelanguage.googleapis.com/v1/models/${modelName}:generateContent?key=${GEMINI_API_KEY}`;
+        const url = 'https://api.groq.com/openai/v1/chat/completions';
         
         const response = await fetch(url, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${GROQ_API_KEY}`
           },
           body: JSON.stringify({
-            contents: conversationHistory,
-            generationConfig: {
-              temperature: 0.9,
-              topK: 40,
-              topP: 0.95,
-              maxOutputTokens: 2048,
-            },
-            safetySettings: [
-              {
-                category: "HARM_CATEGORY_HARASSMENT",
-                threshold: "BLOCK_MEDIUM_AND_ABOVE"
-              },
-              {
-                category: "HARM_CATEGORY_HATE_SPEECH",
-                threshold: "BLOCK_MEDIUM_AND_ABOVE"
-              },
-              {
-                category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-                threshold: "BLOCK_MEDIUM_AND_ABOVE"
-              },
-              {
-                category: "HARM_CATEGORY_DANGEROUS_CONTENT",
-                threshold: "BLOCK_MEDIUM_AND_ABOVE"
-              }
-            ]
+            model: modelName,
+            messages: conversationHistory,
+            temperature: 0.7,
+            max_tokens: 2048,
+            top_p: 1,
+            stream: false
           })
         });
 
@@ -987,12 +969,12 @@
           throw new Error(data.error?.message || 'API request failed');
         }
 
-        if (data.candidates && data.candidates[0] && data.candidates[0].content) {
-          const aiResponse = data.candidates[0].content.parts[0].text;
+        if (data.choices && data.choices[0] && data.choices[0].message) {
+          const aiResponse = data.choices[0].message.content;
           addMessage(aiResponse, 'assistant');
           conversationHistory.push({
-            role: 'model',
-            parts: [{text: aiResponse}]
+            role: 'assistant',
+            content: aiResponse
           });
           
           saveChatSession(message);
@@ -1168,21 +1150,21 @@
 
       try {
         const modelName = document.getElementById('modelSelector').value;
-        const url = `https://generativelanguage.googleapis.com/v1/models/${modelName}:generateContent?key=${GEMINI_API_KEY}`;
+        const url = 'https://api.groq.com/openai/v1/chat/completions';
         
         const response = await fetch(url, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${GROQ_API_KEY}`
           },
           body: JSON.stringify({
-            contents: conversationHistory,
-            generationConfig: {
-              temperature: 1.0,
-              topK: 40,
-              topP: 0.95,
-              maxOutputTokens: 2048,
-            }
+            model: modelName,
+            messages: conversationHistory,
+            temperature: 1.0,
+            max_tokens: 2048,
+            top_p: 1,
+            stream: false
           })
         });
 
@@ -1192,12 +1174,12 @@
           throw new Error(data.error?.message || 'API request failed');
         }
 
-        if (data.candidates && data.candidates[0] && data.candidates[0].content) {
-          const aiResponse = data.candidates[0].content.parts[0].text;
+        if (data.choices && data.choices[0] && data.choices[0].message) {
+          const aiResponse = data.choices[0].message.content;
           addMessage(aiResponse, 'assistant');
           conversationHistory.push({
-            role: 'model',
-            parts: [{text: aiResponse}]
+            role: 'assistant',
+            content: aiResponse
           });
         } else {
           throw new Error('Invalid response from API');
@@ -1259,12 +1241,8 @@
       const messagesContainer = document.getElementById('messagesContainer');
       messagesContainer.innerHTML = '';
 
-      session.messages.forEach((msg, index) => {
-        if (index % 2 === 0) {
-          addMessage(msg.parts[0].text, 'user');
-        } else {
-          addMessage(msg.parts[0].text, 'assistant');
-        }
+      session.messages.forEach((msg) => {
+        addMessage(msg.content, msg.role === 'user' ? 'user' : 'assistant');
       });
 
       closeSidebar();
@@ -1273,7 +1251,7 @@
     function showAbout() {
       const aboutMessage = `🤖 GodswillChatbot - Advanced AI Assistant
 
-Powered by Google Gemini AI (2.5 & 3.0), I'm here to help you with:
+Powered by Groq's lightning-fast AI models (Llama 3.3 & Mixtral), I'm here to help you with:
 
 ✨ Creative Writing & Storytelling
 💻 Code Debugging & Development
@@ -1285,16 +1263,17 @@ Powered by Google Gemini AI (2.5 & 3.0), I'm here to help you with:
 🎯 Task Planning
 
 Features:
+• Ultra-fast response times with Groq
 • Context-aware conversations
 • Multi-turn dialogue memory
 • Voice input & text-to-speech
 • Code syntax understanding
-• Multiple AI models (2.5 & 3.0)
+• Multiple AI models (Llama & Mixtral)
 • Chat history saving
 • Cross-device responsive design
 
 Built with ❤️ by Godswill
-Version 3.0 - December 2024`;
+Version 3.1 - December 2024`;
 
       addMessage(aboutMessage, 'assistant');
       closeSidebar();
