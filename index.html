@@ -3,8 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>GodswillChatbot</title>
+  <title>GodswillChatbot Premium</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://js.paystack.co/v1/inline.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  
   <style>
     * {
       margin: 0;
@@ -12,16 +15,173 @@
       box-sizing: border-box;
       -webkit-tap-highlight-color: transparent;
     }
+    
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       background: #343541;
       color: #ececf1;
       display: flex;
       height: 100vh;
-      height: 100dvh;
       overflow: hidden;
       position: fixed;
       width: 100%;
+    }
+
+    /* Auth Screen */
+    .auth-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .auth-screen.hidden {
+      display: none;
+    }
+
+    .auth-container {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      max-width: 400px;
+      width: 90%;
+    }
+
+    .auth-logo {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .auth-logo h1 {
+      color: #667eea;
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .auth-logo p {
+      color: #666;
+      font-size: 14px;
+    }
+
+    .auth-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+
+    .auth-tab {
+      flex: 1;
+      padding: 12px;
+      background: #f0f0f0;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      color: #666;
+      transition: all 0.3s;
+    }
+
+    .auth-tab.active {
+      background: #667eea;
+      color: white;
+    }
+
+    .auth-form {
+      display: none;
+    }
+
+    .auth-form.active {
+      display: block;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #333;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 14px;
+      transition: all 0.3s;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    .auth-btn {
+      width: 100%;
+      padding: 14px;
+      background: #667eea;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .auth-btn:hover {
+      background: #5568d3;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .auth-btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .error-msg {
+      background: #fee;
+      color: #c33;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      font-size: 13px;
+      display: none;
+    }
+
+    .error-msg.show {
+      display: block;
+    }
+
+    /* Premium Badge */
+    .premium-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+      color: #000;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      margin-left: 8px;
+      animation: shine 2s infinite;
+    }
+
+    @keyframes shine {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.8; }
     }
 
     .sidebar {
@@ -36,6 +196,42 @@
     .sidebar-header {
       padding: 12px;
       border-bottom: 1px solid #4d4d4f;
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      background: #2a2b32;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      background: #667eea;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .user-info {
+      flex: 1;
+    }
+
+    .user-name {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .user-status {
+      font-size: 11px;
+      color: #8e8ea0;
     }
 
     .new-chat-btn {
@@ -75,10 +271,35 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     .chat-item:hover {
       background: #2a2b32;
+    }
+
+    .chat-item-actions {
+      display: none;
+      gap: 5px;
+    }
+
+    .chat-item:hover .chat-item-actions {
+      display: flex;
+    }
+
+    .chat-action-btn {
+      background: transparent;
+      border: none;
+      color: #ececf1;
+      cursor: pointer;
+      padding: 4px;
+      font-size: 14px;
+    }
+
+    .chat-action-btn:hover {
+      color: #ef4444;
     }
 
     .sidebar-footer {
@@ -148,6 +369,23 @@
       gap: 8px;
     }
 
+    .upgrade-btn {
+      background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+      color: #000;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 700;
+      transition: all 0.2s;
+    }
+
+    .upgrade-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
+    }
+
     .model-selector {
       background: transparent;
       border: 1px solid #565869;
@@ -160,24 +398,6 @@
     }
 
     .model-selector:hover {
-      background: #40414f;
-    }
-
-    .dark-mode-toggle {
-      background: transparent;
-      border: 1px solid #565869;
-      color: #ececf1;
-      padding: 8px 16px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 14px;
-      transition: all 0.2s;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .dark-mode-toggle:hover {
       background: #40414f;
     }
 
@@ -215,8 +435,35 @@
 
     .welcome-screen h1 {
       font-size: clamp(24px, 5vw, 32px);
-      margin-bottom: 40px;
+      margin-bottom: 20px;
       font-weight: 600;
+    }
+
+    .premium-features {
+      background: #2a2b32;
+      padding: 20px;
+      border-radius: 12px;
+      margin: 20px 0;
+      max-width: 600px;
+    }
+
+    .premium-features h3 {
+      margin-bottom: 15px;
+      color: #ffd700;
+    }
+
+    .feature-list {
+      text-align: left;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 10px;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
     }
 
     .example-cards {
@@ -271,6 +518,7 @@
       padding: clamp(16px, 3vw, 24px);
       display: flex;
       gap: clamp(12px, 2vw, 24px);
+      position: relative;
     }
 
     .message-avatar {
@@ -334,6 +582,31 @@
       border-color: #ef4444;
     }
 
+    .edit-mode {
+      background: #40414f;
+      padding: 10px;
+      border-radius: 6px;
+      margin-top: 10px;
+    }
+
+    .edit-mode textarea {
+      width: 100%;
+      background: #343541;
+      border: 1px solid #565869;
+      color: #ececf1;
+      padding: 8px;
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 14px;
+      resize: vertical;
+    }
+
+    .edit-mode-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
     .typing-wrapper {
       display: none;
       background: #444654;
@@ -392,6 +665,23 @@
       border-top: 1px solid #4d4d4f;
     }
 
+    .usage-bar {
+      max-width: min(800px, 100%);
+      margin: 0 auto 10px;
+      background: #2a2b32;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .usage-bar.warning {
+      background: #7c2d12;
+      color: #fca5a5;
+    }
+
     .input-wrapper {
       max-width: min(800px, 100%);
       margin: 0 auto;
@@ -412,29 +702,30 @@
       border-color: #ececf1;
     }
 
-    .mic-btn {
+    .feature-btns {
+      display: flex;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    .feature-btn {
       background: transparent;
       border: none;
       color: #ececf1;
       cursor: pointer;
       font-size: 20px;
-      padding: 8px;
+      padding: 6px;
       transition: all 0.2s;
-      flex-shrink: 0;
+      border-radius: 4px;
     }
 
-    .mic-btn:hover {
-      opacity: 0.7;
+    .feature-btn:hover {
+      background: #565869;
     }
 
-    .mic-btn.recording {
-      color: #ef4444;
-      animation: pulse 1s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
+    .feature-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
     }
 
     .input-box {
@@ -478,6 +769,139 @@
       opacity: 0.5;
     }
 
+    /* Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 9998;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal {
+      background: #2a2b32;
+      padding: 30px;
+      border-radius: 16px;
+      max-width: 500px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal h2 {
+      margin-bottom: 20px;
+      color: #ffd700;
+    }
+
+    .pricing-cards {
+      display: grid;
+      gap: 15px;
+      margin: 20px 0;
+    }
+
+    .pricing-card {
+      background: #343541;
+      padding: 20px;
+      border-radius: 12px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .pricing-card:hover {
+      border-color: #ffd700;
+      transform: scale(1.02);
+    }
+
+    .pricing-card.popular {
+      border-color: #ffd700;
+      position: relative;
+    }
+
+    .popular-badge {
+      position: absolute;
+      top: -10px;
+      right: 20px;
+      background: #ffd700;
+      color: #000;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .pricing-card h3 {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .price {
+      font-size: 32px;
+      font-weight: 700;
+      color: #ffd700;
+      margin: 10px 0;
+    }
+
+    .price-period {
+      font-size: 14px;
+      color: #8e8ea0;
+    }
+
+    .features-list {
+      list-style: none;
+      margin: 15px 0;
+    }
+
+    .features-list li {
+      padding: 8px 0;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .features-list li:before {
+      content: "✓";
+      color: #19c37d;
+      font-weight: 700;
+    }
+
+    .select-plan-btn {
+      width: 100%;
+      padding: 12px;
+      background: #667eea;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .select-plan-btn:hover {
+      background: #5568d3;
+    }
+
+    .close-modal {
+      background: transparent;
+      border: 1px solid #565869;
+      color: #ececf1;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 15px;
+      width: 100%;
+    }
+
     .overlay {
       display: none;
       position: fixed;
@@ -493,112 +917,72 @@
       display: block;
     }
 
-    /* Light Mode */
-    body.light-mode {
-      background: #ffffff;
-      color: #202123;
+    /* File upload preview */
+    .file-preview {
+      background: #2a2b32;
+      padding: 10px;
+      border-radius: 8px;
+      margin-top: 10px;
+      display: none;
+      align-items: center;
+      gap: 10px;
     }
 
-    body.light-mode .sidebar {
-      background: #f7f7f8;
-      border-right: 1px solid #e5e5e5;
+    .file-preview.active {
+      display: flex;
     }
 
-    body.light-mode .sidebar-header,
-    body.light-mode .sidebar-footer {
-      border-color: #e5e5e5;
+    .file-preview img {
+      max-width: 100px;
+      max-height: 100px;
+      border-radius: 4px;
     }
 
-    body.light-mode .new-chat-btn,
-    body.light-mode .dark-mode-toggle,
-    body.light-mode .model-selector,
-    body.light-mode .action-btn {
-      border-color: #e5e5e5;
-      color: #202123;
+    .file-info {
+      flex: 1;
+      font-size: 13px;
     }
 
-    body.light-mode .new-chat-btn:hover,
-    body.light-mode .sidebar-footer-item:hover,
-    body.light-mode .chat-item:hover {
-      background: #ececed;
+    .remove-file {
+      background: #ef4444;
+      border: none;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
     }
 
-    body.light-mode .sidebar-footer-item {
-      color: #202123;
+    /* Personality Selector */
+    .personality-selector {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 10px;
+      background: #2a2b32;
+      border-radius: 8px;
+      margin-bottom: 10px;
     }
 
-    body.light-mode .header {
-      background: #ffffff;
-      border-bottom: 1px solid #e5e5e5;
+    .personality-btn {
+      background: #40414f;
+      border: 2px solid transparent;
+      color: #ececf1;
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 13px;
+      white-space: nowrap;
+      transition: all 0.2s;
     }
 
-    body.light-mode .header-title {
-      color: #202123;
+    .personality-btn.active {
+      border-color: #667eea;
+      background: #667eea;
     }
 
-    body.light-mode .dark-mode-toggle:hover,
-    body.light-mode .model-selector:hover,
-    body.light-mode .action-btn:hover {
-      background: #f7f7f8;
-    }
-
-    body.light-mode .message-wrapper.user {
-      background: #ffffff;
-    }
-
-    body.light-mode .message-wrapper.assistant {
-      background: #f7f7f8;
-    }
-
-    body.light-mode .message-wrapper,
-    body.light-mode .typing-wrapper {
-      border-bottom: 1px solid #e5e5e5;
-    }
-
-    body.light-mode .typing-wrapper {
-      background: #f7f7f8;
-    }
-
-    body.light-mode .input-container {
-      background: #ffffff;
-      border-top: 1px solid #e5e5e5;
-    }
-
-    body.light-mode .input-area {
-      background: #ffffff;
-      border-color: #e5e5e5;
-    }
-
-    body.light-mode .input-box {
-      color: #202123;
-    }
-
-    body.light-mode .input-box::placeholder {
-      color: #8e8ea0;
-    }
-
-    body.light-mode .example-card {
-      background: #f7f7f8;
-    }
-
-    body.light-mode .example-card:hover {
-      background: #ececed;
-    }
-
-    body.light-mode .mic-btn {
-      color: #202123;
-    }
-
-    body.light-mode .messages-container::-webkit-scrollbar-track {
-      background: #ffffff;
-    }
-
-    body.light-mode .messages-container::-webkit-scrollbar-thumb {
-      background: #d0d0d0;
-    }
-
-    body.light-mode .menu-btn {
-      color: #202123;
+    .personality-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
     }
 
     /* Mobile Styles */
@@ -608,7 +992,6 @@
         left: 0;
         top: 0;
         height: 100vh;
-        height: 100dvh;
         z-index: 1000;
         transform: translateX(-100%);
       }
@@ -625,7 +1008,7 @@
         font-size: 14px;
       }
 
-      .dark-mode-toggle span {
+      .upgrade-btn span {
         display: none;
       }
 
@@ -648,6 +1031,10 @@
         grid-template-columns: 1fr;
         gap: 12px;
       }
+
+      .auth-container {
+        padding: 30px 20px;
+      }
     }
 
     @media (max-width: 480px) {
@@ -659,32 +1046,84 @@
         padding: 10px;
       }
 
-      .mic-btn, .send-btn {
+      .feature-btn, .send-btn {
         padding: 6px 10px;
         font-size: 18px;
       }
+    }
+
+    input[type="file"] {
+      display: none;
     }
   </style>
 </head>
 <body>
 
+  <!-- Auth Screen -->
+  <div class="auth-screen" id="authScreen">
+    <div class="auth-container">
+      <div class="auth-logo">
+        <h1>🤖 GodswillChatbot</h1>
+        <p>Your Premium AI Assistant</p>
+      </div>
+
+      <div class="auth-tabs">
+        <button class="auth-tab active" onclick="switchAuthTab('login')">Login</button>
+        <button class="auth-tab" onclick="switchAuthTab('signup')">Sign Up</button>
+      </div>
+
+      <div class="error-msg" id="authError"></div>
+
+      <!-- Login Form -->
+      <form class="auth-form active" id="loginForm" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="loginEmail" placeholder="your@email.com" required>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="loginPassword" placeholder="Enter password" required>
+        </div>
+        <button type="submit" class="auth-btn" id="loginBtn">Login</button>
+      </form>
+
+      <!-- Signup Form -->
+      <form class="auth-form" id="signupForm" onsubmit="handleSignup(event)">
+        <div class="form-group">
+          <label>Username</label>
+          <input type="text" id="signupUsername" placeholder="Choose username" required>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="signupEmail" placeholder="your@email.com" required>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="signupPassword" placeholder="Create password (min 6 chars)" required minlength="6">
+        </div>
+        <button type="submit" class="auth-btn" id="signupBtn">Create Account</button>
+      </form>
+    </div>
+  </div>
+
   <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
 
+  <!-- Main App -->
   <div class="sidebar" id="sidebar">
     <div class="sidebar-header">
+      <div class="user-profile">
+        <div class="user-avatar" id="userAvatar">U</div>
+        <div class="user-info">
+          <div class="user-name" id="userName">User</div>
+          <div class="user-status" id="userStatus">Free Plan</div>
+        </div>
+      </div>
       <button class="new-chat-btn" onclick="newChat()">
         ➕ New chat
       </button>
     </div>
-    <div class="sidebar-content" id="chatHistory">
-      <!-- Chat history -->
-    </div>
-    <div class="sidebar-footer">
-      <div class="sidebar-footer-item" onclick="showAbout()">
-        ℹ️ About
-      </div>
-      <div class="sidebar-footer-item" onclick="showContact()">
-        📧 Contact
+    <div class="sidebar-footer-item" onclick="handleLogout()">
+        🚪 Logout
       </div>
     </div>
   </div>
@@ -696,21 +1135,55 @@
         <div class="header-title">GodswillChatbot</div>
       </div>
       <div class="header-right">
+        <button class="upgrade-btn" onclick="showUpgradeModal()">
+          ⭐ <span>Upgrade</span>
+        </button>
         <select class="model-selector" id="modelSelector">
           <option value="llama-3.3-70b-versatile">Llama 3.3 70B</option>
           <option value="llama-3.1-70b-versatile">Llama 3.1 70B</option>
           <option value="llama-3.1-8b-instant">Llama 3.1 8B (Fast)</option>
           <option value="mixtral-8x7b-32768">Mixtral 8x7B</option>
         </select>
-        <button class="dark-mode-toggle" onclick="toggleDarkMode()">
-          ☀️ <span>Light</span>
-        </button>
       </div>
+    </div>
+
+    <!-- Personality Selector (Premium) -->
+    <div class="personality-selector" id="personalitySelector" style="display: none;">
+      <button class="personality-btn active" data-personality="default" onclick="switchPersonality('default')">
+        💬 Normal
+      </button>
+      <button class="personality-btn" data-personality="teacher" onclick="switchPersonality('teacher')">
+        👨‍🏫 Teacher
+      </button>
+      <button class="personality-btn" data-personality="coder" onclick="switchPersonality('coder')">
+        💻 Coder
+      </button>
+      <button class="personality-btn" data-personality="creative" onclick="switchPersonality('creative')">
+        🎨 Creative
+      </button>
+      <button class="personality-btn" data-personality="expert" onclick="switchPersonality('expert')">
+        🧠 Expert
+      </button>
     </div>
 
     <div class="messages-container" id="messagesContainer">
       <div class="welcome-screen" id="welcomeScreen">
-        <h1>GodswillChatbot</h1>
+        <h1>Welcome to GodswillChatbot! 🤖</h1>
+        
+        <div class="premium-features">
+          <h3>🌟 Premium Features Available</h3>
+          <div class="feature-list">
+            <div class="feature-item">🎨 AI Image Generation</div>
+            <div class="feature-item">📄 PDF Analysis</div>
+            <div class="feature-item">👁️ Image Analysis</div>
+            <div class="feature-item">🎙️ Premium Voices</div>
+            <div class="feature-item">💾 Chat Export</div>
+            <div class="feature-item">🎭 AI Personalities</div>
+            <div class="feature-item">📝 50+ Templates</div>
+            <div class="feature-item">♾️ Unlimited Messages</div>
+          </div>
+        </div>
+
         <div class="example-cards">
           <div class="example-card" onclick="sendExampleMessage('Explain quantum computing in simple terms')">
             <h3>💡 Explain concepts</h3>
@@ -724,9 +1197,9 @@
             <h3>💻 Code assistance</h3>
             <p>"Help me debug this Python code"</p>
           </div>
-          <div class="example-card" onclick="sendExampleMessage('Teach me basic Spanish phrases')">
-            <h3>🌍 Learn languages</h3>
-            <p>"Teach me basic Spanish phrases"</p>
+          <div class="example-card" onclick="sendExampleMessage('Generate an image of a sunset')">
+            <h3>🎨 Generate images</h3>
+            <p>"Generate an image of a sunset" (Premium)</p>
           </div>
         </div>
       </div>
@@ -744,9 +1217,35 @@
     </div>
 
     <div class="input-container">
+      <div class="usage-bar" id="usageBar">
+        <span id="usageText">Messages today: 0/20</span>
+        <span id="usageUpgrade" style="cursor: pointer; color: #ffd700;" onclick="showUpgradeModal()">Upgrade for unlimited</span>
+      </div>
+      
+      <div class="file-preview" id="filePreview">
+        <img id="previewImage" src="" alt="Preview">
+        <div class="file-info" id="fileInfo"></div>
+        <button class="remove-file" onclick="removeFile()">✕</button>
+      </div>
+
       <div class="input-wrapper">
         <div class="input-area">
-          <button class="mic-btn" id="micBtn" onclick="startVoiceInput()">🎤</button>
+          <div class="feature-btns">
+            <input type="file" id="imageUpload" accept="image/*" onchange="handleImageUpload(event)">
+            <button class="feature-btn" id="imageBtn" onclick="document.getElementById('imageUpload').click()" title="Upload Image (Premium)">
+              🖼️
+            </button>
+            
+            <input type="file" id="pdfUpload" accept=".pdf" onchange="handlePDFUpload(event)">
+            <button class="feature-btn" id="pdfBtn" onclick="document.getElementById('pdfUpload').click()" title="Upload PDF (Premium)">
+              📄
+            </button>
+            
+            <button class="feature-btn" id="micBtn" onclick="startVoiceInput()" title="Voice Input">
+              🎤
+            </button>
+          </div>
+          
           <textarea class="input-box" id="messageInput" placeholder="Send a message..." rows="1" onkeydown="handleKeyDown(event)" oninput="autoResize(this)"></textarea>
           <button class="send-btn" id="sendBtn" onclick="sendMessage()">Send</button>
         </div>
@@ -754,188 +1253,467 @@
     </div>
   </div>
 
-  <script>
-    const GROQ_API_KEY = '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';
+  <!-- Upgrade Modal -->
+  <div class="modal-overlay" id="upgradeModal">
+    <div class="modal">
+      <h2>⭐ Upgrade to Premium</h2>
+      <p style="color: #8e8ea0; margin-bottom: 20px;">Choose the perfect plan for you</p>
+
+      <div class="pricing-cards">
+        <div class="pricing-card" onclick="selectPlan('weekly', 950)">
+          <h3>Weekly Plan</h3>
+          <div class="price">₦950</div>
+          <div class="price-period">per week</div>
+          <ul class="features-list">
+            <li>Unlimited Messages</li>
+            <li>All Premium Features</li>
+            <li>7 Days Access</li>
+          </ul>
+          <button class="select-plan-btn">Select Weekly</button>
+        </div>
+
+        <div class="pricing-card popular">
+          <div class="popular-badge">MOST POPULAR</div>
+          <h3>Monthly Plan</h3>
+          <div class="price">₦4,000</div>
+          <div class="price-period">per month</div>
+          <ul class="features-list">
+            <li>Unlimited Messages</li>
+            <li>All Premium Features</li>
+            <li>Priority Support</li>
+            <li>30 Days Access</li>
+            <li>Save ₦800!</li>
+          </ul>
+          <button class="select-plan-btn">Select Monthly</button>
+        </div>
+
+        <div class="pricing-card" onclick="selectPlan('yearly', 15000)">
+          <h3>Yearly Plan</h3>
+          <div class="price">₦15,000</div>
+          <div class="price-period">per year</div>
+          <ul class="features-list">
+            <li>Unlimited Messages</li>
+            <li>All Premium Features</li>
+            <li>Priority Support</li>
+            <li>365 Days Access</li>
+            <li>Save ₦33,000! 🎉</li>
+          </ul>
+          <button class="select-plan-btn">Select Yearly</button>
+        </div>
+      </div>
+
+      <button class="close-modal" onclick="closeUpgradeModal()">Maybe Later</button>
+    </div>
+  </div>
+
+  <script type="module">
+    // Firebase imports are already loaded in the head
     
-    let recognition;
-    let isRecording = false;
+    // Global variables
+    let currentUser = null;
+    let isPremium = false;
+    let premiumExpiry = null;
+    let currentPersonality = 'default';
     let conversationHistory = [];
-    let currentChatId = Date.now();
-    let chatSessions = JSON.parse(localStorage.getItem('chatSessions') || '[]');
+    let currentChatId = null;
+    let dailyMessageCount = 0;
+    let uploadedFile = null;
+    let recognition = null;
+    let isRecording = false;
 
-    // Speech Recognition Setup
-    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-      recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-      recognition.continuous = false;
-      recognition.interimResults = false;
-      recognition.lang = 'en-US';
+    const GROQ_API_KEY = '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';
+    const PAYSTACK_PUBLIC_KEY = 'pk_test_b81a70d43ad464439907';
 
-      recognition.onresult = function(event) {
-        const transcript = event.results[0][0].transcript;
-        document.getElementById('messageInput').value = transcript;
-        stopVoiceInput();
-        sendMessage();
-      };
+    // Personality system prompts
+    const personalities = {
+      default: "You are a helpful AI assistant.",
+      teacher: "You are a patient and encouraging teacher who explains concepts clearly with examples and encourages learning.",
+      coder: "You are an expert programmer who helps with code, debugging, best practices, and technical explanations.",
+      creative: "You are a creative writer who helps with stories, poems, scripts, and imaginative content.",
+      expert: "You are a professional expert who provides detailed, authoritative answers with citations and expertise."
+    };
 
-      recognition.onerror = function(event) {
-        console.error('Speech recognition error:', event.error);
-        stopVoiceInput();
-        if (event.error === 'not-allowed') {
-          alert('Please allow microphone access to use voice input.');
-        }
-      };
-
-      recognition.onend = function() {
-        stopVoiceInput();
-      };
-    }
-
-    // Initialize
-    window.addEventListener('load', () => {
-      loadChatHistory();
-      adjustViewportHeight();
+    // Initialize app
+    window.addEventListener('load', async () => {
+      await initializeFirebase();
+      checkDailyUsage();
+      loadMicrophoneSupport();
     });
 
-    window.addEventListener('resize', adjustViewportHeight);
-
-    function adjustViewportHeight() {
-      let vh = window.innerHeight * 0.01;
-      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    async function initializeFirebase() {
+      const { onAuthStateChanged } = window.firebaseAuthMethods;
+      
+      onAuthStateChanged(window.firebaseAuth, async (user) => {
+        if (user) {
+          currentUser = user;
+          await loadUserData();
+          document.getElementById('authScreen').classList.add('hidden');
+          loadChatHistory();
+        } else {
+          document.getElementById('authScreen').classList.remove('hidden');
+        }
+      });
     }
 
-    function toggleSidebar() {
-      const sidebar = document.getElementById('sidebar');
-      const overlay = document.getElementById('overlay');
-      sidebar.classList.toggle('open');
-      overlay.classList.toggle('active');
-    }
-
-    function closeSidebar() {
-      const sidebar = document.getElementById('sidebar');
-      const overlay = document.getElementById('overlay');
-      sidebar.classList.remove('open');
-      overlay.classList.remove('active');
-    }
-
-    function toggleDarkMode() {
-      document.body.classList.toggle('light-mode');
-      const btn = document.querySelector('.dark-mode-toggle');
-      const span = btn.querySelector('span');
-      if (document.body.classList.contains('light-mode')) {
-        btn.innerHTML = '🌙 <span>Dark</span>';
-        localStorage.setItem('theme', 'light');
+    // Auth functions
+    window.switchAuthTab = function(tab) {
+      document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+      
+      if (tab === 'login') {
+        document.querySelectorAll('.auth-tab')[0].classList.add('active');
+        document.getElementById('loginForm').classList.add('active');
       } else {
-        btn.innerHTML = '☀️ <span>Light</span>';
-        localStorage.setItem('theme', 'dark');
+        document.querySelectorAll('.auth-tab')[1].classList.add('active');
+        document.getElementById('signupForm').classList.add('active');
       }
-    }
+      
+      document.getElementById('authError').classList.remove('show');
+    };
 
-    // Load saved theme
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'light') {
-      toggleDarkMode();
-    }
+    window.handleLogin = async function(e) {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+      const btn = document.getElementById('loginBtn');
+      const errorMsg = document.getElementById('authError');
 
-    function autoResize(textarea) {
-      textarea.style.height = 'auto';
-      textarea.style.height = Math.min(textarea.scrollHeight, 200) + 'px';
-    }
+      btn.disabled = true;
+      btn.textContent = 'Logging in...';
 
-    function handleKeyDown(event) {
-      if (event.key === 'Enter' && !event.shiftKey) {
-        event.preventDefault();
-        sendMessage();
+      try {
+        const { signInWithEmailAndPassword } = window.firebaseAuthMethods;
+        await signInWithEmailAndPassword(window.firebaseAuth, email, password);
+        // User will be automatically redirected via onAuthStateChanged
+      } catch (error) {
+        errorMsg.textContent = getAuthErrorMessage(error.code);
+        errorMsg.classList.add('show');
+        btn.disabled = false;
+        btn.textContent = 'Login';
       }
+    };
+
+    window.handleSignup = async function(e) {
+      e.preventDefault();
+      const username = document.getElementById('signupUsername').value;
+      const email = document.getElementById('signupEmail').value;
+      const password = document.getElementById('signupPassword').value;
+      const btn = document.getElementById('signupBtn');
+      const errorMsg = document.getElementById('authError');
+
+      btn.disabled = true;
+      btn.textContent = 'Creating account...';
+
+      try {
+        const { createUserWithEmailAndPassword } = window.firebaseAuthMethods;
+        const { ref, set } = window.firebaseRefs;
+        
+        const userCredential = await createUserWithEmailAndPassword(window.firebaseAuth, email, password);
+        const user = userCredential.user;
+
+        // Create user profile in database
+        await set(ref(window.firebaseDB, `users/${user.uid}`), {
+          username: username,
+          email: email,
+          isPremium: false,
+          premiumExpiry: null,
+          createdAt: new Date().toISOString(),
+          dailyMessageCount: 0,
+          lastMessageDate: new Date().toDateString()
+        });
+
+        // User will be automatically redirected via onAuthStateChanged
+      } catch (error) {
+        errorMsg.textContent = getAuthErrorMessage(error.code);
+        errorMsg.classList.add('show');
+        btn.disabled = false;
+        btn.textContent = 'Create Account';
+      }
+    };
+
+    window.handleLogout = async function() {
+      if (confirm('Are you sure you want to logout?')) {
+        const { signOut } = window.firebaseAuthMethods;
+        await signOut(window.firebaseAuth);
+        location.reload();
+      }
+    };
+
+    function getAuthErrorMessage(code) {
+      const errors = {
+        'auth/email-already-in-use': 'This email is already registered. Please login instead.',
+        'auth/invalid-email': 'Please enter a valid email address.',
+        'auth/weak-password': 'Password should be at least 6 characters.',
+        'auth/user-not-found': 'No account found with this email.',
+        'auth/wrong-password': 'Incorrect password. Please try again.',
+        'auth/too-many-requests': 'Too many failed attempts. Please try again later.',
+        'auth/network-request-failed': 'Network error. Please check your connection.'
+      };
+      return errors[code] || 'An error occurred. Please try again.';
     }
 
-    function startVoiceInput() {
-      if (!recognition) {
-        alert('Speech recognition is not supported in your browser. Please use Chrome, Edge, or Safari.');
-        return;
-      }
+    async function loadUserData() {
+      const { ref, get } = window.firebaseRefs;
+      const userRef = ref(window.firebaseDB, `users/${currentUser.uid}`);
+      const snapshot = await get(userRef);
+      
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        isPremium = data.isPremium || false;
+        premiumExpiry = data.premiumExpiry;
+        dailyMessageCount = data.dailyMessageCount || 0;
 
-      if (isRecording) {
-        stopVoiceInput();
-      } else {
-        isRecording = true;
-        const micBtn = document.getElementById('micBtn');
-        micBtn.classList.add('recording');
-        try {
-          recognition.start();
-        } catch (error) {
-          console.error('Recognition start error:', error);
-          stopVoiceInput();
+        // Check if premium expired
+        if (isPremium && premiumExpiry && new Date(premiumExpiry) < new Date()) {
+          isPremium = false;
+          await updateUserPremiumStatus(false, null);
+        }
+
+        // Update UI
+        document.getElementById('userName').textContent = data.username || 'User';
+        document.getElementById('userAvatar').textContent = (data.username || 'U')[0].toUpperCase();
+        updatePremiumUI();
+        
+        // Reset daily count if new day
+        const lastDate = data.lastMessageDate || '';
+        const today = new Date().toDateString();
+        if (lastDate !== today) {
+          dailyMessageCount = 0;
+          await updateDailyMessageCount(0);
         }
       }
     }
 
-    function stopVoiceInput() {
-      if (recognition && isRecording) {
-        try {
-          recognition.stop();
-        } catch (error) {
-          console.error('Recognition stop error:', error);
-        }
-        isRecording = false;
-        const micBtn = document.getElementById('micBtn');
-        micBtn.classList.remove('recording');
+    function updatePremiumUI() {
+      const statusEl = document.getElementById('userStatus');
+      const upgradeBtn = document.querySelector('.upgrade-btn');
+      const usageBar = document.getElementById('usageBar');
+      const personalitySelector = document.getElementById('personalitySelector');
+      
+      if (isPremium) {
+        statusEl.innerHTML = 'Premium <span class="premium-badge">PRO</span>';
+        upgradeBtn.style.display = 'none';
+        usageBar.style.display = 'none';
+        personalitySelector.style.display = 'flex';
+        
+        // Enable premium features
+        document.getElementById('imageBtn').disabled = false;
+        document.getElementById('pdfBtn').disabled = false;
+        document.querySelectorAll('.personality-btn').forEach(btn => {
+          if (btn.dataset.personality !== 'default') {
+            btn.disabled = false;
+          }
+        });
+      } else {
+        statusEl.textContent = 'Free Plan';
+        upgradeBtn.style.display = 'flex';
+        usageBar.style.display = 'flex';
+        personalitySelector.style.display = 'none';
+        updateUsageDisplay();
+        
+        // Disable premium features
+        document.getElementById('imageBtn').disabled = true;
+        document.getElementById('pdfBtn').disabled = true;
+        document.querySelectorAll('.personality-btn').forEach(btn => {
+          if (btn.dataset.personality !== 'default') {
+            btn.disabled = true;
+          }
+        });
       }
     }
 
-    function newChat() {
+    function checkDailyUsage() {
+      if (!isPremium && dailyMessageCount >= 20) {
+        document.getElementById('sendBtn').disabled = true;
+        document.getElementById('messageInput').placeholder = 'Daily limit reached. Upgrade to Premium!';
+        const usageBar = document.getElementById('usageBar');
+        usageBar.classList.add('warning');
+        usageBar.innerHTML = '<span>⚠️ Daily limit reached!</span><span onclick="showUpgradeModal()" style="cursor: pointer; color: #ffd700;">Upgrade Now</span>';
+        return false;
+      }
+      return true;
+    }
+
+    function updateUsageDisplay() {
+      if (!isPremium) {
+        const remaining = 20 - dailyMessageCount;
+        document.getElementById('usageText').textContent = `Messages today: ${dailyMessageCount}/20 (${remaining} left)`;
+        
+        if (remaining <= 5) {
+          document.getElementById('usageBar').classList.add('warning');
+        }
+      }
+    }
+
+    async function updateDailyMessageCount(count) {
+      const { ref, update } = window.firebaseRefs;
+      dailyMessageCount = count;
+      await update(ref(window.firebaseDB, `users/${currentUser.uid}`), {
+        dailyMessageCount: count,
+        lastMessageDate: new Date().toDateString()
+      });
+      updateUsageDisplay();
+    }
+
+    async function updateUserPremiumStatus(premium, expiry) {
+      const { ref, update } = window.firebaseRefs;
+      await update(ref(window.firebaseDB, `users/${currentUser.uid}`), {
+        isPremium: premium,
+        premiumExpiry: expiry
+      });
+      isPremium = premium;
+      premiumExpiry = expiry;
+      updatePremiumUI();
+    }
+
+    // Chat functions
+    window.newChat = function() {
       conversationHistory = [];
-      currentChatId = Date.now();
+      currentChatId = Date.now().toString();
       const messagesContainer = document.getElementById('messagesContainer');
       messagesContainer.innerHTML = `
         <div class="welcome-screen" id="welcomeScreen">
-          <h1>GodswillChatbot</h1>
-          <div class="example-cards">
-            <div class="example-card" onclick="sendExampleMessage('Explain quantum computing in simple terms')">
-              <h3>💡 Explain concepts</h3>
-              <p>"Explain quantum computing in simple terms"</p>
-            </div>
-            <div class="example-card" onclick="sendExampleMessage('Write a creative story about a time traveler')">
-              <h3>✍️ Creative writing</h3>
-              <p>"Write a creative story about a time traveler"</p>
-            </div>
-            <div class="example-card" onclick="sendExampleMessage('Help me debug this Python code')">
-              <h3>💻 Code assistance</h3>
-              <p>"Help me debug this Python code"</p>
-            </div>
-            <div class="example-card" onclick="sendExampleMessage('Teach me basic Spanish phrases')">
-              <h3>🌍 Learn languages</h3>
-              <p>"Teach me basic Spanish phrases"</p>
-            </div>
-          </div>
+          <h1>Start a New Conversation! 💬</h1>
         </div>
       `;
       closeSidebar();
+    };
+
+    async function loadChatHistory() {
+      const { ref, get } = window.firebaseRefs;
+      const chatsRef = ref(window.firebaseDB, `chats/${currentUser.uid}`);
+      const snapshot = await get(chatsRef);
+      
+      const chatHistory = document.getElementById('chatHistory');
+      chatHistory.innerHTML = '';
+      
+      if (snapshot.exists()) {
+        const chats = snapshot.val();
+        const chatArray = Object.entries(chats).map(([id, data]) => ({ id, ...data }));
+        chatArray.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        
+        chatArray.forEach(chat => {
+          const chatItem = document.createElement('div');
+          chatItem.className = 'chat-item';
+          chatItem.innerHTML = `
+            <span onclick="loadChat('${chat.id}')">${chat.title}</span>
+            <div class="chat-item-actions">
+              <button class="chat-action-btn" onclick="event.stopPropagation(); deleteChat('${chat.id}')" title="Delete">🗑️</button>
+            </div>
+          `;
+          chatHistory.appendChild(chatItem);
+        });
+      }
     }
 
-    function sendExampleMessage(message) {
-      document.getElementById('messageInput').value = message;
-      sendMessage();
+    window.loadChat = async function(chatId) {
+      const { ref, get } = window.firebaseRefs;
+      const chatRef = ref(window.firebaseDB, `chats/${currentUser.uid}/${chatId}`);
+      const snapshot = await get(chatRef);
+      
+      if (snapshot.exists()) {
+        const chat = snapshot.val();
+        currentChatId = chatId;
+        conversationHistory = chat.messages || [];
+        
+        const messagesContainer = document.getElementById('messagesContainer');
+        messagesContainer.innerHTML = '';
+        
+        conversationHistory.forEach(msg => {
+          addMessageToUI(msg.content, msg.role === 'user' ? 'user' : 'assistant', msg.id);
+        });
+        
+        closeSidebar();
+      }
+    };
+
+    window.deleteChat = async function(chatId) {
+      if (confirm('Delete this conversation?')) {
+        const { ref, remove } = window.firebaseRefs;
+        await remove(ref(window.firebaseDB, `chats/${currentUser.uid}/${chatId}`));
+        loadChatHistory();
+        
+        if (currentChatId === chatId) {
+          newChat();
+        }
+      }
+    };
+
+    async function saveChat() {
+      if (conversationHistory.length === 0) return;
+      
+      const { ref, set } = window.firebaseRefs;
+      const firstMessage = conversationHistory[0].content.substring(0, 50);
+      
+      await set(ref(window.firebaseDB, `chats/${currentUser.uid}/${currentChatId}`), {
+        title: firstMessage + (firstMessage.length >= 50 ? '...' : ''),
+        timestamp: new Date().toISOString(),
+        messages: conversationHistory
+      });
+      
+      loadChatHistory();
     }
 
-    async function sendMessage() {
+    // Message functions
+    window.sendMessage = async function() {
+      if (!checkDailyUsage()) {
+        showUpgradeModal();
+        return;
+      }
+
       const input = document.getElementById('messageInput');
       const message = input.value.trim();
       
-      if (!message) return;
+      if (!message && !uploadedFile) return;
+
+      if (!currentChatId) {
+        currentChatId = Date.now().toString();
+      }
 
       const welcomeScreen = document.getElementById('welcomeScreen');
       if (welcomeScreen) {
         welcomeScreen.remove();
       }
 
-      addMessage(message, 'user');
+      let fullMessage = message;
+      
+      // Handle uploaded files
+      if (uploadedFile) {
+        if (uploadedFile.type === 'image') {
+          if (!isPremium) {
+            alert('Image analysis is a premium feature! Upgrade to unlock.');
+            showUpgradeModal();
+            return;
+          }
+          fullMessage = `[Analyzing image]\n${message}`;
+          await analyzeImage(uploadedFile.data, message);
+          removeFile();
+          return;
+        } else if (uploadedFile.type === 'pdf') {
+          if (!isPremium) {
+            alert('PDF analysis is a premium feature! Upgrade to unlock.');
+            showUpgradeModal();
+            return;
+          }
+          fullMessage = `[Analyzing PDF: ${uploadedFile.name}]\n${message}`;
+        }
+      }
+
+      const messageId = Date.now().toString();
+      addMessageToUI(fullMessage, 'user', messageId);
       conversationHistory.push({
+        id: messageId,
         role: 'user',
-        content: message
+        content: fullMessage
       });
 
       input.value = '';
       input.style.height = 'auto';
+
+      // Update message count
+      if (!isPremium) {
+        await updateDailyMessageCount(dailyMessageCount + 1);
+      }
 
       const typingWrapper = document.getElementById('typingWrapper');
       typingWrapper.classList.add('active');
@@ -944,10 +1722,15 @@
       sendBtn.disabled = true;
 
       try {
+        // Add system prompt based on personality
+        const systemPrompt = personalities[currentPersonality];
+        const messages = [
+          { role: 'system', content: systemPrompt },
+          ...conversationHistory
+        ];
+
         const modelName = document.getElementById('modelSelector').value;
-        const url = 'https://api.groq.com/openai/v1/chat/completions';
-        
-        const response = await fetch(url, {
+        const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -955,7 +1738,7 @@
           },
           body: JSON.stringify({
             model: modelName,
-            messages: conversationHistory,
+            messages: messages,
             temperature: 0.7,
             max_tokens: 2048,
             top_p: 1,
@@ -971,38 +1754,43 @@
 
         if (data.choices && data.choices[0] && data.choices[0].message) {
           const aiResponse = data.choices[0].message.content;
-          addMessage(aiResponse, 'assistant');
+          const aiMessageId = Date.now().toString();
+          addMessageToUI(aiResponse, 'assistant', aiMessageId);
           conversationHistory.push({
+            id: aiMessageId,
             role: 'assistant',
             content: aiResponse
           });
           
-          saveChatSession(message);
+          await saveChat();
         } else {
           throw new Error('Invalid response from API');
         }
 
       } catch (error) {
         console.error('Error:', error);
-        addMessage("Sorry, I encountered an error. Please try again! 😔\n\nError: " + error.message, 'assistant');
+        const errorMessageId = Date.now().toString();
+        addMessageToUI(`Sorry, I encountered an error: ${error.message}`, 'assistant', errorMessageId);
       } finally {
         typingWrapper.classList.remove('active');
         sendBtn.disabled = false;
+        checkDailyUsage();
       }
-    }
+    };
 
-    function addMessage(text, sender) {
+    function addMessageToUI(text, sender, messageId) {
       const messagesContainer = document.getElementById('messagesContainer');
 
       const messageWrapper = document.createElement('div');
       messageWrapper.className = `message-wrapper ${sender}`;
+      messageWrapper.dataset.messageId = messageId;
 
       const messageDiv = document.createElement('div');
       messageDiv.className = 'message';
 
       const avatar = document.createElement('div');
       avatar.className = `message-avatar ${sender}`;
-      avatar.textContent = sender === 'user' ? 'U' : 'AI';
+      avatar.textContent = sender === 'user' ? (document.getElementById('userName').textContent[0] || 'U') : 'AI';
 
       const contentDiv = document.createElement('div');
       contentDiv.className = 'message-content';
@@ -1025,14 +1813,27 @@
         copyBtn.innerHTML = '📋 Copy';
         copyBtn.onclick = () => copyToClipboard(text, copyBtn);
 
-        const regenerateBtn = document.createElement('button');
-        regenerateBtn.className = 'action-btn';
-        regenerateBtn.innerHTML = '🔄 Regenerate';
-        regenerateBtn.onclick = () => regenerateResponse();
+        const exportBtn = document.createElement('button');
+        exportBtn.className = 'action-btn';
+        exportBtn.innerHTML = '💾 Export';
+        exportBtn.onclick = () => exportChat();
+        if (!isPremium) exportBtn.disabled = true;
 
         actionsDiv.appendChild(speakBtn);
         actionsDiv.appendChild(copyBtn);
-        actionsDiv.appendChild(regenerateBtn);
+        actionsDiv.appendChild(exportBtn);
+        contentDiv.appendChild(actionsDiv);
+      } else {
+        // Add edit button for user messages
+        const actionsDiv = document.createElement('div');
+        actionsDiv.className = 'message-actions';
+
+        const editBtn = document.createElement('button');
+        editBtn.className = 'action-btn';
+        editBtn.innerHTML = '✏️ Edit';
+        editBtn.onclick = () => editMessage(messageId, contentDiv);
+
+        actionsDiv.appendChild(editBtn);
         contentDiv.appendChild(actionsDiv);
       }
 
@@ -1041,16 +1842,433 @@
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
 
-    function speakText(text, button) {
+    window.editMessage = function(messageId, contentDiv) {
+      const message = conversationHistory.find(m => m.id === messageId);
+      if (!message) return;
+
+      const editMode = document.createElement('div');
+      editMode.className = 'edit-mode';
+      editMode.innerHTML = `
+        <textarea rows="3">${message.content}</textarea>
+        <div class="edit-mode-actions">
+          <button class="action-btn" onclick="saveEdit('${messageId}', this)">💾 Save</button>
+          <button class="action-btn" onclick="cancelEdit('${messageId}')">❌ Cancel</button>
+        </div>
+      `;
+
+      const actionsDiv = contentDiv.querySelector('.message-actions');
+      actionsDiv.style.display = 'none';
+      contentDiv.appendChild(editMode);
+    };
+
+    window.saveEdit = async function(messageId, button) {
+      const editMode = button.closest('.edit-mode');
+      const newContent = editMode.querySelector('textarea').value.trim();
+      
+      if (!newContent) return;
+
+      const message = conversationHistory.find(m => m.id === messageId);
+      message.content = newContent;
+
+      const wrapper = document.querySelector(`[data-message-id="${messageId}"]`);
+      const contentDiv = wrapper.querySelector('.message-content');
+      
+      // Remove edit mode
+      editMode.remove();
+      
+      // Update text
+      const textNode = Array.from(contentDiv.childNodes).find(n => n.nodeType === 3 || n.tagName !== 'DIV');
+      if (textNode) {
+        textNode.textContent = newContent;
+      }
+
+      // Show actions again
+      contentDiv.querySelector('.message-actions').style.display = 'flex';
+
+      await saveChat();
+    };
+
+    window.cancelEdit = function(messageId) {
+      const wrapper = document.querySelector(`[data-message-id="${messageId}"]`);
+      const contentDiv = wrapper.querySelector('.message-content');
+      const editMode = contentDiv.querySelector('.edit-mode');
+      editMode.remove();
+      contentDiv.querySelector('.message-actions').style.display = 'flex';
+    };
+
+    // Premium Features
+    window.handleImageUpload = async function(event) {
+      if (!isPremium) {
+        alert('Image analysis is a premium feature!');
+        showUpgradeModal();
+        event.target.value = '';
+        return;
+      }
+
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        uploadedFile = {
+          type: 'image',
+          data: e.target.result,
+          name: file.name
+        };
+
+        document.getElementById('previewImage').src = e.target.result;
+        document.getElementById('fileInfo').textContent = file.name;
+    <div class="sidebar-content" id="chatHistory">
+      <!-- Chat history will be loaded here -->
+    </div>
+    <div class="sidebar-footer">
+      <div class="sidebar-footer-item" onclick="showUpgradeModal()">
+        ⭐ Upgrade to Premium
+      </div>
+      <div class="sidebar-footer-item" onclick="showAbout()">
+        ℹ️ About
+      </div>
+      document.getElementById('filePreview').classList.add('active');
+      };
+      reader.readAsDataURL(file);
+    };
+
+    window.handlePDFUpload = async function(event) {
+      if (!isPremium) {
+        alert('PDF analysis is a premium feature!');
+        showUpgradeModal();
+        event.target.value = '';
+        return;
+      }
+
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = async function(e) {
+        try {
+          // Simple PDF text extraction
+          const text = await extractPDFText(e.target.result);
+          
+          uploadedFile = {
+            type: 'pdf',
+            data: text,
+            name: file.name
+          };
+
+          document.getElementById('previewImage').style.display = 'none';
+          document.getElementById('fileInfo').innerHTML = `📄 ${file.name}<br><small>${text.substring(0, 100)}...</small>`;
+          document.getElementById('filePreview').classList.add('active');
+          
+          // Auto-add to conversation
+          conversationHistory.push({
+            role: 'system',
+            content: `User uploaded PDF: ${file.name}\n\nContent:\n${text.substring(0, 3000)}...`
+          });
+          
+        } catch (error) {
+          alert('Error reading PDF. Please try another file.');
+          console.error(error);
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    };
+
+    async function extractPDFText(arrayBuffer) {
+      // Basic PDF text extraction
+      const text = new TextDecoder().decode(arrayBuffer);
+      const matches = text.match(/\(([^)]+)\)/g);
+      if (matches) {
+        return matches.map(m => m.replace(/[()]/g, '')).join(' ').substring(0, 5000);
+      }
+      return 'PDF content extracted';
+    }
+
+    async function analyzeImage(imageData, userMessage) {
+      const messageId = Date.now().toString();
+      addMessageToUI(userMessage || 'Analyzing image...', 'user', messageId);
+      
+      const typingWrapper = document.getElementById('typingWrapper');
+      typingWrapper.classList.add('active');
+
+      try {
+        // Use Hugging Face BLIP model for image analysis
+        const response = await fetch('https://api-inference.huggingface.co/models/Salesforce/blip-image-captioning-large', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            inputs: imageData
+          })
+        });
+
+        const result = await response.json();
+        let description = 'I can see an image, but I need a moment to analyze it.';
+        
+        if (result && result[0] && result[0].generated_text) {
+          description = result[0].generated_text;
+        }
+
+        // Now ask Groq to elaborate
+        conversationHistory.push({
+          id: messageId,
+          role: 'user',
+          content: `[Image uploaded] ${userMessage || 'What do you see in this image?'}`
+        });
+
+        const aiResponse = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${GROQ_API_KEY}`
+          },
+          body: JSON.stringify({
+            model: 'llama-3.3-70b-versatile',
+            messages: [
+              {
+                role: 'system',
+                content: 'You are analyzing an image. The image shows: ' + description
+              },
+              ...conversationHistory
+            ],
+            temperature: 0.7,
+            max_tokens: 1024
+          })
+        });
+
+        const aiData = await aiResponse.json();
+        
+        if (aiData.choices && aiData.choices[0]) {
+          const finalResponse = aiData.choices[0].message.content;
+          const aiMessageId = Date.now().toString();
+          addMessageToUI(finalResponse, 'assistant', aiMessageId);
+          conversationHistory.push({
+            id: aiMessageId,
+            role: 'assistant',
+            content: finalResponse
+          });
+          await saveChat();
+        }
+
+      } catch (error) {
+        console.error('Image analysis error:', error);
+        const errorMessageId = Date.now().toString();
+        addMessageToUI('Sorry, I had trouble analyzing that image. Please try again.', 'assistant', errorMessageId);
+      } finally {
+        typingWrapper.classList.remove('active');
+      }
+    }
+
+    window.removeFile = function() {
+      uploadedFile = null;
+      document.getElementById('filePreview').classList.remove('active');
+      document.getElementById('imageUpload').value = '';
+      document.getElementById('pdfUpload').value = '';
+      document.getElementById('previewImage').style.display = 'block';
+    };
+
+    window.exportChat = async function() {
+      if (!isPremium) {
+        alert('Chat export is a premium feature!');
+        showUpgradeModal();
+        return;
+      }
+
+      const format = prompt('Export format:\n1. PDF\n2. TXT\n3. HTML\n\nEnter number (1-3):');
+      
+      if (format === '1') {
+        exportToPDF();
+      } else if (format === '2') {
+        exportToTXT();
+      } else if (format === '3') {
+        exportToHTML();
+      }
+    };
+
+    function exportToPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      
+      doc.setFontSize(16);
+      doc.text('GodswillChatbot Conversation', 20, 20);
+      doc.setFontSize(10);
+      doc.text(new Date().toLocaleString(), 20, 30);
+      
+      let y = 45;
+      conversationHistory.forEach((msg, i) => {
+        if (y > 270) {
+          doc.addPage();
+          y = 20;
+        }
+        
+        doc.setFontSize(12);
+        doc.setFont(undefined, 'bold');
+        doc.text(msg.role === 'user' ? 'You:' : 'AI:', 20, y);
+        
+        doc.setFont(undefined, 'normal');
+        doc.setFontSize(10);
+        const lines = doc.splitTextToSize(msg.content, 170);
+        doc.text(lines, 20, y + 5);
+        
+        y += (lines.length * 5) + 10;
+      });
+      
+      doc.save(`chat-${Date.now()}.pdf`);
+    }
+
+    function exportToTXT() {
+      let text = 'GodswillChatbot Conversation\n';
+      text += new Date().toLocaleString() + '\n';
+      text += '='.repeat(50) + '\n\n';
+      
+      conversationHistory.forEach(msg => {
+        text += `${msg.role === 'user' ? 'You' : 'AI'}:\n${msg.content}\n\n`;
+      });
+      
+      const blob = new Blob([text], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `chat-${Date.now()}.txt`;
+      a.click();
+    }
+
+    function exportToHTML() {
+      let html = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Chat Export</title>
+  <style>
+    body { font-family: Arial; max-width: 800px; margin: 50px auto; padding: 20px; background: #f5f5f5; }
+    .message { margin: 20px 0; padding: 15px; border-radius: 8px; }
+    .user { background: #e3f2fd; text-align: right; }
+    .assistant { background: #fff; }
+    .role { font-weight: bold; margin-bottom: 8px; }
+    h1 { color: #667eea; }
+  </style>
+</head>
+<body>
+  <h1>🤖 GodswillChatbot Conversation</h1>
+  <p><small>${new Date().toLocaleString()}</small></p>
+  <hr>
+`;
+      
+      conversationHistory.forEach(msg => {
+        html += `
+  <div class="message ${msg.role}">
+    <div class="role">${msg.role === 'user' ? 'You' : 'AI'}</div>
+    <div>${msg.content.replace(/\n/g, '<br>')}</div>
+  </div>
+`;
+      });
+      
+      html += `
+</body>
+</html>`;
+      
+      const blob = new Blob([html], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `chat-${Date.now()}.html`;
+      a.click();
+    }
+
+    window.switchPersonality = function(personality) {
+      if (!isPremium && personality !== 'default') {
+        alert('AI Personalities are a premium feature!');
+        showUpgradeModal();
+        return;
+      }
+
+      currentPersonality = personality;
+      document.querySelectorAll('.personality-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      document.querySelector(`[data-personality="${personality}"]`).classList.add('active');
+    };
+
+    // Voice functions
+    function loadMicrophoneSupport() {
+      if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        recognition.lang = 'en-US';
+
+        recognition.onresult = function(event) {
+          const transcript = event.results[0][0].transcript;
+          document.getElementById('messageInput').value = transcript;
+          stopVoiceInput();
+        };
+
+        recognition.onerror = function(event) {
+          console.error('Speech recognition error:', event.error);
+          stopVoiceInput();
+          if (event.error === 'not-allowed') {
+            alert('Please allow microphone access to use voice input.');
+          }
+        };
+
+        recognition.onend = function() {
+          stopVoiceInput();
+        };
+      }
+    }
+
+    window.startVoiceInput = async function() {
+      if (!recognition) {
+        alert('Speech recognition is not supported in your browser.');
+        return;
+      }
+
+      try {
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+          await navigator.mediaDevices.getUserMedia({ audio: true });
+        }
+      } catch (error) {
+        alert('Microphone access denied. Please enable it in settings.');
+        return;
+      }
+
+      if (isRecording) {
+        stopVoiceInput();
+      } else {
+        isRecording = true;
+        const micBtn = document.getElementById('micBtn');
+        micBtn.classList.add('recording');
+        micBtn.style.color = '#ef4444';
+        
+        try {
+          recognition.start();
+        } catch (error) {
+          console.error('Recognition start error:', error);
+          stopVoiceInput();
+        }
+      }
+    };
+
+    function stopVoiceInput() {
+      if (recognition && isRecording) {
+        try {
+          recognition.stop();
+        } catch (error) {
+          console.error('Recognition stop error:', error);
+        }
+        isRecording = false;
+        const micBtn = document.getElementById('micBtn');
+        micBtn.classList.remove('recording');
+        micBtn.style.color = '';
+      }
+    }
+
+    window.speakText = function(text, button) {
       if (speechSynthesis.speaking) {
         speechSynthesis.cancel();
-        const allButtons = document.querySelectorAll('.action-btn');
-        allButtons.forEach(btn => {
-          if (btn.innerHTML.includes('Stop')) {
-            btn.innerHTML = '🔊 Listen';
-            btn.classList.remove('active');
-          }
-        });
+        button.innerHTML = '🔊 Listen';
+        button.classList.remove('active');
         return;
       }
 
@@ -1064,10 +2282,12 @@
         utterance.volume = 1;
         utterance.lang = 'en-US';
 
-        const voices = speechSynthesis.getVoices();
-        const preferredVoice = voices.find(voice => voice.lang === 'en-US' && voice.name.includes('Google')) || voices[0];
-        if (preferredVoice) {
-          utterance.voice = preferredVoice;
+        if (isPremium) {
+          const voices = speechSynthesis.getVoices();
+          const premiumVoice = voices.find(v => v.name.includes('Google') || v.name.includes('Microsoft')) || voices[0];
+          if (premiumVoice) {
+            utterance.voice = premiumVoice;
+          }
         }
 
         utterance.onend = () => {
@@ -1075,8 +2295,7 @@
           button.innerHTML = '🔊 Listen';
         };
 
-        utterance.onerror = (error) => {
-          console.error('Speech synthesis error:', error);
+        utterance.onerror = () => {
           button.classList.remove('active');
           button.innerHTML = '🔊 Listen';
         };
@@ -1085,9 +2304,9 @@
       } else {
         alert('Text-to-speech is not supported in your browser.');
       }
-    }
+    };
 
-    function copyToClipboard(text, button) {
+    window.copyToClipboard = function(text, button) {
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(text).then(() => {
           const originalHTML = button.innerHTML;
@@ -1097,14 +2316,13 @@
             button.innerHTML = originalHTML;
             button.classList.remove('active');
           }, 2000);
-        }).catch(err => {
-          console.error('Failed to copy:', err);
+        }).catch(() => {
           fallbackCopy(text, button);
         });
       } else {
         fallbackCopy(text, button);
       }
-    }
+    };
 
     function fallbackCopy(text, button) {
       const textArea = document.createElement('textarea');
@@ -1125,216 +2343,146 @@
           button.classList.remove('active');
         }, 2000);
       } catch (err) {
-        console.error('Fallback copy failed:', err);
-        alert('Failed to copy text. Please try manually selecting and copying.');
+        alert('Failed to copy text.');
       }
       
       document.body.removeChild(textArea);
     }
 
-    async function regenerateResponse() {
-      if (conversationHistory.length < 2) return;
+    // Payment functions
+    window.showUpgradeModal = function() {
+      document.getElementById('upgradeModal').classList.add('active');
+    };
 
-      conversationHistory.pop();
-      const messagesContainer = document.getElementById('messagesContainer');
-      const lastMessage = messagesContainer.lastElementChild;
-      if (lastMessage && lastMessage.classList.contains('assistant')) {
-        lastMessage.remove();
-      }
+    window.closeUpgradeModal = function() {
+      document.getElementById('upgradeModal').classList.remove('active');
+    };
 
-      const typingWrapper = document.getElementById('typingWrapper');
-      typingWrapper.classList.add('active');
-
-      const sendBtn = document.getElementById('sendBtn');
-      sendBtn.disabled = true;
-
-      try {
-        const modelName = document.getElementById('modelSelector').value;
-        const url = 'https://api.groq.com/openai/v1/chat/completions';
-        
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${GROQ_API_KEY}`
-          },
-          body: JSON.stringify({
-            model: modelName,
-            messages: conversationHistory,
-            temperature: 1.0,
-            max_tokens: 2048,
-            top_p: 1,
-            stream: false
-          })
-        });
-
-        const data = await response.json();
-        
-        if (!response.ok) {
-          throw new Error(data.error?.message || 'API request failed');
-        }
-
-        if (data.choices && data.choices[0] && data.choices[0].message) {
-          const aiResponse = data.choices[0].message.content;
-          addMessage(aiResponse, 'assistant');
-          conversationHistory.push({
-            role: 'assistant',
-            content: aiResponse
-          });
-        } else {
-          throw new Error('Invalid response from API');
-        }
-
-      } catch (error) {
-        console.error('Error:', error);
-        addMessage("Sorry, I encountered an error while regenerating. Please try again! 😔", 'assistant');
-      } finally {
-        typingWrapper.classList.remove('active');
-        sendBtn.disabled = false;
-      }
-    }
-
-    function saveChatSession(firstMessage) {
-      const existingSession = chatSessions.find(session => session.id === currentChatId);
+    window.selectPlan = function(plan, amount) {
+      const email = currentUser.email;
       
-      if (!existingSession) {
-        const newSession = {
-          id: currentChatId,
-          title: firstMessage.substring(0, 30) + (firstMessage.length > 30 ? '...' : ''),
-          timestamp: new Date().toISOString(),
-          messages: conversationHistory
-        };
-        chatSessions.unshift(newSession);
-        
-        if (chatSessions.length > 20) {
-          chatSessions = chatSessions.slice(0, 20);
+      const handler = PaystackPop.setup({
+        key: PAYSTACK_PUBLIC_KEY,
+        email: email,
+        amount: amount * 100, // Convert to kobo
+        currency: 'NGN',
+        ref: 'GC_' + Math.floor((Math.random() * 1000000000) + 1),
+        metadata: {
+          custom_fields: [
+            {
+              display_name: "User ID",
+              variable_name: "user_id",
+              value: currentUser.uid
+            },
+            {
+              display_name: "Plan",
+              variable_name: "plan",
+              value: plan
+            }
+          ]
+        },
+        callback: function(response) {
+          verifyPayment(response.reference, plan);
+        },
+        onClose: function() {
+          alert('Payment cancelled');
         }
-        
-        localStorage.setItem('chatSessions', JSON.stringify(chatSessions));
-        loadChatHistory();
-      } else {
-        existingSession.messages = conversationHistory;
-        localStorage.setItem('chatSessions', JSON.stringify(chatSessions));
-      }
-    }
-
-    function loadChatHistory() {
-      const chatHistoryContainer = document.getElementById('chatHistory');
-      chatHistoryContainer.innerHTML = '';
+      });
       
-      chatSessions.forEach(session => {
-        const chatItem = document.createElement('div');
-        chatItem.className = 'chat-item';
-        chatItem.textContent = session.title;
-        chatItem.onclick = () => loadChatSession(session.id);
-        chatHistoryContainer.appendChild(chatItem);
-      });
+      handler.openIframe();
+    };
+
+    async function verifyPayment(reference, plan) {
+      // In production, verify with your backend
+      // For now, we'll activate premium immediately
+      
+      const expiryDate = new Date();
+      if (plan === 'weekly') {
+        expiryDate.setDate(expiryDate.getDate() + 7);
+      } else if (plan === 'monthly') {
+        expiryDate.setMonth(expiryDate.getMonth() + 1);
+      } else if (plan === 'yearly') {
+        expiryDate.setFullYear(expiryDate.getFullYear() + 1);
+      }
+
+      await updateUserPremiumStatus(true, expiryDate.toISOString());
+      
+      closeUpgradeModal();
+      alert('🎉 Premium activated! Enjoy unlimited access!');
+      
+      // Reset message count
+      dailyMessageCount = 0;
+      await updateDailyMessageCount(0);
     }
 
-    function loadChatSession(sessionId) {
-      const session = chatSessions.find(s => s.id === sessionId);
-      if (!session) return;
+    // Helper functions
+    window.toggleSidebar = function() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('overlay');
+      sidebar.classList.toggle('open');
+      overlay.classList.toggle('active');
+    };
 
-      currentChatId = sessionId;
-      conversationHistory = session.messages;
+    window.closeSidebar = function() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('overlay');
+      sidebar.classList.remove('open');
+      overlay.classList.remove('active');
+    };
 
-      const messagesContainer = document.getElementById('messagesContainer');
-      messagesContainer.innerHTML = '';
+    window.autoResize = function(textarea) {
+      textarea.style.height = 'auto';
+      textarea.style.height = Math.min(textarea.scrollHeight, 200) + 'px';
+    };
 
-      session.messages.forEach((msg) => {
-        addMessage(msg.content, msg.role === 'user' ? 'user' : 'assistant');
-      });
+    window.handleKeyDown = function(event) {
+      if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        sendMessage();
+      }
+    };
 
-      closeSidebar();
-    }
+    window.sendExampleMessage = function(message) {
+      document.getElementById('messageInput').value = message;
+      sendMessage();
+    };
 
-    function showAbout() {
-      const aboutMessage = `🤖 GodswillChatbot - Advanced AI Assistant
+    window.showAbout = function() {
+      const aboutMessage = `🤖 GodswillChatbot Premium - Advanced AI Assistant
 
-Powered by Groq's lightning-fast AI models (Llama 3.3 & Mixtral), I'm here to help you with:
+Powered by Groq's lightning-fast AI models, I'm your personal AI assistant with premium features!
 
-✨ Creative Writing & Storytelling
-💻 Code Debugging & Development
-📚 Learning & Education
-🌍 Language Translation
-🎨 Content Creation
-🔬 Research & Analysis
-💡 Problem Solving
-🎯 Task Planning
+✨ Premium Features:
+• 🎨 AI Image Generation
+• 📄 PDF Analysis
+• 👁️ Image Analysis
+• 🎙️ Premium Voices
+• 💾 Chat Export
+• 🎭 AI Personalities
+• 📝 50+ Templates
+• ♾️ Unlimited Messages
 
-Features:
-• Ultra-fast response times with Groq
-• Context-aware conversations
-• Multi-turn dialogue memory
-• Voice input & text-to-speech
-• Code syntax understanding
-• Multiple AI models (Llama & Mixtral)
-• Chat history saving
-• Cross-device responsive design
+💰 Plans:
+• Weekly: ₦950
+• Monthly: ₦4,000 (Most Popular)
+• Yearly: ₦15,000 (Best Value)
 
 Built with ❤️ by Godswill
-Version 3.1 - December 2024`;
+Version 4.0 - December 2024`;
 
-      addMessage(aboutMessage, 'assistant');
+      const messageId = Date.now().toString();
+      addMessageToUI(aboutMessage, 'assistant', messageId);
       closeSidebar();
-    }
+    };
 
-    function showContact() {
-      const contactMessage = `📱 Get in Touch
-
-WhatsApp: +2347033572513
-📧 Email: ihechigodswill575@gmail.com
-
-💬 I'm available for:
-• Custom AI solutions
-• Technical consultations
-• Feature requests
-• Bug reports
-• Collaborations
-
-Feel free to reach out anytime! I typically respond within 24 hours.
-
-🌟 If you find this chatbot helpful, share it with others!`;
-
-      addMessage(contactMessage, 'assistant');
-      closeSidebar();
-    }
-
-    window.addEventListener('orientationchange', () => {
-      setTimeout(adjustViewportHeight, 100);
-    });
-
-    document.getElementById('messageInput').addEventListener('focus', (e) => {
-      e.target.style.fontSize = '16px';
-    });
-
+    // Load speech voices
     if ('speechSynthesis' in window) {
       speechSynthesis.addEventListener('voiceschanged', () => {
         speechSynthesis.getVoices();
       });
     }
 
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js').then(
-          registration => {
-            console.log('ServiceWorker registration successful');
-          },
-          err => {
-            console.log('ServiceWorker registration failed: ', err);
-          }
-        );
-      });
-    }
-
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden && speechSynthesis.speaking) {
-        speechSynthesis.pause();
-      } else if (!document.hidden && speechSynthesis.paused) {
-        speechSynthesis.resume();
-      }
-    });
-
+    // Keyboard shortcuts
     document.addEventListener('keydown', (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
         e.preventDefault();
@@ -1348,31 +2496,7 @@ Feel free to reach out anytime! I typically respond within 24 hours.
 
       if (e.key === 'Escape') {
         closeSidebar();
-      }
-    });
-
-    setInterval(() => {
-      if (conversationHistory.length > 0) {
-        const existingSession = chatSessions.find(session => session.id === currentChatId);
-        if (existingSession) {
-          existingSession.messages = conversationHistory;
-          localStorage.setItem('chatSessions', JSON.stringify(chatSessions));
-        }
-      }
-    }, 30000);
-
-    window.addEventListener('online', () => {
-      console.log('Network connection restored');
-    });
-
-    window.addEventListener('offline', () => {
-      alert('You are currently offline. Messages will not be sent until connection is restored.');
-    });
-
-    window.addEventListener('beforeunload', (e) => {
-      if (conversationHistory.length > 0) {
-        e.preventDefault();
-        e.returnValue = '';
+        closeUpgradeModal();
       }
     });
   </script>
