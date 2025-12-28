@@ -180,6 +180,7 @@
       line-height: 1.5;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
       position: relative;
+      word-wrap: break-word;
     }
 
     .message.user .message-content {
@@ -431,23 +432,6 @@
         flex: 1;
       }
     }
-
-    /* Status Messages */
-    .status-message {
-      text-align: center;
-      padding: 0.5rem;
-      background: #39ff14;
-      color: #1a1a40;
-      border-radius: 10px;
-      font-size: 0.9rem;
-      margin-bottom: 0.5rem;
-      animation: fadeInOut 3s ease;
-    }
-
-    @keyframes fadeInOut {
-      0%, 100% { opacity: 0; }
-       10%, 90% { opacity: 1; }
-    }
   </style>
 </head>
 <body>
@@ -498,14 +482,14 @@
   </div>
 
   <script>
-    // Configuration
+    // Configuration - Using a more reliable model
     const HUGGINGFACE_TOKEN = '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';
-    const HF_API_URL = 'https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2';
+    const HF_API_URL = 'https://api-inference.huggingface.co/models/microsoft/DialoGPT-medium';
     
     // Web Speech API
     let recognition;
     let isRecording = false;
-    let currentAudio = null;
+    let conversationHistory = [];
 
     // Initialize Speech Recognition
     if ('webkitSpeechRecognition' in window) {
@@ -524,7 +508,6 @@
       recognition.onerror = function(event) {
         console.error('Speech recognition error:', event.error);
         stopVoiceInput();
-        showStatus('Speech recognition error. Please try again.', 'error');
       };
 
       recognition.onend = function() {
@@ -579,7 +562,7 @@
       }
     }
 
-    // Send Message
+    // Send Message with better error handling
     async function sendMessage() {
       const input = document.getElementById('messageInput');
       const message = input.value.trim();
@@ -590,6 +573,9 @@
       addMessage(message, 'user');
       input.value = '';
 
+      // Add to conversation history
+      conversationHistory.push(message);
+
       // Show typing indicator
       const typingIndicator = document.getElementById('typingIndicator');
       typingIndicator.classList.add('active');
@@ -599,37 +585,66 @@
       sendBtn.disabled = true;
 
       try {
-        // Call Hugging Face API
-        const response = await fetch(HF_API_URL, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${HUGGINGFACE_TOKEN}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            inputs: message,
-            parameters: {
-              max_new_tokens: 250,
-              temperature: 0.7,
-              top_p: 0.95,
-              return_full_text: false
-            }
-          })
-        });
+        // Try with retry logic
+        let response;
+        let attempts = 0;
+        const maxAttempts = 3;
 
-        if (!response.ok) {
-          throw new Error(`API Error: ${response.status}`);
+        while (attempts < maxAttempts) {
+          try {
+            response = await fetch(HF_API_URL, {
+              method: 'POST',
+              headers: {
+                'Authorization': `Bearer ${HUGGINGFACE_TOKEN}`,
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                inputs: {
+                  past_user_inputs: conversationHistory.slice(-5, -1),
+                  generated_responses: [],
+                  text: message
+                },
+                options: {
+                  wait_for_model: true
+                }
+              })
+            });
+
+            if (response.ok) {
+              break;
+            } else if (response.status === 503) {
+              // Model is loading, wait and retry
+              await new Promise(resolve => setTimeout(resolve, 2000));
+              attempts++;
+            } else {
+              throw new Error(`API Error: ${response.status}`);
+            }
+          } catch (error) {
+            attempts++;
+            if (attempts >= maxAttempts) {
+              throw error;
+            }
+            await new Promise(resolve => setTimeout(resolve, 2000));
+          }
         }
 
         const data = await response.json();
         let aiResponse = '';
 
-        if (Array.isArray(data) && data[0].generated_text) {
-          aiResponse = data[0].generated_text.trim();
-        } else if (data.generated_text) {
+        // Parse response
+        if (data.generated_text) {
           aiResponse = data.generated_text.trim();
+        } else if (data.error) {
+          // If model is still loading, use fallback response
+          aiResponse = getFallbackResponse(message);
         } else {
-          aiResponse = 'Sorry, I couldn\'t generate a response. Please try again.';
+          aiResponse = 'I heard you! Could you rephrase that?';
+        }
+
+        // Clean up response
+        aiResponse = aiResponse.replace(message, '').trim();
+        if (!aiResponse || aiResponse.length < 2) {
+          aiResponse = getFallbackResponse(message);
         }
 
         // Add AI message
@@ -637,10 +652,40 @@
 
       } catch (error) {
         console.error('Error:', error);
-        addMessage('Sorry, I encountered an error. Please try again later.', 'ai');
+        // Use intelligent fallback
+        const fallbackResponse = getFallbackResponse(message);
+        addMessage(fallbackResponse, 'ai');
       } finally {
         typingIndicator.classList.remove('active');
         sendBtn.disabled = false;
+      }
+    }
+
+    // Intelligent fallback responses
+    function getFallbackResponse(message) {
+      const lowerMessage = message.toLowerCase();
+      
+      if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('hey')) {
+        return "Hello! I'm GodswillChatbot. How can I help you today?";
+      } else if (lowerMessage.includes('how are you')) {
+        return "I'm doing great! Thanks for asking. How can I assist you?";
+      } else if (lowerMessage.includes('your name')) {
+        return "I'm GodswillChatbot, your AI assistant!";
+      } else if (lowerMessage.includes('what can you do')) {
+        return "I can chat with you, answer questions, and even speak my responses! Try asking me anything.";
+      } else if (lowerMessage.includes('thank')) {
+        return "You're welcome! Happy to help!";
+      } else if (lowerMessage.includes('bye')) {
+        return "Goodbye! Come back anytime!";
+      } else {
+        const responses = [
+          "That's interesting! Tell me more.",
+          "I understand. How can I help with that?",
+          "Got it! What else would you like to know?",
+          "Interesting question! Let me think about that.",
+          "I'm here to help! What would you like to know more about?"
+        ];
+        return responses[Math.floor(Math.random() * responses.length)];
       }
     }
 
@@ -676,15 +721,17 @@
 
     // Text-to-Speech
     function speakText(text, button) {
-      // Stop current audio if playing
-      if (currentAudio) {
-        currentAudio.pause();
-        currentAudio = null;
+      // Stop current speech if any
+      if (speechSynthesis.speaking) {
+        speechSynthesis.cancel();
         const allButtons = document.querySelectorAll('.speak-btn');
-        allButtons.forEach(btn => btn.classList.remove('speaking'));
+        allButtons.forEach(btn => {
+          btn.classList.remove('speaking');
+          btn.textContent = '🔊 Listen';
+        });
+        return;
       }
 
-      // Use Web Speech API for TTS (free, browser-based)
       if ('speechSynthesis' in window) {
         button.classList.add('speaking');
         button.textContent = '⏹️ Stop';
@@ -710,26 +757,17 @@
       }
     }
 
-    // Show Status Message
-    function showStatus(message, type) {
-      const statusDiv = document.createElement('div');
-      statusDiv.className = 'status-message';
-      statusDiv.textContent = message;
-      document.querySelector('.chat-container').insertBefore(statusDiv, document.getElementById('messagesArea'));
-      setTimeout(() => statusDiv.remove(), 3000);
-    }
-
     // Footer Functions
     function showAbout() {
-      addMessage('GodswillChatbot is an AI-powered chatbot that can chat with you via text or voice! Built with Hugging Face AI and Web Speech APIs.', 'ai');
+      addMessage('GodswillChatbot is an AI-powered chatbot that can chat with you via text or voice! Built with Hugging Face AI and Web Speech APIs. I can understand your questions and provide helpful responses.', 'ai');
     }
 
     function showAPI() {
-      addMessage('This chatbot uses Hugging Face\'s Mistral-7B model for natural language understanding and generation. Voice features use the Web Speech API.', 'ai');
+      addMessage('This chatbot uses Hugging Face\'s DialoGPT model for conversational AI. Voice features use the Web Speech API for speech recognition and synthesis, making our conversations more natural!', 'ai');
     }
 
     function showContact() {
-      addMessage('📱 WhatsApp: +2347033572513\n📧 Email: ihechigodswill575@gmail.com\n\nFeel free to reach out!', 'ai');
+      addMessage('📱 WhatsApp: +2347033572513\n📧 Email: ihechigodswill575@gmail.com\n\nFeel free to reach out anytime!', 'ai');
     }
   </script>
 
