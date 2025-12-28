@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>GodswillChatbot</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
@@ -10,6 +10,7 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
@@ -18,16 +19,19 @@
       color: #ececf1;
       display: flex;
       height: 100vh;
+      height: 100dvh;
       overflow: hidden;
+      position: fixed;
+      width: 100%;
     }
 
-    /* Sidebar */
     .sidebar {
       width: 260px;
       background: #202123;
       display: flex;
       flex-direction: column;
       border-right: 1px solid #4d4d4f;
+      transition: transform 0.3s ease;
     }
 
     .sidebar-header {
@@ -47,6 +51,7 @@
       font-weight: 500;
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 8px;
       transition: all 0.2s;
     }
@@ -59,6 +64,22 @@
       flex: 1;
       overflow-y: auto;
       padding: 12px;
+    }
+
+    .chat-item {
+      padding: 10px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-bottom: 4px;
+      transition: all 0.2s;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .chat-item:hover {
+      background: #2a2b32;
     }
 
     .sidebar-footer {
@@ -76,22 +97,20 @@
       gap: 8px;
       transition: all 0.2s;
       color: #ececf1;
-      text-decoration: none;
     }
 
     .sidebar-footer-item:hover {
       background: #2a2b32;
     }
 
-    /* Main Content */
     .main-content {
       flex: 1;
       display: flex;
       flex-direction: column;
       position: relative;
+      min-width: 0;
     }
 
-    /* Header */
     .header {
       background: #343541;
       padding: 12px 16px;
@@ -99,12 +118,50 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-shrink: 0;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .menu-btn {
+      display: none;
+      background: transparent;
+      border: none;
+      color: #ececf1;
+      font-size: 24px;
+      cursor: pointer;
+      padding: 4px;
     }
 
     .header-title {
       font-size: 16px;
       font-weight: 600;
       color: #ececf1;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .model-selector {
+      background: transparent;
+      border: 1px solid #565869;
+      color: #ececf1;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.2s;
+    }
+
+    .model-selector:hover {
+      background: #40414f;
     }
 
     .dark-mode-toggle {
@@ -116,18 +173,22 @@
       cursor: pointer;
       font-size: 14px;
       transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 4px;
     }
 
     .dark-mode-toggle:hover {
       background: #40414f;
     }
 
-    /* Messages Area */
     .messages-container {
       flex: 1;
       overflow-y: auto;
+      overflow-x: hidden;
       display: flex;
       flex-direction: column;
+      -webkit-overflow-scrolling: touch;
     }
 
     .messages-container::-webkit-scrollbar {
@@ -154,14 +215,14 @@
     }
 
     .welcome-screen h1 {
-      font-size: 32px;
+      font-size: clamp(24px, 5vw, 32px);
       margin-bottom: 40px;
       font-weight: 600;
     }
 
     .example-cards {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
       gap: 16px;
       max-width: 900px;
       width: 100%;
@@ -178,6 +239,7 @@
 
     .example-card:hover {
       background: #505162;
+      transform: translateY(-2px);
     }
 
     .example-card h3 {
@@ -191,7 +253,6 @@
       color: #c5c5d2;
     }
 
-    /* Message */
     .message-wrapper {
       width: 100%;
       border-bottom: 1px solid #4d4d4f;
@@ -206,11 +267,11 @@
     }
 
     .message {
-      max-width: 800px;
+      max-width: min(800px, 100%);
       margin: 0 auto;
-      padding: 24px;
+      padding: clamp(16px, 3vw, 24px);
       display: flex;
-      gap: 24px;
+      gap: clamp(12px, 2vw, 24px);
     }
 
     .message-avatar {
@@ -238,12 +299,20 @@
     .message-content {
       flex: 1;
       line-height: 1.7;
-      font-size: 15px;
+      font-size: clamp(14px, 2vw, 15px);
       word-wrap: break-word;
       white-space: pre-wrap;
+      min-width: 0;
     }
 
-    .speak-btn {
+    .message-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    .action-btn {
       background: transparent;
       border: 1px solid #565869;
       color: #ececf1;
@@ -251,20 +320,21 @@
       border-radius: 4px;
       cursor: pointer;
       font-size: 13px;
-      margin-top: 12px;
       transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 4px;
     }
 
-    .speak-btn:hover {
+    .action-btn:hover {
       background: #40414f;
     }
 
-    .speak-btn.speaking {
+    .action-btn.active {
       background: #ef4444;
       border-color: #ef4444;
     }
 
-    /* Typing Indicator */
     .typing-wrapper {
       display: none;
       background: #444654;
@@ -276,11 +346,11 @@
     }
 
     .typing-indicator {
-      max-width: 800px;
+      max-width: min(800px, 100%);
       margin: 0 auto;
-      padding: 24px;
+      padding: clamp(16px, 3vw, 24px);
       display: flex;
-      gap: 24px;
+      gap: clamp(12px, 2vw, 24px);
     }
 
     .typing-dots {
@@ -316,14 +386,15 @@
       }
     }
 
-    /* Input Area */
     .input-container {
-      padding: 16px;
+      padding: clamp(12px, 2vw, 16px);
       background: #343541;
+      flex-shrink: 0;
+      border-top: 1px solid #4d4d4f;
     }
 
     .input-wrapper {
-      max-width: 800px;
+      max-width: min(800px, 100%);
       margin: 0 auto;
       position: relative;
     }
@@ -372,12 +443,13 @@
       background: transparent;
       border: none;
       color: #ececf1;
-      font-size: 15px;
+      font-size: clamp(14px, 2vw, 15px);
       font-family: 'Inter', sans-serif;
       outline: none;
       resize: none;
       max-height: 200px;
       line-height: 1.5;
+      min-width: 0;
     }
 
     .input-box::placeholder {
@@ -407,6 +479,21 @@
       opacity: 0.5;
     }
 
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+    }
+
+    .overlay.active {
+      display: block;
+    }
+
     /* Light Mode */
     body.light-mode {
       background: #ffffff;
@@ -418,23 +505,23 @@
       border-right: 1px solid #e5e5e5;
     }
 
-    body.light-mode .sidebar-header {
-      border-bottom: 1px solid #e5e5e5;
+    body.light-mode .sidebar-header,
+    body.light-mode .sidebar-footer {
+      border-color: #e5e5e5;
     }
 
     body.light-mode .new-chat-btn,
-    body.light-mode .dark-mode-toggle {
+    body.light-mode .dark-mode-toggle,
+    body.light-mode .model-selector,
+    body.light-mode .action-btn {
       border-color: #e5e5e5;
       color: #202123;
     }
 
     body.light-mode .new-chat-btn:hover,
-    body.light-mode .sidebar-footer-item:hover {
+    body.light-mode .sidebar-footer-item:hover,
+    body.light-mode .chat-item:hover {
       background: #ececed;
-    }
-
-    body.light-mode .sidebar-footer {
-      border-top: 1px solid #e5e5e5;
     }
 
     body.light-mode .sidebar-footer-item {
@@ -450,7 +537,9 @@
       color: #202123;
     }
 
-    body.light-mode .dark-mode-toggle:hover {
+    body.light-mode .dark-mode-toggle:hover,
+    body.light-mode .model-selector:hover,
+    body.light-mode .action-btn:hover {
       background: #f7f7f8;
     }
 
@@ -462,17 +551,18 @@
       background: #f7f7f8;
     }
 
-    body.light-mode .message-wrapper {
+    body.light-mode .message-wrapper,
+    body.light-mode .typing-wrapper {
       border-bottom: 1px solid #e5e5e5;
     }
 
     body.light-mode .typing-wrapper {
       background: #f7f7f8;
-      border-bottom: 1px solid #e5e5e5;
     }
 
     body.light-mode .input-container {
       background: #ffffff;
+      border-top: 1px solid #e5e5e5;
     }
 
     body.light-mode .input-area {
@@ -496,9 +586,7 @@
       background: #ececed;
     }
 
-    body.light-mode .speak-btn,
     body.light-mode .mic-btn {
-      border-color: #e5e5e5;
       color: #202123;
     }
 
@@ -510,47 +598,87 @@
       background: #d0d0d0;
     }
 
-    /* Mobile Responsive */
+    body.light-mode .menu-btn {
+      color: #202123;
+    }
+
+    /* Mobile Styles */
     @media (max-width: 768px) {
       .sidebar {
         position: fixed;
-        left: -260px;
+        left: 0;
         top: 0;
         height: 100vh;
+        height: 100dvh;
         z-index: 1000;
-        transition: left 0.3s;
+        transform: translateX(-100%);
       }
 
       .sidebar.open {
-        left: 0;
+        transform: translateX(0);
+      }
+
+      .menu-btn {
+        display: block;
+      }
+
+      .header-title {
+        font-size: 14px;
+      }
+
+      .dark-mode-toggle span {
+        display: none;
+      }
+
+      .model-selector {
+        font-size: 12px;
+        padding: 6px 8px;
       }
 
       .message {
-        padding: 20px 16px;
-        gap: 16px;
+        padding: 16px 12px;
+        gap: 12px;
       }
 
       .welcome-screen h1 {
         font-size: 24px;
+        margin-bottom: 24px;
       }
 
       .example-cards {
         grid-template-columns: 1fr;
+        gap: 12px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .input-container {
+        padding: 10px;
+      }
+
+      .input-area {
+        padding: 10px;
+      }
+
+      .mic-btn, .send-btn {
+        padding: 6px 10px;
+        font-size: 18px;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Sidebar -->
+  <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
   <div class="sidebar" id="sidebar">
     <div class="sidebar-header">
       <button class="new-chat-btn" onclick="newChat()">
         ➕ New chat
       </button>
     </div>
-    <div class="sidebar-content">
-      <!-- Chat history will go here -->
+    <div class="sidebar-content" id="chatHistory">
+      <!-- Chat history -->
     </div>
     <div class="sidebar-footer">
       <div class="sidebar-footer-item" onclick="showAbout()">
@@ -562,15 +690,23 @@
     </div>
   </div>
 
-  <!-- Main Content -->
   <div class="main-content">
-    <!-- Header -->
     <div class="header">
-      <div class="header-title">GodswillChatbot</div>
-      <button class="dark-mode-toggle" onclick="toggleDarkMode()">☀️ Light</button>
+      <div class="header-left">
+        <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+        <div class="header-title">GodswillChatbot</div>
+      </div>
+      <div class="header-right">
+        <select class="model-selector" id="modelSelector">
+          <option value="gemini-pro">Gemini Pro</option>
+          <option value="gemini-pro-vision">Gemini Pro Vision</option>
+        </select>
+        <button class="dark-mode-toggle" onclick="toggleDarkMode()">
+          ☀️ <span>Light</span>
+        </button>
+      </div>
     </div>
 
-    <!-- Messages Container -->
     <div class="messages-container" id="messagesContainer">
       <div class="welcome-screen" id="welcomeScreen">
         <h1>GodswillChatbot</h1>
@@ -579,19 +715,22 @@
             <h3>💡 Explain concepts</h3>
             <p>"Explain quantum computing in simple terms"</p>
           </div>
-          <div class="example-card" onclick="sendExampleMessage('Help me write an essay about climate change')">
-            <h3>✍️ Get help with writing</h3>
-            <p>"Help me write an essay about climate change"</p>
+          <div class="example-card" onclick="sendExampleMessage('Write a creative story about a time traveler')">
+            <h3>✍️ Creative writing</h3>
+            <p>"Write a creative story about a time traveler"</p>
           </div>
-          <div class="example-card" onclick="sendExampleMessage('What are some fun facts about space?')">
-            <h3>🚀 Learn something new</h3>
-            <p>"What are some fun facts about space?"</p>
+          <div class="example-card" onclick="sendExampleMessage('Help me debug this Python code')">
+            <h3>💻 Code assistance</h3>
+            <p>"Help me debug this Python code"</p>
+          </div>
+          <div class="example-card" onclick="sendExampleMessage('Teach me basic Spanish phrases')">
+            <h3>🌍 Learn languages</h3>
+            <p>"Teach me basic Spanish phrases"</p>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Typing Indicator -->
     <div class="typing-wrapper" id="typingWrapper">
       <div class="typing-indicator">
         <div class="message-avatar assistant">AI</div>
@@ -603,7 +742,6 @@
       </div>
     </div>
 
-    <!-- Input Area -->
     <div class="input-container">
       <div class="input-wrapper">
         <div class="input-area">
@@ -616,16 +754,17 @@
   </div>
 
   <script>
-    // Google Gemini API Configuration
     const GEMINI_API_KEY = 'AIzaSyC-SOHl4EIrc6dF_GU7TqWbB64FO-1bd3M';
     
-    // Web Speech API
     let recognition;
     let isRecording = false;
+    let conversationHistory = [];
+    let currentChatId = Date.now();
+    let chatSessions = JSON.parse(localStorage.getItem('chatSessions') || '[]');
 
-    // Initialize Speech Recognition
-    if ('webkitSpeechRecognition' in window) {
-      recognition = new webkitSpeechRecognition();
+    // Speech Recognition Setup
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
       recognition.continuous = false;
       recognition.interimResults = false;
       recognition.lang = 'en-US';
@@ -640,6 +779,9 @@
       recognition.onerror = function(event) {
         console.error('Speech recognition error:', event.error);
         stopVoiceInput();
+        if (event.error === 'not-allowed') {
+          alert('Please allow microphone access to use voice input.');
+        }
       };
 
       recognition.onend = function() {
@@ -647,24 +789,57 @@
       };
     }
 
-    // Dark Mode Toggle
+    // Initialize
+    window.addEventListener('load', () => {
+      loadChatHistory();
+      adjustViewportHeight();
+    });
+
+    window.addEventListener('resize', adjustViewportHeight);
+
+    function adjustViewportHeight() {
+      let vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('overlay');
+      sidebar.classList.toggle('open');
+      overlay.classList.toggle('active');
+    }
+
+    function closeSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('overlay');
+      sidebar.classList.remove('open');
+      overlay.classList.remove('active');
+    }
+
     function toggleDarkMode() {
       document.body.classList.toggle('light-mode');
       const btn = document.querySelector('.dark-mode-toggle');
+      const span = btn.querySelector('span');
       if (document.body.classList.contains('light-mode')) {
-        btn.textContent = '🌙 Dark';
+        btn.innerHTML = '🌙 <span>Dark</span>';
+        localStorage.setItem('theme', 'light');
       } else {
-        btn.textContent = '☀️ Light';
+        btn.innerHTML = '☀️ <span>Light</span>';
+        localStorage.setItem('theme', 'dark');
       }
     }
 
-    // Auto-resize textarea
+    // Load saved theme
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+      toggleDarkMode();
+    }
+
     function autoResize(textarea) {
       textarea.style.height = 'auto';
       textarea.style.height = Math.min(textarea.scrollHeight, 200) + 'px';
     }
 
-    // Handle Enter Key
     function handleKeyDown(event) {
       if (event.key === 'Enter' && !event.shiftKey) {
         event.preventDefault();
@@ -672,10 +847,9 @@
       }
     }
 
-    // Voice Input
     function startVoiceInput() {
       if (!recognition) {
-        alert('Speech recognition is not supported in your browser. Please use Chrome or Edge.');
+        alert('Speech recognition is not supported in your browser. Please use Chrome, Edge, or Safari.');
         return;
       }
 
@@ -685,21 +859,31 @@
         isRecording = true;
         const micBtn = document.getElementById('micBtn');
         micBtn.classList.add('recording');
-        recognition.start();
+        try {
+          recognition.start();
+        } catch (error) {
+          console.error('Recognition start error:', error);
+          stopVoiceInput();
+        }
       }
     }
 
     function stopVoiceInput() {
       if (recognition && isRecording) {
-        recognition.stop();
+        try {
+          recognition.stop();
+        } catch (error) {
+          console.error('Recognition stop error:', error);
+        }
         isRecording = false;
         const micBtn = document.getElementById('micBtn');
         micBtn.classList.remove('recording');
       }
     }
 
-    // New Chat
     function newChat() {
+      conversationHistory = [];
+      currentChatId = Date.now();
       const messagesContainer = document.getElementById('messagesContainer');
       messagesContainer.innerHTML = `
         <div class="welcome-screen" id="welcomeScreen">
@@ -709,53 +893,58 @@
               <h3>💡 Explain concepts</h3>
               <p>"Explain quantum computing in simple terms"</p>
             </div>
-            <div class="example-card" onclick="sendExampleMessage('Help me write an essay about climate change')">
-              <h3>✍️ Get help with writing</h3>
-              <p>"Help me write an essay about climate change"</p>
+            <div class="example-card" onclick="sendExampleMessage('Write a creative story about a time traveler')">
+              <h3>✍️ Creative writing</h3>
+              <p>"Write a creative story about a time traveler"</p>
             </div>
-            <div class="example-card" onclick="sendExampleMessage('What are some fun facts about space?')">
-              <h3>🚀 Learn something new</h3>
-              <p>"What are some fun facts about space?"</p>
+            <div class="example-card" onclick="sendExampleMessage('Help me debug this Python code')">
+              <h3>💻 Code assistance</h3>
+              <p>"Help me debug this Python code"</p>
+            </div>
+            <div class="example-card" onclick="sendExampleMessage('Teach me basic Spanish phrases')">
+              <h3>🌍 Learn languages</h3>
+              <p>"Teach me basic Spanish phrases"</p>
             </div>
           </div>
         </div>
       `;
+      closeSidebar();
     }
 
-    // Send Example Message
     function sendExampleMessage(message) {
       document.getElementById('messageInput').value = message;
       sendMessage();
     }
 
-    // Send Message
     async function sendMessage() {
       const input = document.getElementById('messageInput');
       const message = input.value.trim();
       
       if (!message) return;
 
-      // Remove welcome screen
       const welcomeScreen = document.getElementById('welcomeScreen');
       if (welcomeScreen) {
         welcomeScreen.remove();
       }
 
-      // Add user message
       addMessage(message, 'user');
+      conversationHistory.push({
+        role: 'user',
+        parts: [{text: message}]
+      });
+
       input.value = '';
       input.style.height = 'auto';
 
-      // Show typing indicator
       const typingWrapper = document.getElementById('typingWrapper');
       typingWrapper.classList.add('active');
 
-      // Disable send button
       const sendBtn = document.getElementById('sendBtn');
       sendBtn.disabled = true;
 
       try {
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`;
+        const modelName = document.getElementById('modelSelector').value;
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${GEMINI_API_KEY}`;
         
         const response = await fetch(url, {
           method: 'POST',
@@ -763,11 +952,31 @@
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            contents: [{
-              parts: [{
-                text: message
-              }]
-            }]
+            contents: conversationHistory,
+            generationConfig: {
+              temperature: 0.9,
+              topK: 40,
+              topP: 0.95,
+              maxOutputTokens: 2048,
+            },
+            safetySettings: [
+              {
+                category: "HARM_CATEGORY_HARASSMENT",
+                threshold: "BLOCK_MEDIUM_AND_ABOVE"
+              },
+              {
+                category: "HARM_CATEGORY_HATE_SPEECH",
+                threshold: "BLOCK_MEDIUM_AND_ABOVE"
+              },
+              {
+                category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                threshold: "BLOCK_MEDIUM_AND_ABOVE"
+              },
+              {
+                category: "HARM_CATEGORY_DANGEROUS_CONTENT",
+                threshold: "BLOCK_MEDIUM_AND_ABOVE"
+              }
+            ]
           })
         });
 
@@ -780,20 +989,25 @@
         if (data.candidates && data.candidates[0] && data.candidates[0].content) {
           const aiResponse = data.candidates[0].content.parts[0].text;
           addMessage(aiResponse, 'assistant');
+          conversationHistory.push({
+            role: 'model',
+            parts: [{text: aiResponse}]
+          });
+          
+          saveChatSession(message);
         } else {
           throw new Error('Invalid response from API');
         }
 
       } catch (error) {
         console.error('Error:', error);
-        addMessage("Sorry, I encountered an error. Please try again! 😔", 'assistant');
+        addMessage("Sorry, I encountered an error. Please try again! 😔\n\nError: " + error.message, 'assistant');
       } finally {
         typingWrapper.classList.remove('active');
         sendBtn.disabled = false;
       }
     }
 
-    // Add Message
     function addMessage(text, sender) {
       const messagesContainer = document.getElementById('messagesContainer');
 
@@ -814,13 +1028,29 @@
       messageDiv.appendChild(avatar);
       messageDiv.appendChild(contentDiv);
 
-      // Add speak button for assistant messages
       if (sender === 'assistant') {
+        const actionsDiv = document.createElement('div');
+        actionsDiv.className = 'message-actions';
+
         const speakBtn = document.createElement('button');
-        speakBtn.className = 'speak-btn';
+        speakBtn.className = 'action-btn';
         speakBtn.innerHTML = '🔊 Listen';
         speakBtn.onclick = () => speakText(text, speakBtn);
-        contentDiv.appendChild(speakBtn);
+
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'action-btn';
+        copyBtn.innerHTML = '📋 Copy';
+        copyBtn.onclick = () => copyToClipboard(text, copyBtn);
+
+        const regenerateBtn = document.createElement('button');
+        regenerateBtn.className = 'action-btn';
+        regenerateBtn.innerHTML = '🔄 Regenerate';
+        regenerateBtn.onclick = () => regenerateResponse();
+
+        actionsDiv.appendChild(speakBtn);
+        actionsDiv.appendChild(copyBtn);
+        actionsDiv.appendChild(regenerateBtn);
+        contentDiv.appendChild(actionsDiv);
       }
 
       messageWrapper.appendChild(messageDiv);
@@ -828,52 +1058,358 @@
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
 
-    // Text-to-Speech
     function speakText(text, button) {
       if (speechSynthesis.speaking) {
         speechSynthesis.cancel();
-        const allButtons = document.querySelectorAll('.speak-btn');
+        const allButtons = document.querySelectorAll('.action-btn');
         allButtons.forEach(btn => {
-          btn.classList.remove('speaking');
-          btn.textContent = '🔊 Listen';
+          if (btn.innerHTML.includes('Stop')) {
+            btn.innerHTML = '🔊 Listen';
+            btn.classList.remove('active');
+          }
         });
         return;
       }
 
       if ('speechSynthesis' in window) {
-        button.classList.add('speaking');
-        button.textContent = '⏹️ Stop';
+        button.classList.add('active');
+        button.innerHTML = '⏹️ Stop';
 
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.rate = 0.9;
         utterance.pitch = 1;
         utterance.volume = 1;
+        utterance.lang = 'en-US';
+
+        const voices = speechSynthesis.getVoices();
+        const preferredVoice = voices.find(voice => voice.lang === 'en-US' && voice.name.includes('Google')) || voices[0];
+        if (preferredVoice) {
+          utterance.voice = preferredVoice;
+        }
 
         utterance.onend = () => {
-          button.classList.remove('speaking');
-          button.textContent = '🔊 Listen';
+          button.classList.remove('active');
+          button.innerHTML = '🔊 Listen';
         };
 
-        utterance.onerror = () => {
-          button.classList.remove('speaking');
-          button.textContent = '🔊 Listen';
+        utterance.onerror = (error) => {
+          console.error('Speech synthesis error:', error);
+          button.classList.remove('active');
+          button.innerHTML = '🔊 Listen';
         };
 
         speechSynthesis.speak(utterance);
+      } else {
+        alert('Text-to-speech is not supported in your browser.');
       }
     }
 
-    // Footer Functions
+    function copyToClipboard(text, button) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          const originalHTML = button.innerHTML;
+          button.innerHTML = '✅ Copied!';
+          button.classList.add('active');
+          setTimeout(() => {
+            button.innerHTML = originalHTML;
+            button.classList.remove('active');
+          }, 2000);
+        }).catch(err => {
+          console.error('Failed to copy:', err);
+          fallbackCopy(text, button);
+        });
+      } else {
+        fallbackCopy(text, button);
+      }
+    }
+
+    function fallbackCopy(text, button) {
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      textArea.style.position = 'fixed';
+      textArea.style.left = '-999999px';
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      
+      try {
+        document.execCommand('copy');
+        const originalHTML = button.innerHTML;
+        button.innerHTML = '✅ Copied!';
+        button.classList.add('active');
+        setTimeout(() => {
+          button.innerHTML = originalHTML;
+          button.classList.remove('active');
+        }, 2000);
+      } catch (err) {
+        console.error('Fallback copy failed:', err);
+        alert('Failed to copy text. Please try manually selecting and copying.');
+      }
+      
+      document.body.removeChild(textArea);
+    }
+
+    async function regenerateResponse() {
+      if (conversationHistory.length < 2) return;
+
+      // Remove last AI response from history and UI
+      conversationHistory.pop();
+      const messagesContainer = document.getElementById('messagesContainer');
+      const lastMessage = messagesContainer.lastElementChild;
+      if (lastMessage && lastMessage.classList.contains('assistant')) {
+        lastMessage.remove();
+      }
+
+      // Resend the last user message
+      const typingWrapper = document.getElementById('typingWrapper');
+      typingWrapper.classList.add('active');
+
+      const sendBtn = document.getElementById('sendBtn');
+      sendBtn.disabled = true;
+
+      try {
+        const modelName = document.getElementById('modelSelector').value;
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${GEMINI_API_KEY}`;
+        
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            contents: conversationHistory,
+            generationConfig: {
+              temperature: 1.0, // Higher temperature for more varied responses
+              topK: 40,
+              topP: 0.95,
+              maxOutputTokens: 2048,
+            }
+          })
+        });
+
+        const data = await response.json();
+        
+        if (!response.ok) {
+          throw new Error(data.error?.message || 'API request failed');
+        }
+
+        if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+          const aiResponse = data.candidates[0].content.parts[0].text;
+          addMessage(aiResponse, 'assistant');
+          conversationHistory.push({
+            role: 'model',
+            parts: [{text: aiResponse}]
+          });
+        } else {
+          throw new Error('Invalid response from API');
+        }
+
+      } catch (error) {
+        console.error('Error:', error);
+        addMessage("Sorry, I encountered an error while regenerating. Please try again! 😔", 'assistant');
+      } finally {
+        typingWrapper.classList.remove('active');
+        sendBtn.disabled = false;
+      }
+    }
+
+    function saveChatSession(firstMessage) {
+      const existingSession = chatSessions.find(session => session.id === currentChatId);
+      
+      if (!existingSession) {
+        const newSession = {
+          id: currentChatId,
+          title: firstMessage.substring(0, 30) + (firstMessage.length > 30 ? '...' : ''),
+          timestamp: new Date().toISOString(),
+          messages: conversationHistory
+        };
+        chatSessions.unshift(newSession);
+        
+        // Keep only last 20 sessions
+        if (chatSessions.length > 20) {
+          chatSessions = chatSessions.slice(0, 20);
+        }
+        
+        localStorage.setItem('chatSessions', JSON.stringify(chatSessions));
+        loadChatHistory();
+      } else {
+        existingSession.messages = conversationHistory;
+        localStorage.setItem('chatSessions', JSON.stringify(chatSessions));
+      }
+    }
+
+    function loadChatHistory() {
+      const chatHistoryContainer = document.getElementById('chatHistory');
+      chatHistoryContainer.innerHTML = '';
+      
+      chatSessions.forEach(session => {
+        const chatItem = document.createElement('div');
+        chatItem.className = 'chat-item';
+        chatItem.textContent = session.title;
+        chatItem.onclick = () => loadChatSession(session.id);
+        chatHistoryContainer.appendChild(chatItem);
+      });
+    }
+
+    function loadChatSession(sessionId) {
+      const session = chatSessions.find(s => s.id === sessionId);
+      if (!session) return;
+
+      currentChatId = sessionId;
+      conversationHistory = session.messages;
+
+      const messagesContainer = document.getElementById('messagesContainer');
+      messagesContainer.innerHTML = '';
+
+      session.messages.forEach((msg, index) => {
+        if (index % 2 === 0) {
+          addMessage(msg.parts[0].text, 'user');
+        } else {
+          addMessage(msg.parts[0].text, 'assistant');
+        }
+      });
+
+      closeSidebar();
+    }
+
     function showAbout() {
-      const message = 'GodswillChatbot is an AI-powered assistant using Google Gemini AI! I can help you with questions, writing, learning, and much more. Built with ❤️ by Godswill!';
-      document.getElementById('messageInput').value = message;
-      sendMessage();
+      const aboutMessage = `🤖 GodswillChatbot - Advanced AI Assistant
+
+Powered by Google Gemini AI, I'm here to help you with:
+
+✨ Creative Writing & Storytelling
+💻 Code Debugging & Development
+📚 Learning & Education
+🌍 Language Translation
+🎨 Content Creation
+🔬 Research & Analysis
+💡 Problem Solving
+🎯 Task Planning
+
+Features:
+• Context-aware conversations
+• Multi-turn dialogue memory
+• Voice input & text-to-speech
+• Code syntax understanding
+• Multiple AI models
+• Chat history saving
+• Cross-device responsive design
+
+Built with ❤️ by Godswill
+Version 2.0 - December 2024`;
+
+      addMessage(aboutMessage, 'assistant');
+      closeSidebar();
     }
 
     function showContact() {
-      const message = '📱 WhatsApp: +2347033572513\n📧 Email: ihechigodswill575@gmail.com\n\nFeel free to reach out anytime!';
-      addMessage(message, 'assistant');
+      const contactMessage = `📱 Get in Touch
+
+WhatsApp: +2347033572513
+📧 Email: ihechigodswill575@gmail.com
+
+💬 I'm available for:
+• Custom AI solutions
+• Technical consultations
+• Feature requests
+• Bug reports
+• Collaborations
+
+Feel free to reach out anytime! I typically respond within 24 hours.
+
+🌟 If you find this chatbot helpful, share it with others!`;
+
+      addMessage(contactMessage, 'assistant');
+      closeSidebar();
     }
+
+    // Handle orientation changes on mobile
+    window.addEventListener('orientationchange', () => {
+      setTimeout(adjustViewportHeight, 100);
+    });
+
+    // Prevent zoom on input focus (iOS)
+    document.getElementById('messageInput').addEventListener('focus', (e) => {
+      e.target.style.fontSize = '16px';
+    });
+
+    // Load voices for speech synthesis
+    if ('speechSynthesis' in window) {
+      speechSynthesis.addEventListener('voiceschanged', () => {
+        speechSynthesis.getVoices();
+      });
+    }
+
+    // Service Worker for PWA (optional)
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').then(
+          registration => {
+            console.log('ServiceWorker registration successful');
+          },
+          err => {
+            console.log('ServiceWorker registration failed: ', err);
+          }
+        );
+      });
+    }
+
+    // Handle visibility change to pause/resume speech
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden && speechSynthesis.speaking) {
+        speechSynthesis.pause();
+      } else if (!document.hidden && speechSynthesis.paused) {
+        speechSynthesis.resume();
+      }
+    });
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      // Ctrl/Cmd + K to focus input
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        document.getElementById('messageInput').focus();
+      }
+      
+      // Ctrl/Cmd + N for new chat
+      if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
+        e.preventDefault();
+        newChat();
+      }
+
+      // Escape to close sidebar
+      if (e.key === 'Escape') {
+        closeSidebar();
+      }
+    });
+
+    // Auto-save conversation periodically
+    setInterval(() => {
+      if (conversationHistory.length > 0) {
+        const existingSession = chatSessions.find(session => session.id === currentChatId);
+        if (existingSession) {
+          existingSession.messages = conversationHistory;
+          localStorage.setItem('chatSessions', JSON.stringify(chatSessions));
+        }
+      }
+    }, 30000); // Save every 30 seconds
+
+    // Network status indicator
+    window.addEventListener('online', () => {
+      console.log('Network connection restored');
+    });
+
+    window.addEventListener('offline', () => {
+      alert('You are currently offline. Messages will not be sent until connection is restored.');
+    });
+
+    // Prevent accidental page refresh
+    window.addEventListener('beforeunload', (e) => {
+      if (conversationHistory.length > 0) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    });
   </script>
 
 </body>
