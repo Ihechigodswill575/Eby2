@@ -22,13 +22,11 @@
       overflow: hidden;
     }
 
-    /* Dark Mode */
     body.dark-mode {
       background: #0a0a0a;
       color: #e0e0e0;
     }
 
-    /* Header */
     .header {
       background: #1a1a40;
       color: white;
@@ -77,7 +75,6 @@
       background: rgba(255, 255, 255, 0.3);
     }
 
-    /* Main Chat Container */
     .chat-container {
       flex: 1;
       display: flex;
@@ -89,7 +86,6 @@
       overflow: hidden;
     }
 
-    /* Messages Area */
     .messages-area {
       flex: 1;
       overflow-y: auto;
@@ -121,7 +117,6 @@
       border-radius: 10px;
     }
 
-    /* Welcome Message */
     .welcome-message {
       text-align: center;
       padding: 3rem 1rem;
@@ -146,7 +141,6 @@
       font-size: clamp(0.9rem, 2vw, 1.1rem);
     }
 
-    /* Message Bubbles */
     .message {
       display: flex;
       gap: 0.8rem;
@@ -181,6 +175,7 @@
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
       position: relative;
       word-wrap: break-word;
+      white-space: pre-wrap;
     }
 
     .message.user .message-content {
@@ -231,7 +226,6 @@
       50% { opacity: 0.7; }
     }
 
-    /* Input Area */
     .input-area {
       display: flex;
       gap: 0.8rem;
@@ -320,7 +314,6 @@
       cursor: not-allowed;
     }
 
-    /* Loading Animation */
     .typing-indicator {
       display: none;
       padding: 1rem;
@@ -369,7 +362,6 @@
       }
     }
 
-    /* Footer */
     .footer {
       background: #1a1a40;
       color: white;
@@ -402,7 +394,6 @@
       color: #ccc;
     }
 
-    /* Responsive */
     @media (max-width: 768px) {
       .message-content {
         max-width: 85%;
@@ -436,7 +427,6 @@
 </head>
 <body>
 
-  <!-- Header -->
   <div class="header">
     <div class="logo">
       <h1>GodswillChatbot</h1>
@@ -447,7 +437,6 @@
     </div>
   </div>
 
-  <!-- Chat Container -->
   <div class="chat-container">
     <div class="messages-area" id="messagesArea">
       <div class="welcome-message">
@@ -456,14 +445,12 @@
       </div>
     </div>
 
-    <!-- Typing Indicator -->
     <div class="typing-indicator" id="typingIndicator">
       <span></span>
       <span></span>
       <span></span>
     </div>
 
-    <!-- Input Area -->
     <div class="input-area">
       <button class="mic-btn" id="micBtn" onclick="startVoiceInput()">🎤</button>
       <input type="text" class="input-box" id="messageInput" placeholder="Type your message here..." onkeypress="handleKeyPress(event)">
@@ -471,25 +458,23 @@
     </div>
   </div>
 
-  <!-- Footer -->
   <div class="footer">
     <div class="footer-links">
       <a href="#about" onclick="showAbout()">About</a>
       <a href="#api" onclick="showAPI()">API Info</a>
       <a href="#contact" onclick="showContact()">Contact</a>
     </div>
-    <p class="copyright">© 2025 GodswillChatbot</p>
+    <p class="copyright">© 2025 GodswillChatbot - Powered by Google Gemini AI</p>
   </div>
 
   <script>
-    // Configuration - Using a more reliable model
-    const HUGGINGFACE_TOKEN = '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';
-    const HF_API_URL = 'https://api-inference.huggingface.co/models/microsoft/DialoGPT-medium';
+    // Google Gemini API Configuration
+    const GEMINI_API_KEY = 'AIzaSyAU0fKMOjDDYWXpU_Ew7wMmARqn3b-wwug';
+    const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`;
     
     // Web Speech API
     let recognition;
     let isRecording = false;
-    let conversationHistory = [];
 
     // Initialize Speech Recognition
     if ('webkitSpeechRecognition' in window) {
@@ -562,7 +547,7 @@
       }
     }
 
-    // Send Message with better error handling
+    // Send Message with Google Gemini AI
     async function sendMessage() {
       const input = document.getElementById('messageInput');
       const message = input.value.trim();
@@ -573,9 +558,6 @@
       addMessage(message, 'user');
       input.value = '';
 
-      // Add to conversation history
-      conversationHistory.push(message);
-
       // Show typing indicator
       const typingIndicator = document.getElementById('typingIndicator');
       typingIndicator.classList.add('active');
@@ -585,107 +567,35 @@
       sendBtn.disabled = true;
 
       try {
-        // Try with retry logic
-        let response;
-        let attempts = 0;
-        const maxAttempts = 3;
-
-        while (attempts < maxAttempts) {
-          try {
-            response = await fetch(HF_API_URL, {
-              method: 'POST',
-              headers: {
-                'Authorization': `Bearer ${HUGGINGFACE_TOKEN}`,
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                inputs: {
-                  past_user_inputs: conversationHistory.slice(-5, -1),
-                  generated_responses: [],
-                  text: message
-                },
-                options: {
-                  wait_for_model: true
-                }
-              })
-            });
-
-            if (response.ok) {
-              break;
-            } else if (response.status === 503) {
-              // Model is loading, wait and retry
-              await new Promise(resolve => setTimeout(resolve, 2000));
-              attempts++;
-            } else {
-              throw new Error(`API Error: ${response.status}`);
-            }
-          } catch (error) {
-            attempts++;
-            if (attempts >= maxAttempts) {
-              throw error;
-            }
-            await new Promise(resolve => setTimeout(resolve, 2000));
-          }
-        }
+        const response = await fetch(GEMINI_API_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            contents: [{
+              parts: [{
+                text: message
+              }]
+            }]
+          })
+        });
 
         const data = await response.json();
-        let aiResponse = '';
-
-        // Parse response
-        if (data.generated_text) {
-          aiResponse = data.generated_text.trim();
-        } else if (data.error) {
-          // If model is still loading, use fallback response
-          aiResponse = getFallbackResponse(message);
+        
+        if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+          const aiResponse = data.candidates[0].content.parts[0].text;
+          addMessage(aiResponse, 'ai');
         } else {
-          aiResponse = 'I heard you! Could you rephrase that?';
+          throw new Error('Invalid response from AI');
         }
-
-        // Clean up response
-        aiResponse = aiResponse.replace(message, '').trim();
-        if (!aiResponse || aiResponse.length < 2) {
-          aiResponse = getFallbackResponse(message);
-        }
-
-        // Add AI message
-        addMessage(aiResponse, 'ai');
 
       } catch (error) {
         console.error('Error:', error);
-        // Use intelligent fallback
-        const fallbackResponse = getFallbackResponse(message);
-        addMessage(fallbackResponse, 'ai');
+        addMessage("Sorry, I encountered an error. Please try again! Make sure your API key is valid.", 'ai');
       } finally {
         typingIndicator.classList.remove('active');
         sendBtn.disabled = false;
-      }
-    }
-
-    // Intelligent fallback responses
-    function getFallbackResponse(message) {
-      const lowerMessage = message.toLowerCase();
-      
-      if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('hey')) {
-        return "Hello! I'm GodswillChatbot. How can I help you today?";
-      } else if (lowerMessage.includes('how are you')) {
-        return "I'm doing great! Thanks for asking. How can I assist you?";
-      } else if (lowerMessage.includes('your name')) {
-        return "I'm GodswillChatbot, your AI assistant!";
-      } else if (lowerMessage.includes('what can you do')) {
-        return "I can chat with you, answer questions, and even speak my responses! Try asking me anything.";
-      } else if (lowerMessage.includes('thank')) {
-        return "You're welcome! Happy to help!";
-      } else if (lowerMessage.includes('bye')) {
-        return "Goodbye! Come back anytime!";
-      } else {
-        const responses = [
-          "That's interesting! Tell me more.",
-          "I understand. How can I help with that?",
-          "Got it! What else would you like to know?",
-          "Interesting question! Let me think about that.",
-          "I'm here to help! What would you like to know more about?"
-        ];
-        return responses[Math.floor(Math.random() * responses.length)];
       }
     }
 
@@ -759,15 +669,15 @@
 
     // Footer Functions
     function showAbout() {
-      addMessage('GodswillChatbot is an AI-powered chatbot that can chat with you via text or voice! Built with Hugging Face AI and Web Speech APIs. I can understand your questions and provide helpful responses.', 'ai');
+      addMessage('GodswillChatbot is an AI-powered chatbot using Google Gemini AI! I can chat with you via text or voice, answer questions, help with homework, explain concepts, and much more. Built with love by Godswill! 🚀', 'ai');
     }
 
     function showAPI() {
-      addMessage('This chatbot uses Hugging Face\'s DialoGPT model for conversational AI. Voice features use the Web Speech API for speech recognition and synthesis, making our conversations more natural!', 'ai');
+      addMessage('This chatbot is powered by Google Gemini AI - one of the most advanced AI models available! Voice features use the Web Speech API for natural speech recognition and text-to-speech capabilities. All completely FREE for students! 🎓', 'ai');
     }
 
     function showContact() {
-      addMessage('📱 WhatsApp: +2347033572513\n📧 Email: ihechigodswill575@gmail.com\n\nFeel free to reach out anytime!', 'ai');
+      addMessage('📱 WhatsApp: +2347033572513\n📧 Email: ihechigodswill575@gmail.com\n\nFeel free to reach out anytime! I\'d love to hear from you! 😊', 'ai');
     }
   </script>
 
