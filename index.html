@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GodswillChatbot - AI at your fingertips</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <title>GodswillChatbot</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -13,464 +13,611 @@
     }
 
     body {
-      font-family: 'Poppins', sans-serif;
-      background: #f5f5f5;
-      color: #333;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #343541;
+      color: #ececf1;
       display: flex;
-      flex-direction: column;
       height: 100vh;
       overflow: hidden;
     }
 
-    body.dark-mode {
-      background: #0a0a0a;
-      color: #e0e0e0;
+    /* Sidebar */
+    .sidebar {
+      width: 260px;
+      background: #202123;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid #4d4d4f;
     }
 
+    .sidebar-header {
+      padding: 12px;
+      border-bottom: 1px solid #4d4d4f;
+    }
+
+    .new-chat-btn {
+      background: transparent;
+      border: 1px solid #565869;
+      color: #ececf1;
+      padding: 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 14px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .new-chat-btn:hover {
+      background: #2a2b32;
+    }
+
+    .sidebar-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+    }
+
+    .sidebar-footer {
+      padding: 12px;
+      border-top: 1px solid #4d4d4f;
+    }
+
+    .sidebar-footer-item {
+      padding: 10px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+      color: #ececf1;
+      text-decoration: none;
+    }
+
+    .sidebar-footer-item:hover {
+      background: #2a2b32;
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    /* Header */
     .header {
-      background: #1a1a40;
-      color: white;
-      padding: clamp(1rem, 3vw, 1.5rem);
+      background: #343541;
+      padding: 12px 16px;
+      border-bottom: 1px solid #4d4d4f;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
 
-    .logo {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .logo h1 {
-      font-size: clamp(1.3rem, 4vw, 2rem);
-      font-weight: 700;
-      color: #39ff14;
-    }
-
-    .logo p {
-      font-size: clamp(0.75rem, 2vw, 0.95rem);
-      color: #ccc;
-      margin-top: 0.2rem;
-    }
-
-    .header-controls {
-      display: flex;
-      gap: 0.8rem;
-      align-items: center;
+    .header-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #ececf1;
     }
 
     .dark-mode-toggle {
-      background: rgba(255, 255, 255, 0.2);
-      border: none;
-      padding: 0.6rem 1rem;
-      border-radius: 8px;
-      color: white;
+      background: transparent;
+      border: 1px solid #565869;
+      color: #ececf1;
+      padding: 8px 16px;
+      border-radius: 6px;
       cursor: pointer;
-      font-size: clamp(0.85rem, 2vw, 1rem);
-      transition: all 0.3s;
+      font-size: 14px;
+      transition: all 0.2s;
     }
 
     .dark-mode-toggle:hover {
-      background: rgba(255, 255, 255, 0.3);
+      background: #40414f;
     }
 
-    .chat-container {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      max-width: 1200px;
-      width: 100%;
-      margin: 0 auto;
-      padding: clamp(1rem, 3vw, 2rem);
-      overflow: hidden;
-    }
-
-    .messages-area {
+    /* Messages Area */
+    .messages-container {
       flex: 1;
       overflow-y: auto;
-      padding: clamp(1rem, 2vw, 1.5rem);
       display: flex;
       flex-direction: column;
-      gap: 1.2rem;
-      background: white;
-      border-radius: 20px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-      margin-bottom: 1rem;
     }
 
-    body.dark-mode .messages-area {
-      background: #1a1a1a;
-    }
-
-    .messages-area::-webkit-scrollbar {
+    .messages-container::-webkit-scrollbar {
       width: 8px;
     }
 
-    .messages-area::-webkit-scrollbar-track {
-      background: rgba(0, 0, 0, 0.05);
-      border-radius: 10px;
+    .messages-container::-webkit-scrollbar-track {
+      background: #343541;
     }
 
-    .messages-area::-webkit-scrollbar-thumb {
-      background: #1a1a40;
-      border-radius: 10px;
+    .messages-container::-webkit-scrollbar-thumb {
+      background: #565869;
+      border-radius: 4px;
     }
 
-    .welcome-message {
+    .welcome-screen {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
       text-align: center;
-      padding: 3rem 1rem;
-      color: #666;
     }
 
-    body.dark-mode .welcome-message {
-      color: #999;
+    .welcome-screen h1 {
+      font-size: 32px;
+      margin-bottom: 40px;
+      font-weight: 600;
     }
 
-    .welcome-message h2 {
-      font-size: clamp(1.5rem, 4vw, 2rem);
-      color: #1a1a40;
-      margin-bottom: 1rem;
+    .example-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+      max-width: 900px;
+      width: 100%;
     }
 
-    body.dark-mode .welcome-message h2 {
-      color: #39ff14;
+    .example-card {
+      background: #444654;
+      padding: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: left;
     }
 
-    .welcome-message p {
-      font-size: clamp(0.9rem, 2vw, 1.1rem);
+    .example-card:hover {
+      background: #505162;
+    }
+
+    .example-card h3 {
+      font-size: 14px;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .example-card p {
+      font-size: 13px;
+      color: #c5c5d2;
+    }
+
+    /* Message */
+    .message-wrapper {
+      width: 100%;
+      border-bottom: 1px solid #4d4d4f;
+    }
+
+    .message-wrapper.user {
+      background: #343541;
+    }
+
+    .message-wrapper.assistant {
+      background: #444654;
     }
 
     .message {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 24px;
       display: flex;
-      gap: 0.8rem;
-      animation: slideIn 0.3s ease;
+      gap: 24px;
     }
 
-    @keyframes slideIn {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    .message-avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 4px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 14px;
     }
 
-    .message.user {
-      justify-content: flex-end;
+    .message-avatar.user {
+      background: #5436da;
+      color: white;
     }
 
-    .message.ai {
-      justify-content: flex-start;
+    .message-avatar.assistant {
+      background: #19c37d;
+      color: white;
     }
 
     .message-content {
-      max-width: 70%;
-      padding: 1rem 1.2rem;
-      border-radius: 20px;
-      font-size: clamp(0.9rem, 2vw, 1rem);
-      line-height: 1.5;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      position: relative;
+      flex: 1;
+      line-height: 1.7;
+      font-size: 15px;
       word-wrap: break-word;
       white-space: pre-wrap;
     }
 
-    .message.user .message-content {
-      background: #1a1a40;
-      color: white;
-      border-bottom-right-radius: 5px;
-    }
-
-    .message.ai .message-content {
-      background: #f0f0f0;
-      color: #333;
-      border-bottom-left-radius: 5px;
-    }
-
-    body.dark-mode .message.ai .message-content {
-      background: #2a2a2a;
-      color: #e0e0e0;
-    }
-
     .speak-btn {
-      background: #39ff14;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
-      color: #1a1a40;
-      font-weight: 600;
+      background: transparent;
+      border: 1px solid #565869;
+      color: #ececf1;
+      padding: 6px 12px;
+      border-radius: 4px;
       cursor: pointer;
-      margin-top: 0.5rem;
-      font-size: clamp(0.8rem, 2vw, 0.9rem);
-      transition: all 0.3s;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.3rem;
+      font-size: 13px;
+      margin-top: 12px;
+      transition: all 0.2s;
     }
 
     .speak-btn:hover {
-      background: #2ecc11;
-      transform: scale(1.05);
+      background: #40414f;
     }
 
     .speak-btn.speaking {
-      background: #ff6b6b;
-      animation: pulse 1s infinite;
+      background: #ef4444;
+      border-color: #ef4444;
     }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.7; }
-    }
-
-    .input-area {
-      display: flex;
-      gap: 0.8rem;
-      align-items: center;
-      background: white;
-      padding: clamp(0.8rem, 2vw, 1.2rem);
-      border-radius: 20px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    }
-
-    body.dark-mode .input-area {
-      background: #1a1a1a;
-    }
-
-    .mic-btn {
-      background: #39ff14;
-      border: none;
-      width: clamp(45px, 10vw, 55px);
-      height: clamp(45px, 10vw, 55px);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: clamp(1.2rem, 3vw, 1.5rem);
-      transition: all 0.3s;
-      flex-shrink: 0;
-    }
-
-    .mic-btn:hover {
-      background: #2ecc11;
-      transform: scale(1.1);
-    }
-
-    .mic-btn.recording {
-      background: #ff4444;
-      animation: pulse 1s infinite;
-    }
-
-    .input-box {
-      flex: 1;
-      padding: clamp(0.8rem, 2vw, 1rem);
-      border: 2px solid #ddd;
-      border-radius: 15px;
-      font-size: clamp(0.9rem, 2vw, 1rem);
-      font-family: 'Poppins', sans-serif;
-      outline: none;
-      transition: border-color 0.3s;
-    }
-
-    body.dark-mode .input-box {
-      background: #2a2a2a;
-      border-color: #444;
-      color: #e0e0e0;
-    }
-
-    .input-box:focus {
-      border-color: #1a1a40;
-    }
-
-    body.dark-mode .input-box:focus {
-      border-color: #39ff14;
-    }
-
-    .send-btn {
-      background: #1a1a40;
-      border: none;
-      padding: clamp(0.8rem, 2vw, 1rem) clamp(1.2rem, 3vw, 1.8rem);
-      border-radius: 15px;
-      color: white;
-      font-weight: 600;
-      cursor: pointer;
-      font-size: clamp(0.9rem, 2vw, 1rem);
-      transition: all 0.3s;
-      flex-shrink: 0;
-      min-height: 44px;
-    }
-
-    .send-btn:hover {
-      background: #2a2a60;
-      transform: translateY(-2px);
-    }
-
-    .send-btn:disabled {
-      background: #ccc;
-      cursor: not-allowed;
-    }
-
-    .typing-indicator {
+    /* Typing Indicator */
+    .typing-wrapper {
       display: none;
-      padding: 1rem;
-      background: #f0f0f0;
-      border-radius: 20px;
-      max-width: 70px;
-      border-bottom-left-radius: 5px;
+      background: #444654;
+      border-bottom: 1px solid #4d4d4f;
     }
 
-    body.dark-mode .typing-indicator {
-      background: #2a2a2a;
-    }
-
-    .typing-indicator.active {
+    .typing-wrapper.active {
       display: block;
     }
 
-    .typing-indicator span {
-      display: inline-block;
+    .typing-indicator {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 24px;
+      display: flex;
+      gap: 24px;
+    }
+
+    .typing-dots {
+      display: flex;
+      gap: 4px;
+      padding: 8px 0;
+    }
+
+    .typing-dots span {
       width: 8px;
       height: 8px;
-      background: #1a1a40;
+      background: #ececf1;
       border-radius: 50%;
-      margin: 0 2px;
       animation: typing 1.4s infinite;
     }
 
-    body.dark-mode .typing-indicator span {
-      background: #39ff14;
-    }
-
-    .typing-indicator span:nth-child(2) {
+    .typing-dots span:nth-child(2) {
       animation-delay: 0.2s;
     }
 
-    .typing-indicator span:nth-child(3) {
+    .typing-dots span:nth-child(3) {
       animation-delay: 0.4s;
     }
 
     @keyframes typing {
       0%, 60%, 100% {
+        opacity: 0.3;
         transform: translateY(0);
       }
       30% {
-        transform: translateY(-10px);
+        opacity: 1;
+        transform: translateY(-8px);
       }
     }
 
-    .footer {
-      background: #1a1a40;
-      color: white;
-      padding: clamp(1rem, 3vw, 1.5rem);
-      text-align: center;
+    /* Input Area */
+    .input-container {
+      padding: 16px;
+      background: #343541;
     }
 
-    .footer-links {
+    .input-wrapper {
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .input-area {
+      background: #40414f;
+      border: 1px solid #565869;
+      border-radius: 12px;
       display: flex;
-      justify-content: center;
-      gap: clamp(1rem, 4vw, 2rem);
-      margin-bottom: 0.8rem;
-      flex-wrap: wrap;
+      align-items: flex-end;
+      padding: 12px;
+      gap: 8px;
     }
 
-    .footer-links a {
-      color: #39ff14;
-      text-decoration: none;
-      font-size: clamp(0.85rem, 2vw, 1rem);
-      transition: color 0.3s;
+    .input-area:focus-within {
+      border-color: #ececf1;
     }
 
-    .footer-links a:hover {
-      color: #2ecc11;
-      text-decoration: underline;
+    .mic-btn {
+      background: transparent;
+      border: none;
+      color: #ececf1;
+      cursor: pointer;
+      font-size: 20px;
+      padding: 8px;
+      transition: all 0.2s;
+      flex-shrink: 0;
     }
 
-    .copyright {
-      font-size: clamp(0.75rem, 1.8vw, 0.9rem);
-      color: #ccc;
+    .mic-btn:hover {
+      opacity: 0.7;
     }
 
+    .mic-btn.recording {
+      color: #ef4444;
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .input-box {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: #ececf1;
+      font-size: 15px;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      resize: none;
+      max-height: 200px;
+      line-height: 1.5;
+    }
+
+    .input-box::placeholder {
+      color: #8e8ea0;
+    }
+
+    .send-btn {
+      background: #19c37d;
+      border: none;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+
+    .send-btn:hover {
+      background: #1a9f6a;
+    }
+
+    .send-btn:disabled {
+      background: #565869;
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+
+    /* Light Mode */
+    body.light-mode {
+      background: #ffffff;
+      color: #202123;
+    }
+
+    body.light-mode .sidebar {
+      background: #f7f7f8;
+      border-right: 1px solid #e5e5e5;
+    }
+
+    body.light-mode .sidebar-header {
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    body.light-mode .new-chat-btn,
+    body.light-mode .dark-mode-toggle {
+      border-color: #e5e5e5;
+      color: #202123;
+    }
+
+    body.light-mode .new-chat-btn:hover,
+    body.light-mode .sidebar-footer-item:hover {
+      background: #ececed;
+    }
+
+    body.light-mode .sidebar-footer {
+      border-top: 1px solid #e5e5e5;
+    }
+
+    body.light-mode .sidebar-footer-item {
+      color: #202123;
+    }
+
+    body.light-mode .header {
+      background: #ffffff;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    body.light-mode .header-title {
+      color: #202123;
+    }
+
+    body.light-mode .dark-mode-toggle:hover {
+      background: #f7f7f8;
+    }
+
+    body.light-mode .message-wrapper.user {
+      background: #ffffff;
+    }
+
+    body.light-mode .message-wrapper.assistant {
+      background: #f7f7f8;
+    }
+
+    body.light-mode .message-wrapper {
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    body.light-mode .typing-wrapper {
+      background: #f7f7f8;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    body.light-mode .input-container {
+      background: #ffffff;
+    }
+
+    body.light-mode .input-area {
+      background: #ffffff;
+      border-color: #e5e5e5;
+    }
+
+    body.light-mode .input-box {
+      color: #202123;
+    }
+
+    body.light-mode .input-box::placeholder {
+      color: #8e8ea0;
+    }
+
+    body.light-mode .example-card {
+      background: #f7f7f8;
+    }
+
+    body.light-mode .example-card:hover {
+      background: #ececed;
+    }
+
+    body.light-mode .speak-btn,
+    body.light-mode .mic-btn {
+      border-color: #e5e5e5;
+      color: #202123;
+    }
+
+    body.light-mode .messages-container::-webkit-scrollbar-track {
+      background: #ffffff;
+    }
+
+    body.light-mode .messages-container::-webkit-scrollbar-thumb {
+      background: #d0d0d0;
+    }
+
+    /* Mobile Responsive */
     @media (max-width: 768px) {
-      .message-content {
-        max-width: 85%;
+      .sidebar {
+        position: fixed;
+        left: -260px;
+        top: 0;
+        height: 100vh;
+        z-index: 1000;
+        transition: left 0.3s;
       }
-    }
 
-    @media (max-width: 480px) {
-      .message-content {
-        max-width: 90%;
+      .sidebar.open {
+        left: 0;
       }
-      
-      .input-area {
-        flex-wrap: wrap;
+
+      .message {
+        padding: 20px 16px;
+        gap: 16px;
       }
-      
-      .input-box {
-        order: 1;
-        width: 100%;
+
+      .welcome-screen h1 {
+        font-size: 24px;
       }
-      
-      .mic-btn {
-        order: 2;
-      }
-      
-      .send-btn {
-        order: 3;
-        flex: 1;
+
+      .example-cards {
+        grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
 <body>
 
-  <div class="header">
-    <div class="logo">
-      <h1>GodswillChatbot</h1>
-      <p>Chat, Speak, Listen – AI at your fingertips</p>
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <button class="new-chat-btn" onclick="newChat()">
+        ➕ New chat
+      </button>
     </div>
-    <div class="header-controls">
-      <button class="dark-mode-toggle" onclick="toggleDarkMode()">🌙 Dark Mode</button>
+    <div class="sidebar-content">
+      <!-- Chat history will go here -->
+    </div>
+    <div class="sidebar-footer">
+      <div class="sidebar-footer-item" onclick="showAbout()">
+        ℹ️ About
+      </div>
+      <div class="sidebar-footer-item" onclick="showContact()">
+        📧 Contact
+      </div>
     </div>
   </div>
 
-  <div class="chat-container">
-    <div class="messages-area" id="messagesArea">
-      <div class="welcome-message">
-        <h2>👋 Welcome to GodswillChatbot!</h2>
-        <p>Type a message, or click the mic 🎤 to speak. I'm here to help!</p>
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Header -->
+    <div class="header">
+      <div class="header-title">GodswillChatbot</div>
+      <button class="dark-mode-toggle" onclick="toggleDarkMode()">☀️ Light</button>
+    </div>
+
+    <!-- Messages Container -->
+    <div class="messages-container" id="messagesContainer">
+      <div class="welcome-screen" id="welcomeScreen">
+        <h1>GodswillChatbot</h1>
+        <div class="example-cards">
+          <div class="example-card" onclick="sendExampleMessage('Explain quantum computing in simple terms')">
+            <h3>💡 Explain concepts</h3>
+            <p>"Explain quantum computing in simple terms"</p>
+          </div>
+          <div class="example-card" onclick="sendExampleMessage('Help me write an essay about climate change')">
+            <h3>✍️ Get help with writing</h3>
+            <p>"Help me write an essay about climate change"</p>
+          </div>
+          <div class="example-card" onclick="sendExampleMessage('What are some fun facts about space?')">
+            <h3>🚀 Learn something new</h3>
+            <p>"What are some fun facts about space?"</p>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="typing-indicator" id="typingIndicator">
-      <span></span>
-      <span></span>
-      <span></span>
+    <!-- Typing Indicator -->
+    <div class="typing-wrapper" id="typingWrapper">
+      <div class="typing-indicator">
+        <div class="message-avatar assistant">AI</div>
+        <div class="typing-dots">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
     </div>
 
-    <div class="input-area">
-      <button class="mic-btn" id="micBtn" onclick="startVoiceInput()">🎤</button>
-      <input type="text" class="input-box" id="messageInput" placeholder="Type your message here..." onkeypress="handleKeyPress(event)">
-      <button class="send-btn" id="sendBtn" onclick="sendMessage()">Send</button>
+    <!-- Input Area -->
+    <div class="input-container">
+      <div class="input-wrapper">
+        <div class="input-area">
+          <button class="mic-btn" id="micBtn" onclick="startVoiceInput()">🎤</button>
+          <textarea class="input-box" id="messageInput" placeholder="Send a message..." rows="1" onkeydown="handleKeyDown(event)" oninput="autoResize(this)"></textarea>
+          <button class="send-btn" id="sendBtn" onclick="sendMessage()">Send</button>
+        </div>
+      </div>
     </div>
-  </div>
-
-  <div class="footer">
-    <div class="footer-links">
-      <a href="#about" onclick="showAbout()">About</a>
-      <a href="#api" onclick="showAPI()">API Info</a>
-      <a href="#contact" onclick="showContact()">Contact</a>
-    </div>
-    <p class="copyright">© 2025 GodswillChatbot - Powered by Google Gemini AI</p>
   </div>
 
   <script>
     // Google Gemini API Configuration
-    const GEMINI_API_KEY = 'AIzaSyAU0fKMOjDDYWXpU_Ew7wMmARqn3b-wwug';
-    const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`;
+    const GEMINI_API_KEY = 'AIzaSyC-SOHl4EIrc6dF_GU7TqWbB64FO-1bd3M';
     
     // Web Speech API
     let recognition;
@@ -502,17 +649,23 @@
 
     // Dark Mode Toggle
     function toggleDarkMode() {
-      document.body.classList.toggle('dark-mode');
+      document.body.classList.toggle('light-mode');
       const btn = document.querySelector('.dark-mode-toggle');
-      if (document.body.classList.contains('dark-mode')) {
-        btn.textContent = '☀️ Light Mode';
+      if (document.body.classList.contains('light-mode')) {
+        btn.textContent = '🌙 Dark';
       } else {
-        btn.textContent = '🌙 Dark Mode';
+        btn.textContent = '☀️ Light';
       }
     }
 
+    // Auto-resize textarea
+    function autoResize(textarea) {
+      textarea.style.height = 'auto';
+      textarea.style.height = Math.min(textarea.scrollHeight, 200) + 'px';
+    }
+
     // Handle Enter Key
-    function handleKeyPress(event) {
+    function handleKeyDown(event) {
       if (event.key === 'Enter' && !event.shiftKey) {
         event.preventDefault();
         sendMessage();
@@ -532,7 +685,6 @@
         isRecording = true;
         const micBtn = document.getElementById('micBtn');
         micBtn.classList.add('recording');
-        micBtn.textContent = '⏹️';
         recognition.start();
       }
     }
@@ -543,31 +695,69 @@
         isRecording = false;
         const micBtn = document.getElementById('micBtn');
         micBtn.classList.remove('recording');
-        micBtn.textContent = '🎤';
       }
     }
 
-    // Send Message with Google Gemini AI
+    // New Chat
+    function newChat() {
+      const messagesContainer = document.getElementById('messagesContainer');
+      messagesContainer.innerHTML = `
+        <div class="welcome-screen" id="welcomeScreen">
+          <h1>GodswillChatbot</h1>
+          <div class="example-cards">
+            <div class="example-card" onclick="sendExampleMessage('Explain quantum computing in simple terms')">
+              <h3>💡 Explain concepts</h3>
+              <p>"Explain quantum computing in simple terms"</p>
+            </div>
+            <div class="example-card" onclick="sendExampleMessage('Help me write an essay about climate change')">
+              <h3>✍️ Get help with writing</h3>
+              <p>"Help me write an essay about climate change"</p>
+            </div>
+            <div class="example-card" onclick="sendExampleMessage('What are some fun facts about space?')">
+              <h3>🚀 Learn something new</h3>
+              <p>"What are some fun facts about space?"</p>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Send Example Message
+    function sendExampleMessage(message) {
+      document.getElementById('messageInput').value = message;
+      sendMessage();
+    }
+
+    // Send Message
     async function sendMessage() {
       const input = document.getElementById('messageInput');
       const message = input.value.trim();
       
       if (!message) return;
 
+      // Remove welcome screen
+      const welcomeScreen = document.getElementById('welcomeScreen');
+      if (welcomeScreen) {
+        welcomeScreen.remove();
+      }
+
       // Add user message
       addMessage(message, 'user');
       input.value = '';
+      input.style.height = 'auto';
 
       // Show typing indicator
-      const typingIndicator = document.getElementById('typingIndicator');
-      typingIndicator.classList.add('active');
+      const typingWrapper = document.getElementById('typingWrapper');
+      typingWrapper.classList.add('active');
 
       // Disable send button
       const sendBtn = document.getElementById('sendBtn');
       sendBtn.disabled = true;
 
       try {
-        const response = await fetch(GEMINI_API_URL, {
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`;
+        
+        const response = await fetch(url, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -583,41 +773,49 @@
 
         const data = await response.json();
         
+        if (!response.ok) {
+          throw new Error(data.error?.message || 'API request failed');
+        }
+
         if (data.candidates && data.candidates[0] && data.candidates[0].content) {
           const aiResponse = data.candidates[0].content.parts[0].text;
-          addMessage(aiResponse, 'ai');
+          addMessage(aiResponse, 'assistant');
         } else {
-          throw new Error('Invalid response from AI');
+          throw new Error('Invalid response from API');
         }
 
       } catch (error) {
         console.error('Error:', error);
-        addMessage("Sorry, I encountered an error. Please try again! Make sure your API key is valid.", 'ai');
+        addMessage("Sorry, I encountered an error. Please try again! 😔", 'assistant');
       } finally {
-        typingIndicator.classList.remove('active');
+        typingWrapper.classList.remove('active');
         sendBtn.disabled = false;
       }
     }
 
-    // Add Message to Chat
+    // Add Message
     function addMessage(text, sender) {
-      const messagesArea = document.getElementById('messagesArea');
-      const welcomeMessage = messagesArea.querySelector('.welcome-message');
-      if (welcomeMessage) {
-        welcomeMessage.remove();
-      }
+      const messagesContainer = document.getElementById('messagesContainer');
+
+      const messageWrapper = document.createElement('div');
+      messageWrapper.className = `message-wrapper ${sender}`;
 
       const messageDiv = document.createElement('div');
-      messageDiv.className = `message ${sender}`;
+      messageDiv.className = 'message';
+
+      const avatar = document.createElement('div');
+      avatar.className = `message-avatar ${sender}`;
+      avatar.textContent = sender === 'user' ? 'U' : 'AI';
 
       const contentDiv = document.createElement('div');
       contentDiv.className = 'message-content';
       contentDiv.textContent = text;
 
+      messageDiv.appendChild(avatar);
       messageDiv.appendChild(contentDiv);
 
-      // Add speak button for AI messages
-      if (sender === 'ai') {
+      // Add speak button for assistant messages
+      if (sender === 'assistant') {
         const speakBtn = document.createElement('button');
         speakBtn.className = 'speak-btn';
         speakBtn.innerHTML = '🔊 Listen';
@@ -625,13 +823,13 @@
         contentDiv.appendChild(speakBtn);
       }
 
-      messagesArea.appendChild(messageDiv);
-      messagesArea.scrollTop = messagesArea.scrollHeight;
+      messageWrapper.appendChild(messageDiv);
+      messagesContainer.appendChild(messageWrapper);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
 
     // Text-to-Speech
     function speakText(text, button) {
-      // Stop current speech if any
       if (speechSynthesis.speaking) {
         speechSynthesis.cancel();
         const allButtons = document.querySelectorAll('.speak-btn');
@@ -662,22 +860,19 @@
         };
 
         speechSynthesis.speak(utterance);
-      } else {
-        alert('Text-to-speech is not supported in your browser.');
       }
     }
 
     // Footer Functions
     function showAbout() {
-      addMessage('GodswillChatbot is an AI-powered chatbot using Google Gemini AI! I can chat with you via text or voice, answer questions, help with homework, explain concepts, and much more. Built with love by Godswill! 🚀', 'ai');
-    }
-
-    function showAPI() {
-      addMessage('This chatbot is powered by Google Gemini AI - one of the most advanced AI models available! Voice features use the Web Speech API for natural speech recognition and text-to-speech capabilities. All completely FREE for students! 🎓', 'ai');
+      const message = 'GodswillChatbot is an AI-powered assistant using Google Gemini AI! I can help you with questions, writing, learning, and much more. Built with ❤️ by Godswill!';
+      document.getElementById('messageInput').value = message;
+      sendMessage();
     }
 
     function showContact() {
-      addMessage('📱 WhatsApp: +2347033572513\n📧 Email: ihechigodswill575@gmail.com\n\nFeel free to reach out anytime! I\'d love to hear from you! 😊', 'ai');
+      const message = '📱 WhatsApp: +2347033572513\n📧 Email: ihechigodswill575@gmail.com\n\nFeel free to reach out anytime!';
+      addMessage(message, 'assistant');
     }
   </script>
 
