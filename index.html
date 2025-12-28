@@ -697,10 +697,10 @@
         <div class="header-title">GodswillChatbot</div>
       </div>
       <div class="header-right">
-        <select class="model-selector" id="modelSelector">
-          <option value="gemini-pro">Gemini Pro</option>
-          <option value="gemini-pro-vision">Gemini Pro Vision</option>
-        </select>
+        select class="model-selector" id="modelSelector">
+  <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
+  <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
+      </select>
         <button class="dark-mode-toggle" onclick="toggleDarkMode()">
           ☀️ <span>Light</span>
         </button>
@@ -944,8 +944,7 @@
 
       try {
         const modelName = document.getElementById('modelSelector').value;
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${GEMINI_API_KEY}`;
-        
+const url = `https://generativelanguage.googleapis.com/v1/models/${modelName}:generateContent?key=${GEMINI_API_KEY}`;
         const response = await fetch(url, {
           method: 'POST',
           headers: {
@@ -1169,8 +1168,7 @@
 
       try {
         const modelName = document.getElementById('modelSelector').value;
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${GEMINI_API_KEY}`;
-        
+const url = `https://generativelanguage.googleapis.com/v1/models/${modelName}:generateContent?key=${GEMINI_API_KEY}`;
         const response = await fetch(url, {
           method: 'POST',
           headers: {
