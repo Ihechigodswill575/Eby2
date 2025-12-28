@@ -698,8 +698,8 @@
       </div>
       <div class="header-right">
         <select class="model-selector" id="modelSelector">
-          <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
-          <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
+          <option value="gemini-3-flash">Gemini 3 Flash</option>
+          <option value="gemini-3-pro">Gemini 3 Pro</option>
         </select>
         <button class="dark-mode-toggle" onclick="toggleDarkMode()">
           ☀️ <span>Light</span>
@@ -1031,7 +1031,6 @@
       if (sender === 'assistant') {
         const actionsDiv = document.createElement('div');
         actionsDiv.className = 'message-actions';
-
         const speakBtn = document.createElement('button');
         speakBtn.className = 'action-btn';
         speakBtn.innerHTML = '🔊 Listen';
@@ -1272,7 +1271,7 @@
     function showAbout() {
       const aboutMessage = `🤖 GodswillChatbot - Advanced AI Assistant
 
-Powered by Google Gemini AI, I'm here to help you with:
+Powered by Google Gemini 3 AI, I'm here to help you with:
 
 ✨ Creative Writing & Storytelling
 💻 Code Debugging & Development
@@ -1288,12 +1287,12 @@ Features:
 • Multi-turn dialogue memory
 • Voice input & text-to-speech
 • Code syntax understanding
-• Multiple AI models
+• Gemini 3 Pro & Flash models
 • Chat history saving
 • Cross-device responsive design
 
 Built with ❤️ by Godswill
-Version 2.0 - December 2024`;
+Version 3.0 - December 2024`;
 
       addMessage(aboutMessage, 'assistant');
       closeSidebar();
