@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>✌Ødegaardhub✌ - Portfolio</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <title>GodswillChatbot - AI at your fingertips</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -13,805 +13,724 @@
     }
 
     body {
-      font-family: 'Inter', sans-serif;
-      background-color: #0a0a0a;
-      color: #e0e0e0;
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-
-    /* Header/Hero Section */
-    header {
-      min-height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      background: #f5f5f5;
+      color: #333;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 20px;
-      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
-    }
-
-    h1 {
-      font-size: clamp(2.5rem, 8vw, 5rem);
-      font-weight: 700;
-      margin-bottom: 1rem;
-      background: linear-gradient(45deg, #ffffff, #888888);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .tagline {
-      font-size: clamp(1rem, 3vw, 1.5rem);
-      color: #888;
-      margin-bottom: 2rem;
-    }
-
-    .contact-quick {
-      font-size: clamp(0.9rem, 2.5vw, 1.1rem);
-      color: #aaa;
-    }
-
-    .contact-quick a {
-      color: #1e90ff;
-      text-decoration: none;
-      transition: color 0.3s;
-    }
-
-    .contact-quick a:hover {
-      color: #4da6ff;
-    }
-
-    /* Section Styling */
-    section {
-      padding: clamp(3rem, 10vw, 6rem) clamp(1rem, 5vw, 3rem);
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-
-    h2 {
-      font-size: clamp(2rem, 5vw, 3rem);
-      margin-bottom: 2rem;
-      text-align: center;
-      color: #fff;
-    }
-
-    /* About Section */
-    #about p {
-      font-size: clamp(1rem, 2.5vw, 1.2rem);
-      color: #bbb;
-      max-width: 800px;
-      margin: 0 auto;
-      text-align: center;
-      line-height: 1.8;
-    }
-
-    /* Portfolio Grid */
-    .portfolio-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: clamp(1rem, 3vw, 2rem);
-      margin-top: 2rem;
-    }
-
-    .portfolio-item {
-      position: relative;
+      height: 100vh;
       overflow: hidden;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: transform 0.3s ease;
-      aspect-ratio: 1;
     }
 
-    .portfolio-item:hover {
-      transform: translateY(-10px);
-    }
-
-    .portfolio-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.3s ease;
-    }
-
-    .portfolio-item:hover img {
-      transform: scale(1.1);
-    }
-
-    /* Contact Section */
-    #contact {
-      background: #111;
-      border-radius: 20px;
-      padding: clamp(2rem, 5vw, 4rem);
-    }
-
-    .contact-info {
-      text-align: center;
-      margin-bottom: 2rem;
-      font-size: clamp(1rem, 2.5vw, 1.2rem);
-      color: #bbb;
-    }
-
-    .contact-info a {
-      color: #1e90ff;
-      text-decoration: none;
-    }
-
-    .contact-info a:hover {
-      text-decoration: underline;
-    }
-
-    /* Contact Form */
-    form {
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
-    form input,
-    form textarea {
-      width: 100%;
-      padding: clamp(0.8rem, 2vw, 1rem);
-      margin-bottom: 1rem;
-      border: 2px solid #333;
-      border-radius: 8px;
+    /* Dark Mode */
+    body.dark-mode {
       background: #0a0a0a;
-      color: #fff;
-      font-size: clamp(0.9rem, 2vw, 1rem);
-      font-family: 'Inter', sans-serif;
-      transition: border-color 0.3s;
+      color: #e0e0e0;
     }
 
-    form input:focus,
-    form textarea:focus {
-      outline: none;
-      border-color: #1e90ff;
-    }
-
-    form textarea {
-      resize: vertical;
-      min-height: 150px;
-    }
-
-    form button {
-      width: 100%;
-      padding: clamp(0.8rem, 2vw, 1rem);
-      background: #1e90ff;
+    /* Header */
+    .header {
+      background: #1a1a40;
       color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: clamp(1rem, 2vw, 1.1rem);
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.3s, transform 0.2s;
-      min-height: 44px;
-    }
-
-    form button:hover {
-      background: #4da6ff;
-      transform: translateY(-2px);
-    }
-
-    form button:active {
-      transform: translateY(0);
-    }
-
-    /* Footer */
-    footer {
-      position: relative;
-      padding: 3rem 1rem 2rem;
-      text-align: center;
-      background: #000;
-      border-top: 1px solid #222;
-    }
-
-    .admin-dot {
-      position: absolute;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 2rem;
-      color: #222;
-      cursor: pointer;
-      user-select: none;
-      transition: color 0.3s;
-    }
-
-    .admin-dot:hover {
-      color: #444;
-    }
-
-    footer p {
-      color: #666;
-      font-size: clamp(0.9rem, 2vw, 1rem);
-      margin-bottom: 0.5rem;
-    }
-
-    .made-by {
-      color: #888;
-      font-size: clamp(0.8rem, 1.8vw, 0.95rem);
-      margin-top: 1rem;
-    }
-
-    .made-by span {
-      color: #1e90ff;
-      font-weight: 600;
-    }
-
-    /* Modal for Admin Login */
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.9);
-      z-index: 1000;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .modal.active {
-      display: flex;
-    }
-
-    .modal-content {
-      background: #111;
-      padding: clamp(2rem, 5vw, 3rem);
-      border-radius: 12px;
-      max-width: 400px;
-      width: 90%;
-      text-align: center;
-    }
-
-    .modal-content h3 {
-      color: #fff;
-      margin-bottom: 1.5rem;
-      font-size: clamp(1.3rem, 3vw, 1.8rem);
-    }
-
-    .modal-content input {
-      width: 100%;
-      padding: 0.8rem;
-      margin-bottom: 1rem;
-      border: 2px solid #333;
-      border-radius: 8px;
-      background: #0a0a0a;
-      color: #fff;
-      font-size: 1rem;
-    }
-
-    .modal-content button {
-      width: 100%;
-      padding: 0.8rem;
-      background: #1e90ff;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      margin-bottom: 0.5rem;
-    }
-
-    .modal-content button.cancel {
-      background: #333;
-    }
-
-    .error-message {
-      color: #ff4444;
-      font-size: 0.9rem;
-      margin-top: 0.5rem;
-      display: none;
-    }
-
-    /* Admin Panel */
-    .admin-panel {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.95);
-      z-index: 2000;
-      overflow-y: auto;
-      padding: 20px;
-    }
-
-    .admin-panel.active {
-      display: block;
-    }
-
-    .admin-container {
-      max-width: 1000px;
-      margin: 0 auto;
-      background: #111;
-      border-radius: 12px;
-      padding: clamp(1.5rem, 4vw, 3rem);
-    }
-
-    .admin-header {
+      padding: clamp(1rem, 3vw, 1.5rem);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 2rem;
-      flex-wrap: wrap;
-      gap: 1rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
 
-    .admin-header h2 {
-      color: #fff;
-      margin: 0;
-      text-align: left;
-      font-size: clamp(1.5rem, 4vw, 2rem);
+    .logo {
+      display: flex;
+      flex-direction: column;
     }
 
-    .logout-btn {
-      padding: 0.6rem 1.5rem;
-      background: #ff4444;
-      color: white;
+    .logo h1 {
+      font-size: clamp(1.3rem, 4vw, 2rem);
+      font-weight: 700;
+      color: #39ff14;
+    }
+
+    .logo p {
+      font-size: clamp(0.75rem, 2vw, 0.95rem);
+      color: #ccc;
+      margin-top: 0.2rem;
+    }
+
+    .header-controls {
+      display: flex;
+      gap: 0.8rem;
+      align-items: center;
+    }
+
+    .dark-mode-toggle {
+      background: rgba(255, 255, 255, 0.2);
       border: none;
+      padding: 0.6rem 1rem;
       border-radius: 8px;
-      cursor: pointer;
-      font-size: clamp(0.9rem, 2vw, 1rem);
-    }
-
-    .admin-section {
-      background: #0a0a0a;
-      padding: clamp(1rem, 3vw, 2rem);
-      border-radius: 8px;
-      margin-bottom: 1.5rem;
-    }
-
-    .admin-section h3 {
-      color: #1e90ff;
-      margin-bottom: 1rem;
-      font-size: clamp(1.2rem, 3vw, 1.5rem);
-    }
-
-    .submissions-list {
-      max-height: 400px;
-      overflow-y: auto;
-    }
-
-    .submission-item {
-      background: #111;
-      padding: 1rem;
-      border-radius: 8px;
-      margin-bottom: 1rem;
-      border-left: 3px solid #1e90ff;
-    }
-
-    .submission-item p {
-      color: #bbb;
-      margin: 0.5rem 0;
-      font-size: clamp(0.85rem, 2vw, 0.95rem);
-    }
-
-    .submission-item strong {
-      color: #fff;
-    }
-
-    .upload-section {
-      margin-top: 1.5rem;
-    }
-
-    .file-input-wrapper {
-      position: relative;
-      display: inline-block;
-      width: 100%;
-      margin-bottom: 1rem;
-    }
-
-    .file-input-wrapper input[type="file"] {
-      position: absolute;
-      opacity: 0;
-      width: 100%;
-      height: 100%;
-      cursor: pointer;
-    }
-
-    .file-input-label {
-      display: block;
-      padding: 1rem;
-      background: #1e90ff;
       color: white;
-      text-align: center;
-      border-radius: 8px;
       cursor: pointer;
-      font-weight: 600;
+      font-size: clamp(0.85rem, 2vw, 1rem);
+      transition: all 0.3s;
     }
 
-    .upload-preview {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      gap: 1rem;
-      margin-top: 1rem;
+    .dark-mode-toggle:hover {
+      background: rgba(255, 255, 255, 0.3);
     }
 
-    .preview-item {
-      position: relative;
-      aspect-ratio: 1;
-      border-radius: 8px;
+    /* Main Chat Container */
+    .chat-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: clamp(1rem, 3vw, 2rem);
       overflow: hidden;
     }
 
-    .preview-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    /* Messages Area */
+    .messages-area {
+      flex: 1;
+      overflow-y: auto;
+      padding: clamp(1rem, 2vw, 1.5rem);
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      margin-bottom: 1rem;
     }
 
-    .upload-btn {
-      width: 100%;
-      padding: 1rem;
-      background: #28a745;
+    body.dark-mode .messages-area {
+      background: #1a1a1a;
+    }
+
+    .messages-area::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .messages-area::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.05);
+      border-radius: 10px;
+    }
+
+    .messages-area::-webkit-scrollbar-thumb {
+      background: #1a1a40;
+      border-radius: 10px;
+    }
+
+    /* Welcome Message */
+    .welcome-message {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: #666;
+    }
+
+    body.dark-mode .welcome-message {
+      color: #999;
+    }
+
+    .welcome-message h2 {
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      color: #1a1a40;
+      margin-bottom: 1rem;
+    }
+
+    body.dark-mode .welcome-message h2 {
+      color: #39ff14;
+    }
+
+    .welcome-message p {
+      font-size: clamp(0.9rem, 2vw, 1.1rem);
+    }
+
+    /* Message Bubbles */
+    .message {
+      display: flex;
+      gap: 0.8rem;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .message.user {
+      justify-content: flex-end;
+    }
+
+    .message.ai {
+      justify-content: flex-start;
+    }
+
+    .message-content {
+      max-width: 70%;
+      padding: 1rem 1.2rem;
+      border-radius: 20px;
+      font-size: clamp(0.9rem, 2vw, 1rem);
+      line-height: 1.5;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+
+    .message.user .message-content {
+      background: #1a1a40;
       color: white;
+      border-bottom-right-radius: 5px;
+    }
+
+    .message.ai .message-content {
+      background: #f0f0f0;
+      color: #333;
+      border-bottom-left-radius: 5px;
+    }
+
+    body.dark-mode .message.ai .message-content {
+      background: #2a2a2a;
+      color: #e0e0e0;
+    }
+
+    .speak-btn {
+      background: #39ff14;
       border: none;
+      padding: 0.5rem 1rem;
       border-radius: 8px;
-      font-size: 1rem;
+      color: #1a1a40;
       font-weight: 600;
       cursor: pointer;
-      margin-top: 1rem;
+      margin-top: 0.5rem;
+      font-size: clamp(0.8rem, 2vw, 0.9rem);
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
     }
 
-    .upload-btn:disabled {
-      background: #666;
+    .speak-btn:hover {
+      background: #2ecc11;
+      transform: scale(1.05);
+    }
+
+    .speak-btn.speaking {
+      background: #ff6b6b;
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    /* Input Area */
+    .input-area {
+      display: flex;
+      gap: 0.8rem;
+      align-items: center;
+      background: white;
+      padding: clamp(0.8rem, 2vw, 1.2rem);
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    body.dark-mode .input-area {
+      background: #1a1a1a;
+    }
+
+    .mic-btn {
+      background: #39ff14;
+      border: none;
+      width: clamp(45px, 10vw, 55px);
+      height: clamp(45px, 10vw, 55px);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: clamp(1.2rem, 3vw, 1.5rem);
+      transition: all 0.3s;
+      flex-shrink: 0;
+    }
+
+    .mic-btn:hover {
+      background: #2ecc11;
+      transform: scale(1.1);
+    }
+
+    .mic-btn.recording {
+      background: #ff4444;
+      animation: pulse 1s infinite;
+    }
+
+    .input-box {
+      flex: 1;
+      padding: clamp(0.8rem, 2vw, 1rem);
+      border: 2px solid #ddd;
+      border-radius: 15px;
+      font-size: clamp(0.9rem, 2vw, 1rem);
+      font-family: 'Poppins', sans-serif;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    body.dark-mode .input-box {
+      background: #2a2a2a;
+      border-color: #444;
+      color: #e0e0e0;
+    }
+
+    .input-box:focus {
+      border-color: #1a1a40;
+    }
+
+    body.dark-mode .input-box:focus {
+      border-color: #39ff14;
+    }
+
+    .send-btn {
+      background: #1a1a40;
+      border: none;
+      padding: clamp(0.8rem, 2vw, 1rem) clamp(1.2rem, 3vw, 1.8rem);
+      border-radius: 15px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: clamp(0.9rem, 2vw, 1rem);
+      transition: all 0.3s;
+      flex-shrink: 0;
+      min-height: 44px;
+    }
+
+    .send-btn:hover {
+      background: #2a2a60;
+      transform: translateY(-2px);
+    }
+
+    .send-btn:disabled {
+      background: #ccc;
       cursor: not-allowed;
     }
 
-    /* Responsive adjustments */
+    /* Loading Animation */
+    .typing-indicator {
+      display: none;
+      padding: 1rem;
+      background: #f0f0f0;
+      border-radius: 20px;
+      max-width: 70px;
+      border-bottom-left-radius: 5px;
+    }
+
+    body.dark-mode .typing-indicator {
+      background: #2a2a2a;
+    }
+
+    .typing-indicator.active {
+      display: block;
+    }
+
+    .typing-indicator span {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: #1a1a40;
+      border-radius: 50%;
+      margin: 0 2px;
+      animation: typing 1.4s infinite;
+    }
+
+    body.dark-mode .typing-indicator span {
+      background: #39ff14;
+    }
+
+    .typing-indicator span:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .typing-indicator span:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes typing {
+      0%, 60%, 100% {
+        transform: translateY(0);
+      }
+      30% {
+        transform: translateY(-10px);
+      }
+    }
+
+    /* Footer */
+    .footer {
+      background: #1a1a40;
+      color: white;
+      padding: clamp(1rem, 3vw, 1.5rem);
+      text-align: center;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: clamp(1rem, 4vw, 2rem);
+      margin-bottom: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: #39ff14;
+      text-decoration: none;
+      font-size: clamp(0.85rem, 2vw, 1rem);
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover {
+      color: #2ecc11;
+      text-decoration: underline;
+    }
+
+    .copyright {
+      font-size: clamp(0.75rem, 1.8vw, 0.9rem);
+      color: #ccc;
+    }
+
+    /* Responsive */
     @media (max-width: 768px) {
-      .portfolio-grid {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      .message-content {
+        max-width: 85%;
       }
     }
 
     @media (max-width: 480px) {
-      .portfolio-grid {
-        grid-template-columns: 1fr;
+      .message-content {
+        max-width: 90%;
       }
+      
+      .input-area {
+        flex-wrap: wrap;
+      }
+      
+      .input-box {
+        order: 1;
+        width: 100%;
+      }
+      
+      .mic-btn {
+        order: 2;
+      }
+      
+      .send-btn {
+        order: 3;
+        flex: 1;
+      }
+    }
+
+    /* Status Messages */
+    .status-message {
+      text-align: center;
+      padding: 0.5rem;
+      background: #39ff14;
+      color: #1a1a40;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+      animation: fadeInOut 3s ease;
+    }
+
+    @keyframes fadeInOut {
+      0%, 100% { opacity: 0; }
+       10%, 90% { opacity: 1; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Header / Hero -->
-  <header>
-    <h1>Odinaka</h1>
-    <p class="tagline">Freelancer | Personal Brand Builder</p>
-    <p class="contact-quick">📞 <a href="tel:+2348062856383">+234 806 285 6383</a> | ✉ <a href="mailto:jamesodinaka75@gmail.com">jamesodinaka75@gmail.com</a></p>
-  </header>
-
-  <!-- About -->
-  <section id="about">
-    <h2>About Me</h2>
-    <p>I am a freelance professional building my personal brand. I specialize in delivering quality services and creating meaningful digital experiences. Let's work together to bring your vision to life.</p>
-  </section>
-
-  <!-- Portfolio -->
-  <section id="portfolio">
-    <h2>My Work</h2>
-    <div class="portfolio-grid" id="portfolioGrid">
-      <!-- Images will be loaded from Cloudinary dynamically -->
+  <!-- Header -->
+  <div class="header">
+    <div class="logo">
+      <h1>GodswillChatbot</h1>
+      <p>Chat, Speak, Listen – AI at your fingertips</p>
     </div>
-  </section>
-
-  <!-- Contact -->
-  <section id="contact">
-    <h2>Contact Me</h2>
-    <div class="contact-info">
-      <p>📱 Phone: <a href="tel:+2348062856383">+234 806 285 6383</a></p>
-      <p>✉ Email: <a href="mailto:jamesodinaka75@gmail.com">jamesodinaka75@gmail.com</a></p>
-      <p>📸 Instagram: <a href="https://www.instagram.com/bukayo5446?igsh=MWczcXZvc2dzazA5NQ==" target="_blank">@bukayo5446</a></p>
+    <div class="header-controls">
+      <button class="dark-mode-toggle" onclick="toggleDarkMode()">🌙 Dark Mode</button>
     </div>
-    
-    <form id="contactForm">
-      <input type="text" name="name" placeholder="Your Name" required>
-      <input type="email" name="email" placeholder="Your Email" required>
-      <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
-      <button type="submit">Send Message</button>
-    </form>
-  </section>
+  </div>
+
+  <!-- Chat Container -->
+  <div class="chat-container">
+    <div class="messages-area" id="messagesArea">
+      <div class="welcome-message">
+        <h2>👋 Welcome to GodswillChatbot!</h2>
+        <p>Type a message, or click the mic 🎤 to speak. I'm here to help!</p>
+      </div>
+    </div>
+
+    <!-- Typing Indicator -->
+    <div class="typing-indicator" id="typingIndicator">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <!-- Input Area -->
+    <div class="input-area">
+      <button class="mic-btn" id="micBtn" onclick="startVoiceInput()">🎤</button>
+      <input type="text" class="input-box" id="messageInput" placeholder="Type your message here..." onkeypress="handleKeyPress(event)">
+      <button class="send-btn" id="sendBtn" onclick="sendMessage()">Send</button>
+    </div>
+  </div>
 
   <!-- Footer -->
-  <footer>
-    <span class="admin-dot" id="adminDot">.</span>
-    <p>&copy; 2025 ✌Ødegaardhub✌</p>
-    <p class="made-by">Made by <span>DevGodswill</span></p>
-  </footer>
-
-  <!-- Admin Login Modal -->
-  <div class="modal" id="adminModal">
-    <div class="modal-content">
-      <h3>Admin Login</h3>
-      <input type="password" id="adminPassword" placeholder="Enter password">
-      <p class="error-message" id="errorMessage">Incorrect password!</p>
-      <button onclick="checkPassword()">Login</button>
-      <button class="cancel" onclick="closeModal()">Cancel</button>
+  <div class="footer">
+    <div class="footer-links">
+      <a href="#about" onclick="showAbout()">About</a>
+      <a href="#api" onclick="showAPI()">API Info</a>
+      <a href="#contact" onclick="showContact()">Contact</a>
     </div>
+    <p class="copyright">© 2025 GodswillChatbot</p>
   </div>
-
-  <!-- Admin Panel -->
-  <div class="admin-panel" id="adminPanel">
-    <div class="admin-container">
-      <div class="admin-header">
-        <h2>Admin Dashboard</h2>
-        <button class="logout-btn" onclick="logout()">Logout</button>
-      </div>
-
-      <div class="admin-section">
-        <h3>Contact Form Submissions</h3>
-        <div class="submissions-list" id="submissionsList">
-          <p style="color: #666;">No submissions yet.</p>
-        </div>
-      </div>
-
-      <div class="admin-section">
-        <h3>Upload Portfolio Images</h3>
-        <div class="upload-section">
-          <div class="file-input-wrapper">
-            <input type="file" id="imageUpload" accept="image/*" multiple>
-            <label class="file-input-label" for="imageUpload">Choose Images to Upload</label>
-          </div>
-          <div class="upload-preview" id="uploadPreview"></div>
-          <button class="upload-btn" id="uploadBtn" onclick="uploadToCloudinary()" disabled>Upload to Cloudinary</button>
-        </div>
-      </div>
-
-      <div class="admin-section">
-        <h3>Manage Portfolio</h3>
-        <div class="portfolio-grid" id="adminPortfolioGrid">
-          <!-- Portfolio images will be loaded here -->
-        </div>
-      </div>
-
-      <div class="admin-section">
-        <h3>Quick Stats</h3>
-        <p style="color: #bbb;">Total Submissions: <span id="totalSubmissions">0</span></p>
-        <p style="color: #bbb;">Portfolio Images: <span id="totalImages">0</span></p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Firebase SDK -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getDatabase, ref, push, onValue, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-
-    // Firebase configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyBzUELxbbaL6Wb_M1uNhjwlZHVTorN9XJs",
-      authDomain: "my-whatsapp-2c1af.firebaseapp.com",
-      databaseURL: "https://my-whatsapp-2c1af-default-rtdb.firebaseio.com",
-      projectId: "my-whatsapp-2c1af",
-      storageBucket: "my-whatsapp-2c1af.firebasestorage.app",
-      messagingSenderId: "1089455460888",
-      appId: "1:1089455460888:web:15bd0820546c813febe96d"
-    };
-
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const database = getDatabase(app);
-
-    // Cloudinary Configuration
-    const CLOUDINARY_CLOUD_NAME = 'dzxckgbzp';
-    const CLOUDINARY_UPLOAD_PRESET = 'Odegaard';
-
-    // Contact Form Submission
-    const contactForm = document.getElementById('contactForm');
-    contactForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      const formData = {
-        name: contactForm.name.value,
-        email: contactForm.email.value,
-        message: contactForm.message.value,
-        timestamp: new Date().toISOString()
-      };
-
-      try {
-        await push(ref(database, 'contact_submissions'), formData);
-        alert('Message sent successfully! I will get back to you soon.');
-        contactForm.reset();
-      } catch (error) {
-        console.error('Error:', error);
-        alert('Failed to send message. Please try again.');
-      }
-    });
-
-    // Load portfolio images
-    function loadPortfolioImages() {
-      const portfolioRef = ref(database, 'portfolio_images');
-      onValue(portfolioRef, (snapshot) => {
-        const data = snapshot.val();
-        const portfolioGrid = document.getElementById('portfolioGrid');
-        const adminPortfolioGrid = document.getElementById('adminPortfolioGrid');
-        const totalImages = document.getElementById('totalImages');
-        
-        if (data) {
-          const images = Object.values(data);
-          totalImages.textContent = images.length;
-          
-          const imageHTML = images.map(img => `
-            <div class="portfolio-item">
-              <img src="${img.url}" alt="${img.title || 'Portfolio Image'}" loading="lazy">
-            </div>
-          `).join('');
-          
-          portfolioGrid.innerHTML = imageHTML;
-          if (adminPortfolioGrid) {
-            adminPortfolioGrid.innerHTML = imageHTML;
-          }
-        } else {
-          portfolioGrid.innerHTML = '<p style="color: #666; text-align: center;">No portfolio images yet. Upload some in the admin panel!</p>';
-          if (totalImages) totalImages.textContent = '0';
-        }
-      });
-    }
-
-    // Load submissions for admin
-    window.loadSubmissions = function() {
-      const submissionsRef = ref(database, 'contact_submissions');
-      onValue(submissionsRef, (snapshot) => {
-        const data = snapshot.val();
-        const submissionsList = document.getElementById('submissionsList');
-        const totalSubmissions = document.getElementById('totalSubmissions');
-        
-        if (data) {
-          const submissions = Object.values(data);
-          totalSubmissions.textContent = submissions.length;
-          
-          submissionsList.innerHTML = submissions.reverse().map(sub => `
-            <div class="submission-item">
-              <p><strong>Name:</strong> ${sub.name}</p>
-              <p><strong>Email:</strong> ${sub.email}</p>
-              <p><strong>Message:</strong> ${sub.message}</p>
-              <p><strong>Date:</strong> ${new Date(sub.timestamp).toLocaleString()}</p>
-            </div>
-          `).join('');
-        } else {
-          submissionsList.innerHTML = '<p style="color: #666;">No submissions yet.</p>';
-          totalSubmissions.textContent = '0';
-        }
-      });
-    };
-
-    // Upload to Cloudinary function
-    let selectedFiles = [];
-    
-    document.getElementById('imageUpload').addEventListener('change', function(e) {
-      selectedFiles = Array.from(e.target.files);
-      const uploadBtn = document.getElementById('uploadBtn');
-      const uploadPreview = document.getElementById('uploadPreview');
-      
-      uploadPreview.innerHTML = '';
-      
-      if (selectedFiles.length > 0) {
-        uploadBtn.disabled = false;
-        selectedFiles.forEach(file => {
-          const reader = new FileReader();
-          reader.onload = function(event) {
-            const previewItem = document.createElement('div');
-            previewItem.className = 'preview-item';
-            previewItem.innerHTML = `<img src="${event.target.result}" alt="Preview">`;
-            uploadPreview.appendChild(previewItem);
-          };
-          reader.readAsDataURL(file);
-        });
-      } else {
-        uploadBtn.disabled = true;
-      }
-    });
-
-    window.uploadToCloudinary = async function() {
-      const uploadBtn = document.getElementById('uploadBtn');
-      uploadBtn.disabled = true;
-      uploadBtn.textContent = 'Uploading...';
-
-      try {
-        for (const file of selectedFiles) {
-          const formData = new FormData();
-          formData.append('file', file);
-          formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
-
-          const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
-            method: 'POST',
-            body: formData
-          });
-
-          const data = await response.json();
-          
-          // Save to Firebase
-          await push(ref(database, 'portfolio_images'), {
-            url: data.secure_url,
-            public_id: data.public_id,
-            title: file.name,
-            timestamp: new Date().toISOString()
-          });
-        }
-
-        alert('Images uploaded successfully!');
-        document.getElementById('imageUpload').value = '';
-        document.getElementById('uploadPreview').innerHTML = '';
-        selectedFiles = [];
-        uploadBtn.textContent = 'Upload to Cloudinary';
-        loadPortfolioImages();
-      } catch (error) {
-        console.error('Upload error:', error);
-        alert('Failed to upload images. Please try again.');
-        uploadBtn.disabled = false;
-        uploadBtn.textContent = 'Upload to Cloudinary';
-      }
-    };
-
-    // Load portfolio images on page load
-    loadPortfolioImages();
-  </script>
 
   <script>
-    const ADMIN_PASSWORD = 'jamesodinaka75@gmail.com';
+    // Configuration
+    const HUGGINGFACE_TOKEN = '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';
+    const HF_API_URL = 'https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2';
+    
+    // Web Speech API
+    let recognition;
+    let isRecording = false;
+    let currentAudio = null;
 
-    // Admin dot click
-    document.getElementById('adminDot').addEventListener('click', () => {
-      document.getElementById('adminModal').classList.add('active');
-      document.getElementById('adminPassword').focus();
-    });
+    // Initialize Speech Recognition
+    if ('webkitSpeechRecognition' in window) {
+      recognition = new webkitSpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.lang = 'en-US';
 
-    // Check password
-    window.checkPassword = function() {
-      const password = document.getElementById('adminPassword').value;
-      const errorMessage = document.getElementById('errorMessage');
-      
-      if (password === ADMIN_PASSWORD) {
-        sessionStorage.setItem('adminLoggedIn', 'true');
-        closeModal();
-        showAdminPanel();
+      recognition.onresult = function(event) {
+        const transcript = event.results[0][0].transcript;
+        document.getElementById('messageInput').value = transcript;
+        stopVoiceInput();
+        sendMessage();
+      };
+
+      recognition.onerror = function(event) {
+        console.error('Speech recognition error:', event.error);
+        stopVoiceInput();
+        showStatus('Speech recognition error. Please try again.', 'error');
+      };
+
+      recognition.onend = function() {
+        stopVoiceInput();
+      };
+    }
+
+    // Dark Mode Toggle
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+      const btn = document.querySelector('.dark-mode-toggle');
+      if (document.body.classList.contains('dark-mode')) {
+        btn.textContent = '☀️ Light Mode';
       } else {
-        errorMessage.style.display = 'block';
-        setTimeout(() => {
-          errorMessage.style.display = 'none';
-        }, 3000);
+        btn.textContent = '🌙 Dark Mode';
       }
-    };
+    }
 
-    // Close modal
-    window.closeModal = function() {
-      document.getElementById('adminModal').classList.remove('active');
-      document.getElementById('adminPassword').value = '';
-      document.getElementById('errorMessage').style.display = 'none';
-    };
-
-    // Show admin panel
-    window.showAdminPanel = function() {
-      document.getElementById('adminPanel').classList.add('active');
-      document.body.style.overflow = 'hidden';
-      loadSubmissions();
-    };
-
-    // Logout
-    window.logout = function() {
-      sessionStorage.removeItem('adminLoggedIn');
-      document.getElementById('adminPanel').classList.remove('active');
-      document.body.style.overflow = 'auto';
-    };
-
-    // Allow Enter key for password
-    document.getElementById('adminPassword').addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        checkPassword();
+    // Handle Enter Key
+    function handleKeyPress(event) {
+      if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        sendMessage();
       }
-    });
+    }
 
-    // Close modal on Escape key
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        closeModal();
+    // Voice Input
+    function startVoiceInput() {
+      if (!recognition) {
+        alert('Speech recognition is not supported in your browser. Please use Chrome or Edge.');
+        return;
       }
-    });
+
+      if (isRecording) {
+        stopVoiceInput();
+      } else {
+        isRecording = true;
+        const micBtn = document.getElementById('micBtn');
+        micBtn.classList.add('recording');
+        micBtn.textContent = '⏹️';
+        recognition.start();
+      }
+    }
+
+    function stopVoiceInput() {
+      if (recognition && isRecording) {
+        recognition.stop();
+        isRecording = false;
+        const micBtn = document.getElementById('micBtn');
+        micBtn.classList.remove('recording');
+        micBtn.textContent = '🎤';
+      }
+    }
+
+    // Send Message
+    async function sendMessage() {
+      const input = document.getElementById('messageInput');
+      const message = input.value.trim();
+      
+      if (!message) return;
+
+      // Add user message
+      addMessage(message, 'user');
+      input.value = '';
+
+      // Show typing indicator
+      const typingIndicator = document.getElementById('typingIndicator');
+      typingIndicator.classList.add('active');
+
+      // Disable send button
+      const sendBtn = document.getElementById('sendBtn');
+      sendBtn.disabled = true;
+
+      try {
+        // Call Hugging Face API
+        const response = await fetch(HF_API_URL, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${HUGGINGFACE_TOKEN}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            inputs: message,
+            parameters: {
+              max_new_tokens: 250,
+              temperature: 0.7,
+              top_p: 0.95,
+              return_full_text: false
+            }
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error(`API Error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        let aiResponse = '';
+
+        if (Array.isArray(data) && data[0].generated_text) {
+          aiResponse = data[0].generated_text.trim();
+        } else if (data.generated_text) {
+          aiResponse = data.generated_text.trim();
+        } else {
+          aiResponse = 'Sorry, I couldn\'t generate a response. Please try again.';
+        }
+
+        // Add AI message
+        addMessage(aiResponse, 'ai');
+
+      } catch (error) {
+        console.error('Error:', error);
+        addMessage('Sorry, I encountered an error. Please try again later.', 'ai');
+      } finally {
+        typingIndicator.classList.remove('active');
+        sendBtn.disabled = false;
+      }
+    }
+
+    // Add Message to Chat
+    function addMessage(text, sender) {
+      const messagesArea = document.getElementById('messagesArea');
+      const welcomeMessage = messagesArea.querySelector('.welcome-message');
+      if (welcomeMessage) {
+        welcomeMessage.remove();
+      }
+
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `message ${sender}`;
+
+      const contentDiv = document.createElement('div');
+      contentDiv.className = 'message-content';
+      contentDiv.textContent = text;
+
+      messageDiv.appendChild(contentDiv);
+
+      // Add speak button for AI messages
+      if (sender === 'ai') {
+        const speakBtn = document.createElement('button');
+        speakBtn.className = 'speak-btn';
+        speakBtn.innerHTML = '🔊 Listen';
+        speakBtn.onclick = () => speakText(text, speakBtn);
+        contentDiv.appendChild(speakBtn);
+      }
+
+      messagesArea.appendChild(messageDiv);
+      messagesArea.scrollTop = messagesArea.scrollHeight;
+    }
+
+    // Text-to-Speech
+    function speakText(text, button) {
+      // Stop current audio if playing
+      if (currentAudio) {
+        currentAudio.pause();
+        currentAudio = null;
+        const allButtons = document.querySelectorAll('.speak-btn');
+        allButtons.forEach(btn => btn.classList.remove('speaking'));
+      }
+
+      // Use Web Speech API for TTS (free, browser-based)
+      if ('speechSynthesis' in window) {
+        button.classList.add('speaking');
+        button.textContent = '⏹️ Stop';
+
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = 0.9;
+        utterance.pitch = 1;
+        utterance.volume = 1;
+
+        utterance.onend = () => {
+          button.classList.remove('speaking');
+          button.textContent = '🔊 Listen';
+        };
+
+        utterance.onerror = () => {
+          button.classList.remove('speaking');
+          button.textContent = '🔊 Listen';
+        };
+
+        speechSynthesis.speak(utterance);
+      } else {
+        alert('Text-to-speech is not supported in your browser.');
+      }
+    }
+
+    // Show Status Message
+    function showStatus(message, type) {
+      const statusDiv = document.createElement('div');
+      statusDiv.className = 'status-message';
+      statusDiv.textContent = message;
+      document.querySelector('.chat-container').insertBefore(statusDiv, document.getElementById('messagesArea'));
+      setTimeout(() => statusDiv.remove(), 3000);
+    }
+
+    // Footer Functions
+    function showAbout() {
+      addMessage('GodswillChatbot is an AI-powered chatbot that can chat with you via text or voice! Built with Hugging Face AI and Web Speech APIs.', 'ai');
+    }
+
+    function showAPI() {
+      addMessage('This chatbot uses Hugging Face\'s Mistral-7B model for natural language understanding and generation. Voice features use the Web Speech API.', 'ai');
+    }
+
+    function showContact() {
+      addMessage('📱 WhatsApp: +2347033572513\n📧 Email: ihechigodswill575@gmail.com\n\nFeel free to reach out!', 'ai');
+    }
   </script>
 
 </body>
