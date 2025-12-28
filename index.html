@@ -697,10 +697,10 @@
         <div class="header-title">GodswillChatbot</div>
       </div>
       <div class="header-right">
-        select class="model-selector" id="modelSelector">
-  <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
-  <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
-      </select>
+        <select class="model-selector" id="modelSelector">
+          <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
+          <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
+        </select>
         <button class="dark-mode-toggle" onclick="toggleDarkMode()">
           ☀️ <span>Light</span>
         </button>
@@ -944,7 +944,8 @@
 
       try {
         const modelName = document.getElementById('modelSelector').value;
-const url = `https://generativelanguage.googleapis.com/v1/models/${modelName}:generateContent?key=${GEMINI_API_KEY}`;
+        const url = `https://generativelanguage.googleapis.com/v1/models/${modelName}:generateContent?key=${GEMINI_API_KEY}`;
+        
         const response = await fetch(url, {
           method: 'POST',
           headers: {
@@ -1151,7 +1152,6 @@ const url = `https://generativelanguage.googleapis.com/v1/models/${modelName}:ge
     async function regenerateResponse() {
       if (conversationHistory.length < 2) return;
 
-      // Remove last AI response from history and UI
       conversationHistory.pop();
       const messagesContainer = document.getElementById('messagesContainer');
       const lastMessage = messagesContainer.lastElementChild;
@@ -1159,7 +1159,6 @@ const url = `https://generativelanguage.googleapis.com/v1/models/${modelName}:ge
         lastMessage.remove();
       }
 
-      // Resend the last user message
       const typingWrapper = document.getElementById('typingWrapper');
       typingWrapper.classList.add('active');
 
@@ -1168,7 +1167,8 @@ const url = `https://generativelanguage.googleapis.com/v1/models/${modelName}:ge
 
       try {
         const modelName = document.getElementById('modelSelector').value;
-const url = `https://generativelanguage.googleapis.com/v1/models/${modelName}:generateContent?key=${GEMINI_API_KEY}`;
+        const url = `https://generativelanguage.googleapis.com/v1/models/${modelName}:generateContent?key=${GEMINI_API_KEY}`;
+        
         const response = await fetch(url, {
           method: 'POST',
           headers: {
@@ -1177,7 +1177,7 @@ const url = `https://generativelanguage.googleapis.com/v1/models/${modelName}:ge
           body: JSON.stringify({
             contents: conversationHistory,
             generationConfig: {
-              temperature: 1.0, // Higher temperature for more varied responses
+              temperature: 1.0,
               topK: 40,
               topP: 0.95,
               maxOutputTokens: 2048,
@@ -1223,7 +1223,6 @@ const url = `https://generativelanguage.googleapis.com/v1/models/${modelName}:ge
         };
         chatSessions.unshift(newSession);
         
-        // Keep only last 20 sessions
         if (chatSessions.length > 20) {
           chatSessions = chatSessions.slice(0, 20);
         }
@@ -1321,24 +1320,20 @@ Feel free to reach out anytime! I typically respond within 24 hours.
       closeSidebar();
     }
 
-    // Handle orientation changes on mobile
     window.addEventListener('orientationchange', () => {
       setTimeout(adjustViewportHeight, 100);
     });
 
-    // Prevent zoom on input focus (iOS)
     document.getElementById('messageInput').addEventListener('focus', (e) => {
       e.target.style.fontSize = '16px';
     });
 
-    // Load voices for speech synthesis
     if ('speechSynthesis' in window) {
       speechSynthesis.addEventListener('voiceschanged', () => {
         speechSynthesis.getVoices();
       });
     }
 
-    // Service Worker for PWA (optional)
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('/sw.js').then(
@@ -1352,7 +1347,6 @@ Feel free to reach out anytime! I typically respond within 24 hours.
       });
     }
 
-    // Handle visibility change to pause/resume speech
     document.addEventListener('visibilitychange', () => {
       if (document.hidden && speechSynthesis.speaking) {
         speechSynthesis.pause();
@@ -1361,27 +1355,22 @@ Feel free to reach out anytime! I typically respond within 24 hours.
       }
     });
 
-    // Keyboard shortcuts
     document.addEventListener('keydown', (e) => {
-      // Ctrl/Cmd + K to focus input
       if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
         e.preventDefault();
         document.getElementById('messageInput').focus();
       }
       
-      // Ctrl/Cmd + N for new chat
       if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
         e.preventDefault();
         newChat();
       }
 
-      // Escape to close sidebar
       if (e.key === 'Escape') {
         closeSidebar();
       }
     });
 
-    // Auto-save conversation periodically
     setInterval(() => {
       if (conversationHistory.length > 0) {
         const existingSession = chatSessions.find(session => session.id === currentChatId);
@@ -1390,9 +1379,8 @@ Feel free to reach out anytime! I typically respond within 24 hours.
           localStorage.setItem('chatSessions', JSON.stringify(chatSessions));
         }
       }
-    }, 30000); // Save every 30 seconds
+    }, 30000);
 
-    // Network status indicator
     window.addEventListener('online', () => {
       console.log('Network connection restored');
     });
@@ -1401,7 +1389,6 @@ Feel free to reach out anytime! I typically respond within 24 hours.
       alert('You are currently offline. Messages will not be sent until connection is restored.');
     });
 
-    // Prevent accidental page refresh
     window.addEventListener('beforeunload', (e) => {
       if (conversationHistory.length > 0) {
         e.preventDefault();
